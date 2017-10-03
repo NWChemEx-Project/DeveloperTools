@@ -4,7 +4,4 @@ NWChemEx Developer Documentation
 Welcome to the repository for the NWChemEx developer documentation.
 
 - Git Workflow
-  - [Making a New GitHub Repository](@ref md_dox_GitRepo)
-- Best Practices
-  - [Documenting the Code With Doxygen](@ref md_dox_doxygen)
-  
+  - [Making a new GitHub repository](dox/GitRepo.md)

@@ -24,4 +24,4 @@ PROJECT_BRIEF          = "It's NWChem, but with an Ex"
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  =
+INPUT                  = dox/
