@@ -1,0 +1,13 @@
+#These are configuration files for QtCreator
+dox.config
+dox.creator
+dox.creator.user
+dox.files
+dox.includes
+*.autosave
+
+#These are the config files for CLion
+.idea/
+
+#The "build" directory for making documentation
+docs/
