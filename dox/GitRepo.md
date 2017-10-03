@@ -63,7 +63,8 @@ TODO: Some sort of order to table.
 |    Repo Name    |  Purpose                                                  |
 | :-------------: | :-------------------------------------------------------: |
 | NWChemExBase    | Provide a common build system                             |
-| dox             | Provide developer docs and Doxygen settings               |
+| dox             | Provide common Doxygen settings                           |
+| DeveloperDox    | Developer documentation repository                        |
 | LibChemist      | Provide tools for describing the chemistry                |
 | SCF             | Provide self-consistent field capabilities                |
 | CC              | Provide coupled-cluster capabilities                      |

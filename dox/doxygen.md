@@ -9,9 +9,8 @@ for discussing involved topics.
 
 TODO: Decide on whether we just want to use markdown, like this page.
 
-TODO: Decide on whether or not Doxygen commands are allowed in the markdown.
-*E.g.* `\f$\mu + \nu\f$` would display the Latex command, but GitHub won't
-parse it.
+TODO: Decide on whether or not Doxygen commands are allowed in the markdown, 
+but realize that GitHub won't parse them.
 
 TODO: Related to above, decide to what extent we want to have the markdown
 pages accessible from GitHub.
@@ -20,9 +19,12 @@ Documenting Code
 ----------------
 
 Doxygen allows you document your code in a minimally invasive manner.  It does
-this by slightly modifying the comment characters.  Examples:
+this by slightly modifying the comment characters.  Examples (if you are 
+viewing this on GitHub ignore the verbatim commands; they're to prevent
+Doxygen from parsing the comments):
 
-~~~.cpp
+```
+\verbatim
 /// This is a Doxygen, single-line comment for the following function  
 void function1();  
  
@@ -37,9 +39,11 @@ void function3();
 /*! The exclamation syntax also works for block comments.
     Still in block comment
  */
-~~~
+void function4();
+\endverbatim
+```
 
-TODO: Decide on either the `///` and `/** */` or the `//!` and `/*! */` syntax
+TODO: Decide on either the "///" and "/** */" or the "//!" and "/*! */" syntax
 
 Documentation in Doxygen comes in two types: brief and detailed.  Brief
 documentation, as the name implies, is meant to quickly convey what a function
@@ -55,8 +59,8 @@ a "\" or "@" character *e.g.* `\param` or `@param`).  By far the most useful
 ones are shown in the following code example, which should be taken as a
 minimal acceptable standard.
 
-~~~.cpp
-
+```
+\verbatim
 /** \brief This is the brief description of fake function 1.
  
     Fake function 1 demonstrates the bare minimal documentation standards. This
@@ -78,12 +82,13 @@ minimal acceptable standard.
  */
  template<typename T>
  int function1(int Param1, int& Param2, int& Param3);
- ~~~
+ \endverbatim
+ ```
  
  Obviously the real documentation should be more helpful, but this illustrates
- the key descriptions: the brief, the detailed description, the input/output 
- parameters, the return value, any template type (or non-type) parameters, and
- any exceptions that are thrown (as well as the level of exception guarantee).
+ the key descriptions: brief, detailed description, input/output parameters, 
+ return value, template type (or non-type) parameters, and exceptions that are
+ thrown (as well as the level of exception guarantee).
  
  TODO: Decide whether we want to use the `\` or `@` syntax.
  
