@@ -24,26 +24,18 @@ viewing this on GitHub ignore the verbatim commands; they're to prevent
 Doxygen from parsing the comments):
 
 ```
-\verbatim
+@verbatim
 /// This is a Doxygen, single-line comment for the following function  
 void function1();  
  
-//! This is an alternative syntax for a single-line comment  
-void function2();
-  
 /** For more extened documentation block comments are preferred.
     This line is also part of the comment.
  */
 void function3();
-  
-/*! The exclamation syntax also works for block comments.
-    Still in block comment
- */
-void function4();
-\endverbatim
+@endverbatim
 ```
-
-TODO: Decide on either the "///" and "/** */" or the "//!" and "/*! */" syntax
+Doxygen supports other conventions; however, the two above are the approved
+conventions for the NWChemEx project.
 
 Documentation in Doxygen comes in two types: brief and detailed.  Brief
 documentation, as the name implies, is meant to quickly convey what a function
@@ -55,34 +47,34 @@ Minimal Documentation Standards
 -------------------------------
 
 To aid in documenting Doxygen provides a host of keywords (triggered by either
-a "\" or "@" character *e.g.* `\param` or `@param`).  By far the most useful
+a "@" character *e.g.* `@param`; for consistency please do not use the alternative syntax of that uses a "\" character).  By far the most useful
 ones are shown in the following code example, which should be taken as a
 minimal acceptable standard.
 
 ```
-\verbatim
-/** \brief This is the brief description of fake function 1.
+@verbatim
+/** @brief This is the brief description of fake function 1.
  
     Fake function 1 demonstrates the bare minimal documentation standards. This
     is the detailed description that will show up in the documentation.
     
-    \param[in] Param1 The first parameter; it's read-only.
+    @param[in] Param1 The first parameter; it's read-only.
      
-    \param[out] Param2 The second parameter; it's going to be written to.
+    @param[out] Param2 The second parameter; it's going to be written to.
      
-    \param[in,out] Param3 The third parameter; it's going to be read from and
+    @param[in,out] Param3 The third parameter; it's going to be read from and
         written to. 
                           
-    \returns Whatever this function returns.
+    @returns Whatever this function returns.
     
-    \tparam T The type this function takes.  It should satisfy XXX concept.
+    @tparam T The type this function takes.  It should satisfy XXX concept.
     
-    \throws std::runtime_error Throws if some condition is tripped.  Weak 
+    @throws std::runtime_error Throws if some condition is tripped.  Weak 
                                exception guarantee.
  */
  template<typename T>
  int function1(int Param1, int& Param2, int& Param3);
- \endverbatim
+ @endverbatim
  ```
  
  Obviously the real documentation should be more helpful, but this illustrates
@@ -90,6 +82,9 @@ minimal acceptable standard.
  return value, template type (or non-type) parameters, and exceptions that are
  thrown (as well as the level of exception guarantee).
  
- TODO: Decide whether we want to use the `\` or `@` syntax.
- 
- TODO: Any other minimal requirements?  Thread safety?
+ Other minimal commands motivated by email thread:
+- @file for documenting files
+- @defgroup used to define groups for organizational reasons
+- @ingroup for associating a file, class, member, *etc.* with a particular
+  group
+
