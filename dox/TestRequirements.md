@@ -15,12 +15,14 @@ There are outstanding questions regarding the test requirements:
     - Tests from approved pull requests should be added to either the [core or
       extended test sets](BuildValidation.md), as determined by the code reviwers.
 - What do tests look like?
-  - Unit tests
+  - Unit tests 
     - Very useful, but they don't test interoperability with other software
       components. For example, a unit test for some Rys Quadrature code doesn't test
       whether those AO integrals can be used sucessfully in a subsequent coupled
       cluster job.
-    - Should identify a standard unit testing framework.
+    - While guidelines and requirements for unit testing are not yet outlined,
+      [Catch](https://github.com/philsquared/Catch) has been chosen as the automated
+      test framework for NWX.
   - NWX input files
     - Tests module interoperability, but tests overlap uneccesarily over core
       routines.
