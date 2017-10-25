@@ -210,3 +210,9 @@ Throughout the above description take note of the forced uniformity, *i.e.*
 interfaces for disparate things like QM/MM and coupled-cluster and to 
 automate as much as possible.  The overall design goal is to branch at the last
 possible second.
+
+C++ Core Use Cases
+------------------
+
+The goal of this section is to list the generalized modules that we will need
+in the C++ core to meet the user-facing use cases.
