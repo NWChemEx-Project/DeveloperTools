@@ -8,10 +8,10 @@ Contents
 --------
 
 - [Types of UML Diagrams](#types-of-uml-diagrams)
-- [Use Case Diagrams](#use-case-diagrams)
-- [Activity Diagrams](#activity-diagrams)
-- [Sequence Diagrams](#sequence-diagrams)
-- [Class Diagrams](#class-diagrams)
+- [Use Case Diagrams](#use-case-diagrams)  
+- [Activity Diagrams](#activity-diagrams)  
+- [Sequence Diagrams](#sequence-diagrams)  
+- [Class Diagrams](#class-diagrams)  
 
 Types of UML Diagrams
 ---------------------

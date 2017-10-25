@@ -6,8 +6,11 @@ code structure.
 
 Contents
 --------
-1. [Interactions With Users](#interactions-with-users)
-2. [NWChemEx SDK](#nwchemex-sdk)
+1. [Interactions With Users](#interactions-with-users)  
+2. [NWChemEx SDK](#nwchemex-sdk)    
+   a. [Calculation Runtime](#calculation-runtime)  
+   b. ["The" Calculation](#the-calculation)  
+   c. [Math Kernel](#math-kernel)  
 
 Interactions With Users
 ----------------------- 
@@ -66,12 +69,9 @@ discovery.  This has several aspects:
 NWChemEx SDK
 ------------
 
-The primary goal of NWChemEx is to provide a platform that performs quantum 
-chemistry at scale on modern high-performance machines.  None the less it is 
-also our intent to have NWChemEx be user friendly and to excel at performing 
-quantum chemical research including methods development.  To this end we 
-purpose the NWChemEx SDK (software development kit) which is comprised of two
- major components:
+In order to meet the use cases laid out in the previous section we purpose 
+the NWChemEx SDK (software development kit).  Summarily NWChemEx SDK is 
+comprised of two major components:
 - Scripting layer
   - Runtime aspect
     - User-friendly API to run basic quantum chemistry
@@ -81,17 +81,20 @@ purpose the NWChemEx SDK (software development kit) which is comprised of two
     - Integration into other packages supporting the scripting language
 - C++ core: NWChemEx
   - Implementations of all functions
-  - Self-contained runtime, *i.e.* scripting layer runtime is optional
+  - Self-contained runtime, *i.e.* scripting layer is optional
     - Running performance critical applications
     - Direct interface for other packages
     - Support alternative scripting layers
-Both the scripting layer and the C++ core are comprised of several 
-subcomponents.  The relationship among these components is depicted in the 
-following diagram.
+  - Broadly speaking arranged into:
+    - Stuff normal users care about ("the" calculation)
+    - Stuff to support "the" calculation
+
+The relationships among these components are summarized in the following 
+package diagram.
 
 ![](uml/program_structure.png)
 
-The major components of the scripting layer can be summarized as:
+The scripting layer is a detachable user-centric API consisting of:
 - Parser
     - Maps old NWChem syntax to new syntax
 - Basic API
@@ -100,54 +103,131 @@ The major components of the scripting layer can be summarized as:
     - Minimal input (say XYZ, basis name, and level of theory)
     - Written in terms of Full API under the hood
 - Full API: 
-  - Direct access to the C++ Core
+  - Script bindings for the C++ Core
   - Test new workflow in "input"
   - Add new feature in "input"
   - "Rewire" NWChemEx from the "input" for advanced calculations
-In the above input is in quotes because the traditional view of an input file
-is gone and instead replaced with a literal script that is then run 
+  
+In this summary input is in quotes because the traditional view of an input 
+file is gone and instead replaced with a literal script that is then run 
 through the interpreter of choice.   
 
-Within the C++ core exist several components.  
-- Runtime
-  - Computer-system-like runtime
-  - Liaison between hardware and NWChemEx
-    - Parallel resources (threads, GPU, accelerators, and MPI)
-    - Long-term (w.r.t. the life of a module not the scientist) storage
-    - Output buffers (out, debug, error)
-  - Task-based call stack
-    - Coarse-grained parallelism      
+Powering the scripting layer is the C++ core, the contents of which are:  
 - Calculation Runtime
-  - The environment in which chemistry is done
-    - Parameters (number of iterations, thresholds, *etc.*)
-    - Fundamental (physical/chemical) constants
-  - Stores computed results
+  - Environment calculation is run in
+  - Contains hardware runtime
 - Checkpointing
-  - Chauffeurs data from calculation runtime to computer runtime
-- Chemical System
-  - Descriptions of the atoms and fields
-  - Basis sets
-  - Point-group symmetry (?)
-  - Utilities for manipulating atoms          
-- Levels of Theory
-  - Physical models for describing a chemical system
-  - *e.g.* Hatree-Fock, coupled-cluster, QM/MM  
-- Utilities
-  - Odds and ends for facilitating quick development
-  - *e.g.* custom containers, custom iterators
+  - Facilitates chauffeuring data from calculation runtime to disk
 - Math Kernels
-  - Tensor algebra
-  - Fundamental (math) constants (*e.g.* factorials)
-  - Math transformations (*e.g.* Fourier transform)
-  - Numerical algorithms (*e.g.* optimizers)
+  - Optimized, parallelized, math libraries and functions
+- "The" Calculation
+  - Parts of NWChemEx users care about 
+  - Chemical System
+    - Relevant details of the chemical system the calculation will be run on                
+  - Levels of Theory
+    - Physical models for describing a chemical system
+  - Post processing methods
+    - Processes results of levels of theory
 
-These subpartitionings are somewhat theoretical/conceptual having a strong 
-dependence on the organization of the library(s) that implement them.  
+
+These subpartitionings are somewhat theoretical/conceptual.  In practice the 
+actual components will be finer-grained than this.  To this end the next 
+three sub sections consider the use cases of the major components of the C++ 
+core. 
+
+### Calculation Runtime
+
+As mentioned, the calculation runtime represents the environment that the 
+calculation is currently running in.  It is thus the interface between the 
+literal user of NWChemEx, the hardware, and the internals of NWChemEx.  The 
+use cases are summarized below.
+
+![](uml/runtime_use.png)
+
+For conceptual clarity we have grouped the the full calculation runtime into 
+three nested runtimes.  
+
+- Calculation runtime
+  - Calculation state
+    - "Log" of inputs to commands as well as their outputs
+    - Very similar to RTDB (I think)
+    - Key quantities to checkpoint
+  - Chemical runtime
+    - Describes the physics/chemistry the calculation is being run under
+        - Fundamental constants and unit conversions
+        - Basis set libraries
+        - Force field parameters
+  - Computer runtime
+    - I/O to disk
+    - Output to standard streams (standard out, error, debug)
+    - Parallel runtime
+      - Fundamental access to inter- and intra-process parallelization
+        - Inter-process likely MPI
+        - Intra-process CPU: OpenMP (?)
+        - Accelerators... (?)
+      - Task Queue
+        - Both inter-process and intra-process queues
+        - Likely implemented by other library
+
+### "The" Calculation
+
+Together the level of theory, any post processing done on it, and the chemical 
+system components represent what is typically thought of as a quantum chemistry
+calculation. We anticipate the major research endeavors of developers to be 
+directed at these three components.  The following diagram depicts the major 
+use cases of these components
+
+![](uml/chemical_use.png)   
+
+- Chemical system
+  - Molecules
+    - Identities and fundamental properties of the molecules/atoms in the system
+    - Used to compute other properties
+  - Fields
+    - Any sort of field the system is embedded in
+    - Electromagnetic
+    - PCM (?)
+    - EFP (?)
+  - Periodicity
+    - Description of the space system lives in
+- Level of theory
+  - Energy derivatives
+  - Wavefunction/density
+    - MM: density is just Dirac delta functions at nuclei
+- Post processing
+
+### Math Kernel
+
+Given that NWChemEx ultimately is a collection of mathematical theories it is
+no surprise that math kernels will play a central role.  The primary 
+mathematical needs we have are: 
+
+![](uml/math_use.png)
+
+Briefly these use cases can be summarized by:
+
+- Tensors
+  - Bread and butter of quantum chemistry
+  - Implemented by TAMM
+- Transforms
+  - Fourier transform likely others
+- Numerical calculus
+  - Finite difference
+  - Numerical integration
+    - DFT grids here (?)
+- Math constants
+  - Not Euler's number or pi, but rather things like factorials
+- Graphs
+- Numerical solvers       
+
+It will be essential to have implementations of these use cases that are 
+efficient both in massively parallel environments, but also on commodity 
+hardware. 
 
 Program Flow
 ------------
 
-Based on the previous section a natural program-flow is given by:
+Based on the previous sections a natural program-flow is given by:
 
 ![](uml/program_flow.png)
 
@@ -182,6 +262,7 @@ Regardless of which entry point is used program flow proceeds according to:
      - Multi-reference is multi-determinant, not multi-wavefunction
      - Excited state methods generate multiple wavefunctions as output
        - Use as generator for dynamics
+   - Formally, even MM has a wavefunction       
 4. Next we load the initial chemical runtime state
    - If this is a restart it comes from the checkpoint file
    - Else start with an empty one
@@ -211,8 +292,4 @@ interfaces for disparate things like QM/MM and coupled-cluster and to
 automate as much as possible.  The overall design goal is to branch at the last
 possible second.
 
-C++ Core Use Cases
-------------------
 
-The goal of this section is to list the generalized modules that we will need
-in the C++ core to meet the user-facing use cases.
