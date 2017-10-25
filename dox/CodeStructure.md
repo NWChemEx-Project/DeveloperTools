@@ -89,7 +89,7 @@ Both the scripting layer and the C++ core are comprised of several
 subcomponents.  The relationship among these components is depicted in the 
 following diagram.
 
-![](uml/program_structure.svg)
+![](uml/program_structure.png)
 
 The major components of the scripting layer can be summarized as:
 - Parser
@@ -149,7 +149,7 @@ Program Flow
 
 Based on the previous section a natural program-flow is given by:
 
-![](uml/program_flow.svg)
+![](uml/program_flow.png)
 
 We foresee two entry points into a run (*i.e.* any use case designed at 
 obtaining chemical results):
