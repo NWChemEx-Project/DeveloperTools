@@ -7,10 +7,10 @@ how to use Doxygen particularly with respect to the NWChemEx project.
 Contents
 --------
 
-- [Documenting Code](#docuemnting_code)
-  - [Intro to Doxygen](#intro_to_doxygen)
-  - [Minimal Standards](#minimal_documentation_standards)
-- [Documentation Pages](#documentation_pages)
+- [Documenting Code](#documenting-code)
+  - [Intro to Doxygen](#intro-to-doxygen)
+  - [Minimal Standards](#minimal-documentation-standards)
+- [Documentation Pages](#documentation-pages)
 
 Documenting Code
 ----------------
