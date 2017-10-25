@@ -28,7 +28,7 @@ At the very top-level NWChemEx is targeted at four types of users:
 The following use case diagram is meant to provide more details pertaining to
 the typical use cases one can expect.       
 
-![](uml/top_level.svg)
+![](uml/top_level.png)
 
 It is reasonable to anticipate that the main consumers of NWChemEx are going 
 to be users who want to run "normal calculations".  For our purposes a normal
