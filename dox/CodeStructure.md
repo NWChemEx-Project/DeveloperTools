@@ -20,7 +20,7 @@ Contents
    a. [Calculation Runtime](#calculation-runtime-classes)    
    b. [Checkpointing](#checkpointing-classes)  
    c. [Chemical System](#chemical-system-classes) 
-4. [Program Flow](#program-flow)     
+4. ["The" Calculation Classes](#the-calculation-classes)     
 
 Interactions With Users
 ----------------------- 
@@ -421,7 +421,14 @@ of its features:
   - Options are stored per module
     - Allows two instances of a module with different options
       - Useful for turning on say DIIS after a set condition
-  - Options are key associated
+  - Options
+    - Aggregates the little tweaks to an algorithm
+      - Thresholds, number of iterations, *etc.*
+    - Proposed mechanism for nesting modules
+      - *e.g.* SCF determines what Fock builder to use by getting the Fock 
+        builder's keys from its options 
+    - Stored per module, not function (*i.e.* can have two SCF modules with 
+      different options)
     - At moment using strings, but could be enums
       - Strings allow new options to be added without updating enum
       - Enums less error prone
@@ -522,74 +529,77 @@ measurement on a system, *i.e.* one would pass a `ChemicalSystem` instance to
 a function or class that would then compute its symmetry.  Determining the 
 symmetry of a geometrical object is a general thing and should thus be 
 packaged in a reusable manner. 
-   
 
-Program Flow
-------------
+"The" Calculation Classes
+--------------------------
 
-Based on the previous sections a natural program-flow is given by:
+The other half of the C++ core is comprised of the components of "the" 
+calculation.  Again, this is the area that we expect to constantly change, 
+*i.e.* be the area under which active research is done (the framework, once 
+the bugs are fixed, is expected to ideally never change again).  
+Consequentially, the design goal here is to minimize the impact that 
+adding say a new algorithm or a new level of theory has on the overall 
+package.  Furthermore, in line with the mentioned use cases, we want to ensure
+levels of theory are compatible with one another (*i.e.* any of them can be 
+used for geometry optimizations or dynamics).  This requires they all 
+maintain the same API.  Tentatively we purpose this API to have two important
+features:
 
-![](uml/program_flow.png)
+1. Constructor taking the requested options, the runtime, and the system on 
+which to perform the computation
+2. The ability to return the derivative w.r.t. the nuclear coordinates as well
+as an updated system.
 
-We foresee two entry points into a run (*i.e.* any use case designed at 
-obtaining chemical results):
+Within a level of theory we conclude that the three main types of tasks to 
+perform are:
 
-1. Simple API
-   - Only accessible via scripting API
-   - Automatically calls the routines shown in the Full API flow column
-   - Responsible for reporting results to user
-     - If checkpointed, can be restarted via Full API to get other results 
-2. Full API
-   - Executed as a script if in the scripting layer
-   - Hard coded into a `main` function if only using C++ runtime
-   - User is responsible for printing desired results
-      
-Regardless of which entry point is used program flow proceeds according to:
-1. Runtime is started
-   - `MPI_Init`, `omp_get_max_threads()`, *etc.*
-2. An initial chemical system instance is created
-   - This need not be just "XYZ" to molecule, can be entire algorithm
-   - Will typically be a single class
-     - Most "multi-system" calculations are approximations to a single system
-       - Fragment based, QM/MM, embedding methods: target is supersystem
-     - For geometry optimizations/PES scans starting geometry
-     - System generation is considered part of the calculation and done there            
-   - Multiple instances sometimes *e.g.* transition state searches
-   - Application of basis handled here
-     - Ghost functions would be applied as part of calculation
-3. An initial wavefunction is created
-   - Do we ever need more than 1 wavefunction initially?
-     - Multi-reference is multi-determinant, not multi-wavefunction
-     - Excited state methods generate multiple wavefunctions as output
-       - Use as generator for dynamics
-   - Formally, even MM has a wavefunction       
-4. Next we load the initial chemical runtime state
-   - If this is a restart it comes from the checkpoint file
-   - Else start with an empty one
-   - Valid, trivially restartable state is key to using Jupyter notebooks
-5. Run requested computation
-   - The loop allows for multiple jobs to be in an input file
-     - Directly using runtime allows parallelization of jobs here, but...
-   - Computation maps to "do a parameter scan" not "run bond length 1.24"       
-     - Coarse-grained parallelism within these commands
-6. If desired, save the chemical runtime's state (presumably to disk)      
-7. Shut down the runtime
-   - `MPI_Finalize`, *etc.*
-8. If this was simple input, return a simple output
-   - Full API can literally do anything, up to user to log what they wanted
-   - Simple output: literally print and **return** requested data
-     - Printing for the user avoids problem of user running 2 week coupled 
-       cluster, trashing checkpoint, and forgetting to print result...
-     - Returning the requested quantity avoids users having to parse outputs 
-       - Direct return allows for direct usage
-   - Traditional output is little more than debug logs, avoid it
-     - Saw it somewhere in the Google drive notes and liked this sentiment   
-                              
-    
-Throughout the above description take note of the forced uniformity, *i.e.* 
-"one system", "one wavefunction", *etc.* This makes it easier to define common 
-interfaces for disparate things like QM/MM and coupled-cluster and to 
-automate as much as possible.  The overall design goal is to branch at the last
-possible second.
+- SystemFragmenter
+  - An algorithm for taking one system and splitting it into multiple systems
+    - Algorithms can be as simple as user telling us which atom goes to which
+      system
+  - First call of QM/MM, SAPT, embedding methods, fragment based methods, *etc.*
+  - No concept of derivative
+- BatchTensorBuilder
+  - Returns a batch of a very large tensor
+    - Thinking coupled-cluser amplitudes, integrals, *etc.*
+  - Need derivatives w.r.t. nuclear positions
+    - Also need other derivatives, like w.r.t. MO coefs.  How to specify (?)
+      - Option(?)
+  - Input is:
+     - Series of tensors (identity of which is implementation defined) 
+     - Indices of the batch to compute
+  - Returns a series of subblocks (identity again being implementation defined)
+- TensorBuilder
+  - Wraps an algorithm for building a full tensor
+  - Similar API to `BatchTensorBuilder`, just without the index arguments
+  - Will need to compute derivatives w.r.t. nuclear positions
 
+Broadly speaking, the general idea is that these classes are stand-ins for a 
+somewhat sophisticated call-back mechanism to be implemented by the framework.
+The base classes make it easy for `CalculationState` to do processing on them
+if desired (*e.g.* a call's results can be checkpointed simply by calling 
+`run_and_log`).  They also make it easy to write, say a geometry optimizer, that
+works with any level of theory.
 
+The above details are summarized in the following class diagram.
+
+![](uml/level_of_theory.png)
+
+To summarize this section, the proposal is the following.  To add onto the 
+"the" calculation, if your goal is:
+
+- Method that computes energy derivatives and (possibly) a new system
+  - Derive from `LevelOfTheory`
+- Compute a tensor in batches
+  - Derive from `BatchTensorBuilder`
+- Compute a full tensor
+  - Derive from `TensorBuilder`    
+
+It may be necessary to add other base types later.  In particular 
+`LevelOfTheory` will likely not cut it for dynamics, or PES scans (it ought to
+work for geometry optimizations and 99.9% of the thermochemistry applications
+though).
+
+As a note to self, I know I also had a property calculator for computing 
+properties given a density.  Obviously needed for user-facing API, but I need to
+remember what I used it for in the SCF...
