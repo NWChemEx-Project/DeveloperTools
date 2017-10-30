@@ -83,11 +83,28 @@ In this section we take a look at the process of running a calculation (or
 more generally speaking running a module).  There are two ways to run a module:
 
 1. Via `run_and_log` member function of `CalculationState`
-2. Directly by calling the module's functions yourself.
+2. Directly calling `run` on the result of `get_module`
 
 They differ in that the first option will automatically log the result (think
 of it as the equivalent of the user running the module and then hitting save 
-afterwards), whereas the second option will not save the result.  Obviously 
+afterwards), whereas the second option will not save the result.  One can 
+think of the first option as a wrapper around the second.  To that end, the 
+following diagram details the sequence of events that happens when one calls 
+the `get_module` member function of `CalculationState`.
+
+![](uml/get_module.png)
+
+As shown the sequence is pretty simple, but there are two things worth 
+pointing out.  First, we need to violate RAII because of C++'s rules on using
+virtual functions in a constructor (if you like `CalculationState` is a 
+factory for generating modules).  To this end the actual initialization is 
+done via the member function `initialize`.  The second point to note is that 
+the resulting module instance is new.  Reuse of the internal buffers of a 
+module happens by repeatedly calling its `run` function.
+
+As mentioned, use of `run_and_log` is a wrapper around `get_module`, followed
+by `run` that logs the result.  For this reason this is the preferred mechanism
+for running a module 
 calling modules via the first option is preferred, but we ultimately leave that
 choice up to the writer of the module.  The following sequence diagram shows the
 steps that occur within a `CalculationState` instance when a user calls the
