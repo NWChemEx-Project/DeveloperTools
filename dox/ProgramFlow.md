@@ -87,46 +87,36 @@ more generally speaking running a module).  There are two ways to run a module:
 
 They differ in that the first option will automatically log the result (think
 of it as the equivalent of the user running the module and then hitting save 
-afterwards), whereas the second option will not save the result.  One can 
-think of the first option as a wrapper around the second.  To that end, the 
-following diagram details the sequence of events that happens when one calls 
-the `get_module` member function of `CalculationState`.
+afterwards), whereas the second option will not save the result.  `run_and_log` 
+is thus best thought of as a wrapper around scenario 2.  For this reason this is
+the preferred mechanism for running a module; however, we ultimately leave the 
+choice of how to call a submodule up to the writer of the module.  The following
+sequence diagram shows the steps that occur within a `CalculationState` instance
+when a user calls the `run_and_log` member function.
 
-![](uml/get_module.png)
+![](uml/run_and_log.png)
 
-As shown the sequence is pretty simple, but there are two things worth 
-pointing out.  First, we need to violate RAII because of C++'s rules on using
-virtual functions in a constructor (if you like `CalculationState` is a 
-factory for generating modules).  To this end the actual initialization is 
-done via the member function `initialize`.  The second point to note is that 
-the resulting module instance is new.  Reuse of the internal buffers of a 
-module happens by repeatedly calling its `run` function.
+1. The `CalculationState` builds a new instance of the requested module
+2. Arguments to `run_and_log` are forwarded to the module's `hash` function.
+   - The hash is assumed unique for each unique input
+     - In practice requires combining the hashes of
+       1. The input arguments 
+       2. Relevant options
+       3. All submodules
+       4. (possibly) the module info (*i.e.* version info)
+3. A check is made to see if we already have the result
+   - If it we don't, we compute and save it
+4. The result is returned   
 
-As mentioned, use of `run_and_log` is a wrapper around `get_module`, followed
-by `run` that logs the result.  For this reason this is the preferred mechanism
-for running a module 
-calling modules via the first option is preferred, but we ultimately leave that
-choice up to the writer of the module.  The following sequence diagram shows the
-steps that occur within a `CalculationState` instance when a user calls the
-`run_and_log` member function.
-
-![](uml/CalculationState.png)
-
-- (Steps 1-3) The `CalculationState` instance will forward its arguments to the 
-  requested module, which in turn will return a hash.
-  - The hash should be unique with a collision if and only if two invocations of
-    a module are guaranteed to return the same result.
-    - In practice requires combining the hashes of
-      1. The input arguments 
-      2. Relevant options
-      3. All submodules
-- The `CalculationState` instance then checks to see if the hash is for a
-  previously computed quantity
-  - If it is, the result is returned (first alt case Steps 4-5)
-  - If not:
-    - The result is computed (second alt case Steps 4-5)
-    - The result is stored under the hash (second alt case Step 6)
-    - The result is returned (second alt case Step 7)
-
-To directly run a computation one obtains the requested module from 
-`CalcaultionState` and then calls `run` on it.
+This mechanism keeps a dynamic record of a computation's state, using 
+pre-cached data when available to speed up computation.  Furthermore, by 
+pre-loading the cache with the answers, calls amount to little more than a 
+pointer dereference (*i.e.* are basically free).  As written this call does 
+not save the computation's state.  At least initially, the idea is that the 
+user of `CalculationState` will save the contents manually.  The next step is
+to make the `results` member an intelligent class that is capable of 
+automatically saving itself to disk.  Long-term the intent is that this class
+becomes more sophisticated by also gaining the ability to automatically free up
+memory (*i.e.* via some yet to be derived mechanism it would know that 
+certain results can be deleted; whereas other results cannot, but can be moved 
+to disk).
