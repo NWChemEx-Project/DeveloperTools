@@ -4,6 +4,12 @@ Program Flow
 The point of this section is to describe the flow of NWChemEx at various 
 points during execution and at various levels of detail.  
 
+Contents
+--------
+1. [Overall Flow](#overall-flow)
+2. [Running "The" Calculation](#running-the-calculation)
+3. [Module Workflows](#typical-module-workflow)
+
 Overall Flow
 ------------
 
@@ -119,4 +125,60 @@ automatically saving itself to disk.  Long-term the intent is that this class
 becomes more sophisticated by also gaining the ability to automatically free up
 memory (*i.e.* via some yet to be derived mechanism it would know that 
 certain results can be deleted; whereas other results cannot, but can be moved 
-to disk).
+to disk).  Finally, note that if one is parallelizing over the calls to 
+`run_or_log` the instances on each process will differ.
+
+Module Workflows
+----------------
+
+The previous sections have focused on workflows that occur largely within the
+framework.  This section turns our attention to "typical" workflows within 
+modules.  As modules represent the guts of what it means to do computational 
+chemistry this overview will necessarily be general as it is impractical to 
+go into detail given that module use cases range from separating the QM and MM 
+regions of a system, to running coupled-cluster.  That said, broadly speaking
+the majority of modules will follow a conceptual workflow similar to the 
+following activity diagram.
+
+![](uml/module_workflow.png) 
+
+Upon control entering your module via its `run` function the first thing most
+modules will do is read in the various knobs that are associated with it (*i.e.*
+figure out the number of iterations, screening thresholds, *etc.*).  This 
+information is passed to your module upon its construction and lives in a 
+base class common to all module types.  The next task will be to figure out 
+what submodules you are calling (if you like you can think of this as  
+figuring out what is the name of the function that will, say, build the 
+Fock matrix for me; as opposed to just assuming you know it, *i.e.* hard 
+coding the function's name).  This is done by getting their keys from your 
+options instance and then calling the corresponding module via the runtime 
+instance also found in your base class (if you call the submodule via 
+`run_and_log` then upon completion you will be able to restart from that 
+call).  Finally, with all the submodule calls out of the way you are able to 
+assemble the quantity or quantities that your module is responsible for and 
+return it.  Note that it's not your responsibility to save your results, 
+rather that falls on the caller of your module.  Specifically, if they called 
+you via `run_and_log` your results will be saved (like it or not they are the 
+module in a better position to determine if your results warrant saving).
+
+TODO: What happens when A calls B directly and B calls C via `run_and_log` ? 
+As it sits the results of C are saved, despite A not wanting to save B's 
+results.  Is that the best option?  
+
+Given the central role of parallelism in NWChemEx the next workflow shows how
+the typical workflow is modified to allow for coarse-grained parallelism.
+
+![](uml/coarse_grain.png)
+
+After the initial collecting of options, the module secures a device on which
+to run the computations.  Since this is a coarse-grained run it is sufficient
+to provide the device a series of functions to run.  In terms of something 
+like a finite-difference computation this could be as simple as adding the 
+submodules to run to the queue.  After the tasks are added your computation 
+is free to carry on and do other work (the task queues operate asynchronously).
+At some point the queued tasks finish and you can collect the results into a
+format suitable for returning.  As you'll note this workflow naturally 
+accounts for task dependencies (that is a submodule's tasks are dependencies of 
+its parent's tasks).  Finally, workflows for fine-grained parallelism are 
+similar; the major difference is your algorithm will be responsible for 
+directly using the devices. 
