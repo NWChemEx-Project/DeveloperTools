@@ -76,5 +76,40 @@ interfaces for disparate things like QM/MM and coupled-cluster and to
 automate as much as possible.  The overall design goal is to branch at the last
 possible second.
 
-Calculation State Lifetime
---------------------------
+Running "The" Calculation
+-------------------------
+
+In this section we take a look at the process of running a calculation (or 
+more generally speaking running a module).  There are two ways to run a module:
+
+1. Via `run_and_log` member function of `CalculationState`
+2. Directly by calling the module's functions yourself.
+
+They differ in that the first option will automatically log the result (think
+of it as the equivalent of the user running the module and then hitting save 
+afterwards), whereas the second option will not save the result.  Obviously 
+calling modules via the first option is preferred, but we ultimately leave that
+choice up to the writer of the module.  The following sequence diagram shows the
+steps that occur within a `CalculationState` instance when a user calls the
+`run_and_log` member function.
+
+![](uml/CalculationState.png)
+
+- (Steps 1-3) The `CalculationState` instance will forward its arguments to the 
+  requested module, which in turn will return a hash.
+  - The hash should be unique with a collision if and only if two invocations of
+    a module are guaranteed to return the same result.
+    - In practice requires combining the hashes of
+      1. The input arguments 
+      2. Relevant options
+      3. All submodules
+- The `CalculationState` instance then checks to see if the hash is for a
+  previously computed quantity
+  - If it is, the result is returned (first alt case Steps 4-5)
+  - If not:
+    - The result is computed (second alt case Steps 4-5)
+    - The result is stored under the hash (second alt case Step 6)
+    - The result is returned (second alt case Step 7)
+
+To directly run a computation one obtains the requested module from 
+`CalcaultionState` and then calls `run` on it.
