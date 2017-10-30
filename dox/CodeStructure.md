@@ -399,11 +399,11 @@ stolen from TensorFlow if we're being honest...).  The main summary points:
   - Likely to be a thin wrapper
 
 The final component of `Runtime` is `CalculationState`.  Of the three 
-components this is likely the least straightforward.  Its purpose is two-fold
+components this is likely the least straightforward.  Its purpose is two-fold:
 to decrease coupling among components and to serve as the mechanism for 
 logging the calculation's state.  Exactly how this all goes down is outlined 
-below in the section [XXX](#link-to-section); for now, we present a summary 
-of its features:
+on the [Program Flow](ProgramFlow.md) page; for now, we present a summary 
+of its features.
 
 - Contains a record of results
   - Map between conditions under which result was generated and said result
@@ -412,9 +412,9 @@ of its features:
   - Jumping off point for loading a previous calculation
   - Guts of what needs checkpointed
 - Contains the list of available modules
-  - Facilitates logging what version of a module was used *etc.*
+  - Collects information related to modules
   - Allows modules to remain uncoupled till runtime
-  - Mechanism for user generated modules
+  - Mechanism for user generated modules (just add them at runtime)
     - Rapid prototyping
     - Power-user access point
 - Contains list of user set (and defaulted) options
@@ -430,7 +430,7 @@ of its features:
     - Stored per module, not function (*i.e.* can have two SCF modules with 
       different options)
     - At moment using strings, but could be enums
-      - Strings allow new options to be added without updating enum
+      - Strings allow new options to be added without updating enum list
       - Enums less error prone
   - Arbitrary types (*i.e.* more than integers and/or doubles)
   
@@ -530,6 +530,9 @@ a function or class that would then compute its symmetry.  Determining the
 symmetry of a geometrical object is a general thing and should thus be 
 packaged in a reusable manner. 
 
+TODO: Density, occupations, MO coefs.  Wavefunction class thin wrapper over 
+Molecule (???)
+
 "The" Calculation Classes
 --------------------------
 
@@ -539,40 +542,50 @@ calculation.  Again, this is the area that we expect to constantly change,
 the bugs are fixed, is expected to ideally never change again).  
 Consequentially, the design goal here is to minimize the impact that 
 adding say a new algorithm or a new level of theory has on the overall 
-package.  Furthermore, in line with the mentioned use cases, we want to ensure
-levels of theory are compatible with one another (*i.e.* any of them can be 
-used for geometry optimizations or dynamics).  This requires they all 
-maintain the same API.  Tentatively we purpose this API to have two important
-features:
+package.  The goal is to consolidate the APIs of the various modules as much as
+possible.  To this end we note:
 
-1. Constructor taking the requested options, the runtime, and the system on 
-which to perform the computation
-2. The ability to return the derivative w.r.t. the nuclear coordinates as well
-as an updated system.
+1. Constructors have same signature (take options and runtime)
+2. For "generator"-like modules (modules expected to be called numerous times)
+   initialize function for setting up buffers (calling virtual functions in a
+   constructor is a bad idea, hence the reason for violating RAII)
+3. Member function for running the module has same name (`run`)
 
-Within a level of theory we conclude that the three main types of tasks to 
-perform are:
+As for what the module types are, at the moment they are a type for the level of
+theory and a type for each of the three main types of tasks to perform within a
+level of theory:
 
+- LevelOfTheory
+  - Returns the derivative of the energy w.r.t to nuclear coordinates
+  - Input derivative order and system
+  - If called multiple times, done to loop over multiple systems
 - SystemFragmenter
   - An algorithm for taking one system and splitting it into multiple systems
     - Algorithms can be as simple as user telling us which atom goes to which
       system
   - First call of QM/MM, SAPT, embedding methods, fragment based methods, *etc.*
   - No concept of derivative
+  - If called multiple times, done so to loop over systems
 - BatchTensorBuilder
-  - Returns a batch of a very large tensor
-    - Thinking coupled-cluser amplitudes, integrals, *etc.*
-  - Need derivatives w.r.t. nuclear positions
+  - Class for building things like coupled-cluster amplitudes, integrals, *etc.*
+  - Return is blocks from very large tensors
+    - Meaning of returned blocks is defined by derived class
+      - *e.g.* 1st block is alpha density, 2nd is beta
+      - Messy and error prone, use tags?
+  - Many repeated calls to get full tensor, *i.e.* needs `initialize` member
+  - Each `run` call returns blocks of derivatives (w.r.t. nuclear coordinates) 
     - Also need other derivatives, like w.r.t. MO coefs.  How to specify (?)
-      - Option(?)
+      - Separate builders(?)
   - Input is:
-     - Series of tensors (identity of which is implementation defined) 
+     - Derivative order
+     - System
      - Indices of the batch to compute
-  - Returns a series of subblocks (identity again being implementation defined)
 - TensorBuilder
   - Wraps an algorithm for building a full tensor
   - Similar API to `BatchTensorBuilder`, just without the index arguments
-  - Will need to compute derivatives w.r.t. nuclear positions
+  - If called multiple times it is to loop over systems
+
+
 
 Broadly speaking, the general idea is that these classes are stand-ins for a 
 somewhat sophisticated call-back mechanism to be implemented by the framework.
@@ -597,8 +610,8 @@ To summarize this section, the proposal is the following.  To add onto the
 
 It may be necessary to add other base types later.  In particular 
 `LevelOfTheory` will likely not cut it for dynamics, or PES scans (it ought to
-work for geometry optimizations and 99.9% of the thermochemistry applications
-though).
+work for geometry optimizations and 99.9% of the thermochemistry application
+though (wrapper could just process Hessian)).
 
 As a note to self, I know I also had a property calculator for computing 
 properties given a density.  Obviously needed for user-facing API, but I need to
