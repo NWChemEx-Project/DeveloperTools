@@ -4,7 +4,7 @@ NWChemEx Developer Documentation
 Welcome to the repository for the NWChemEx developer documentation.
 
 - Git Workflow
-  - [Intro to Git and GitHub](@ref md_dox_GitProcedure)
+  - [Intro to Git and GitHub](dox/GitProcedure.md)
   - [Organization of GitHub repository](dox/GitRepo.md)
   - [What is GitSubrepo?](dox/GitSubrepo.md)
 - Best Practices
