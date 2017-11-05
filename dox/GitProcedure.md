@@ -260,4 +260,13 @@ the reviewer has accepted what's there doesn't mean that the contributor is
 done contributing via that PR). 
 
 
- 
+Git/GitHub schematic
+---------------------
+
+The image below gives an idea of the normal workflow.  The left side of the red line 
+is the GitHub "official" repo.  On the right side of the red line are the repos
+the you (the developer) own.  Above the black dotted line are the GitHub 
+repos and below are the local repos that you create on your own computer (or
+other computers you are using).
+
+![alt text](github_workflow.png "GitHub Workflow")
