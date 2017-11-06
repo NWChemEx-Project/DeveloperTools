@@ -2,8 +2,9 @@ Git and GitHub Procedures
 =========================
 
 The purpose of this page is to document typical Git and GitHub workflows and to
-serve as a cheat sheet for remembering commands.  This page only covers the 
-aspects related to basic version control under Git and how to contribute code.
+serve as a cheat sheet for remembering the commands.  This page only covers the 
+basic aspects related to Git version control and how one uses GitHub to 
+contribute code.
 
 Contents
 --------
@@ -18,23 +19,18 @@ Git and GitHub Background
 
 As a code base evolves it will have existed in many versions.  Almost all modern
 codes use some form of what is termed "version control" (VC) to manage these
-versions.  Typically VC is done via a piece of VC software; the software 
-itself primarily facilitates two things:
+versions.  Rather than attempting to do VC manually, most developers typically 
+employ some form of VC software.  Broadly speaking VC software provides two 
+main services:
 
-1. Saving a history of how a code has evolved
+1. Management of a code's history
+   - Sophisticated "undo" feature
 2. Merging disparate contributions into one code base
+   - Manually merging contributions form different developers is error-prone
+   - Good VC can merge code automatically by utilizing the common code history
 
-The primary purpose of the history is a sophisticated "undo" mechanism for 
-the code base.  This is to say it makes it easy to return the code to any 
-previously saved state.  In particular this encompasses "the last known 
-working state" and the various releases.  As a code base is worked on by more
-and more developers, merging those developers' contributions into a single code 
-base becomes error prone if done manually.  Good VC software can do this in a
-largely automated fashion, only needing help when two changes both modify the
-same lines of code in different ways.   
-
-Broadly speaking, when a developer wants to work on a version controlled code
-base (called a repo), they:
+Superficially all VC software follows a similar workflow.  When a developer 
+wants to work on a version controlled code base (called a repo), they:
 
 1. Copy the repo
 2. Modify the copy
@@ -47,9 +43,9 @@ there is only one repo.  Copies of that repo are intimately linked to the
 original repo.  More modern VC packages, like Git and Mercurial, instead use 
 what is called a distributed repo model.  In this model, all copies of the 
 original repo are perfectly legitimate repos on their own.  Conceptually this 
-means that any "authoritative repo" is purely authoritative as a social 
-convention.  The distributed repo model has a number of advantages compared 
-to the centralized repo model:
+means that any notion of "authoritative repo" is purely a social convention.  
+The distributed repo model has a number of advantages compared to the 
+centralized repo model:
 
 - Faster operations
   - No need to communicate with original (typically remote) repo
@@ -57,8 +53,7 @@ to the centralized repo model:
 - Easy collaboration
   - No need for messy three-way (original, and two copies) synchronization
     - Only worry about copy to copy synchronization
-  - Copies have access to all VC commands (most centralized provide very 
-    limited set)
+  - Copies have access to all VC commands
     - Makes it much easier to share changes without going through original repo
 - Each repo is essentially a "back-up"
   - The original repo's full history is in each copy
@@ -70,19 +65,19 @@ Consequentially, there's nothing special (from the perspective of Git) about the
 repo that lives on GitHub versus a copy of that repo living on any other 
 computer.  That said, given that GitHub is easily accessed by all developers and
 potential users, it's typical to, by social convention, treat the GitHub repo as
-the "official" repo.  GitHub has evolved past simply a place to host Git repos 
-and now also strives to encompass many other aspects of the development 
-process, many of which are used by NWChemEx.  The following sections detail 
-common Git commands and the typical GitHub workflow.
+the "official" repo.  GitHub's popularity is largely fueled by the fact that 
+in addition to being a place to host Git repos it also strives to encompass 
+and simplify many other aspects of the development process (such as continuous 
+integration and code-review).  The following sections detail common Git 
+commands and the typical GitHub workflow purposed for the NWChemEx project.
 
 Common Git Commands
 ------------------- 
 
 For the purposes of this tutorial we'll assume that you're working with an 
-existing Git repo (if you're not, the easiest way to make a repo is to first 
-make it on GitHub and then follow GitHub's prompts).  To that end we'll ignore
-how to setup a Git repo. Once you know which repo you want to work on, the first
-step is for you to get your own copy of that repo (the copy is termed a clone
+existing Git repo (if you're not, the easiest way to make a repo is to do so on 
+GitHub and then follow GitHub's prompts).  Once you know which repo you want 
+to work on, the first step is to get your own copy (the copy is termed a clone
 in Git lingo).  The command to clone a repo is:
 
 ~~~.git
@@ -91,7 +86,7 @@ git clone <path_to_repo> [<where_to_put_repo>]
 
 This will checkout a repo that is located at `path_to_repo` and optionally 
 put it in a folder named `where_to_put_repo` (if you don't specify 
-`where_to_put_repo`, the resulting repo will be cloned into a folder with the 
+`where_to_put_repo`, the clone will be placed into a folder with the 
 same name as the repo you are cloning).  It's important to realize that 
 `path_to_repo` can be either a file path, to say clone a repo on your 
 internal network, or a website like GitHub.  The remainder of the commands in
@@ -102,40 +97,43 @@ folders don't exist).
 Typically one thinks of the code itself as having a single state.  This state
 evolves as features are added to the code.  The timeline of the code's state is 
 termed the "master branch" (history in Git is thought of as tree-like).  By 
-default the clone you get only has the master branch.  It's best to keep this
-branch clean (*i.e.* don't make your changes to it) as it'll make your life 
-easier when it comes time to get updates and to merge.  To this end the first
-thing you should do is make a new branch.  This is done by:
+default the clone you get only has the master branch.  A widely adopted 
+convention of the Git community (adherence to which will make your life easier 
+long term) is that the master branch should always be deployable (*i.e.* work
+and be relatively bug-free).  This convention is easy to meet if we always 
+keep this branch clean (*i.e.* don't make your changes to it) and we keep it 
+up to date. In an effort to keep the master branch clean the first
+thing you should do is thus make a new branch.  This is done by:
 
 ~~~.git
 git checkout -b <branch_name>
 ~~~
 
-where `branch_name` is the name of the branch you'll be working on (if the 
-branch already exists, say you're switching between branches to work on 
-another feature, omit the `-b`; Git will yell at you if the branch exists and
-you use the `-b` flag). In general you should have one branch per feature 
-you're working on.  The resulting branch starts a new timeline that diverges 
-from the master branch at some specific point.  Importantly this provides you a
-means of version controlling your changes until you're ready to merge them back
-into master.
+where `branch_name` is the name of the branch you'll be working on.  The `-b`
+flag tells Git to make the branch (Git will yell at you if the branch exists and
+you use the `-b` flag). The resulting branch starts a new timeline that diverges 
+from the master branch's current state.  All of your development will occur 
+on this branch.  Since the branch has diverged from the master branch it is 
+safe to routinely track your changes, even before they're ready to be merged 
+back into master.
 
 At this point you begin developing your great new feature on your new branch. 
 As time goes by and you write more and more code, you'll reach a point where 
-you'll want to save the code's state to VC so that you can revert to it if 
-something goes horribly wrong.  To do this, first you have to tell Git what code
-you want to save:
+you'll want to save the branch's state with Git so that you can revert if 
+something goes horribly wrong.  To do this, first you have to tell Git what 
+files you want to save:
 
 ~~~.git
 git add <files_to_save>
 ~~~
 
-Note that at this point the state of the files is not saved (they are what is 
+where `files_to_save` is one or more files to save (Linux wild cards work, 
+*e.g.* `git add *.cpp` will save all C++ source files in the current directory).
+After this command, the state of the files is not saved yet (they are what is 
 typically referred to as staged).  The staging phase makes it easier for you to 
 fine tune what gets saved and what doesn't.  You can run `git add` as many 
-times as you want to keep building up the staged file list.  At this point 
-it's useful to note that you can get a wealth of information about the 
-current repo's state via:
+times as you want and keep amassing files to save.  It's useful to note that 
+you can get a wealth of information about the current repo's state via:
 
 ~~~.git
 git status
@@ -151,46 +149,49 @@ git commit -m "<message>"
 ~~~
 
 This command will save all staged files to your branch and log the commit 
-with some (hopefully descriptive) message.  You can now, at a later point in 
-time return to this code state if you so choose.  Note that the files are only 
-saved to your current branch, they are not saved to any other branch yet (other 
-branch notably including the master branch).  
+with some (hopefully descriptive) message (if you omit the `-m` flag and the 
+message it'll bring up your text editor of choice so that you can type one).  
+After running this command your code's state is saved; however, the files are 
+only saved to your current branch, they are not saved to any other branch
+(other branch notably including the master branch) or repo yet.  
 
 At some point you'll want to move your feature to another repo.  Typically this 
 other repo is the original repo you cloned.  Because we are now attempting to 
 partially synchronize two repos, there's a lot of possibilities for how we want 
 to do this.  In an effort to keep this simple, we note that 99.9% of the time,
-using the GitHub workflow laid out below we want to only synchronize a branch
-of each repo.  Moreover we want to synchronize the same branch of both repo.  
-For simplicity we assume our current repo is on the branch we currently want to
-synchronize (if you're not `git checkout branch_to_synch`) and we all changed
-versioned files have been committed.  Before we can synchronize, we have to 
-make sure we have all of the changes on the original repo's branch (if the 
-original repo doesn't have this branch yet, *i.e.* your commit will make it, 
-skip this step; as with most things Git will yell at you if you attempt to 
-synchronize with a non-existent branch). The command to "pull" the other 
-branch's changes is:
+using the GitHub workflow laid out below we want to synchronize a single branch
+of each repo.  Moreover we want to synchronize the same branch (that is we 
+typically will not be directly merging into master as explained below).  For 
+simplicity we assume our current repo is on the branch we currently want to
+synchronize (if you're not `git checkout <branch_to_synch>`) and all changed
+files have been committed.  Before we can synchronize, we have to make sure we 
+have all of the changes on the original repo's branch (if the original repo 
+doesn't have this branch yet, *i.e.* your commit will make it, skip this step; 
+as with most things Git will yell at you if you attempt to synchronize with a
+non-existent branch or if that branch is ahead of yours). The command to "pull" 
+the other branch's changes is:
 
 ~~~.git
 git pull origin <branch_name>
 ~~~
 
-`origin` is an alias Git automatically defines for you which points to the 
+`origin` is an alias Git automatically defines for you, which points to the 
 original repo you cloned (obviously change origin if you're not synchronizing
-with the original repo).  `branch_name` is the name of your current branch 
-and the one you are attempting to synchronize. It is possible for conflicts to 
+with the original repo).  `branch_name` should be both the name of your current 
+branch and the name of the other repo's branch. It is possible for conflicts to 
 occur at this point, so it's worth discussing them now.  Git's pretty good about
-merging contributions from multiple developers.  Nevertheless conflicts occur.  
-If during a merge a conflict does occur, you'll have to correct it manually. To
-do this take note of the conflicting files (if you forget you can get the list
-again by running `git status`).  For each file you'll need to fix all conflicts 
-contained within it.  Git will fence-off the conflicting lines of code by 
-`<<<<<<< HEAD` and `>>>>>>> branch_name` delimiters.  In between these 
-delimiters will be a third delimiter, `=======`.  Relative to `=======` the top
-half will be your current changes, the bottom half will be the changes for the
-original repo.  You'll need to delete the delimiters and fix the code.  Once 
-you've done that you stage and commit the file.  Finally, once all conflicts 
-are fixed (if any existed) you "push" your changes:
+merging contributions from multiple developers automatically.  Nevertheless 
+conflicts do occur.  If during a merge a conflict does occur, you'll have to 
+correct it manually. To do this take note of the conflicting files (if you 
+forget you can get the list again by running `git status`).  For each file 
+you'll need to fix all conflicts contained within it.  Within the file, Git 
+will add three delimiters.  The conflicting lines of code will start with
+`<<<<<<< HEAD` and end with `>>>>>>> branch_name` delimiters.  In between 
+these delimiters `=======` will separate your changes (top half) from the 
+other repo's changes (bottom half).  To fix the conflict, you'll need to delete 
+the delimiters and manually merge the changes.  Once you've done that you 
+stage and then commit the file.  Finally, once all conflicts are fixed (if any 
+existed) you "push" your changes to the other repo:
 
 ~~~.git
 git push origin <branch_name>
@@ -199,14 +200,15 @@ git push origin <branch_name>
 While it's essential to keep the master branch of your repo clean, it's also 
 good practice to keep it synchronized with that of the repo you cloned (we'll
 get to why in a moment).  Synchronization of the the master branch is akin to
-the first half of the pull procedure above.  First (assuming you're on your 
-development branch and not the master branch) change to your master branch:
+the first half of the procedure we just outlined.  First (assuming you're
+on your development branch and not the master branch) change to your master
+branch:
 
 ~~~.git
 git checkout master
 ~~~
 
-and pull the original repo's master branch via:
+then pull the original repo's master branch via:
 
 ~~~.git
 git pull origin master
@@ -214,30 +216,29 @@ git pull origin master
 
 Since you're following this tutorial there'll be no problems with the merge 
 and everything will go swimmingly.  With your master branch up-to-date you'll 
-want to merge those changes into your active development branch.  This ensures
-that eventually when you do want to merge your development branch into master
-the whole procedure goes smoothly.  Anyways, to do this, check-out your 
-development branch and run:
+want to merge those changes into your active development branch. To do this, 
+check-out your development branch and run:
 
 ~~~.git
 git merge master
 ~~~
 
-This will merge the contents of your master branch into your current branch.
-Depending on how master has changed conflicts may occur; if they do, you 
-simply deal with them as we did above.  
+This will merge the contents of your repo's master branch into your current 
+branch.  Depending on how master has changed conflicts may occur; if they do, 
+you simply deal with them as we did above.  
  
   
 GitHub Workflow
 ---------------
 
-The above commands are complemented by several GitHub exclusive extensions.  
-Let's say you want to contribute to a very creatively named repo on GitHub 
-called "GitHubRepo".  Well we've got two problems.  First, the maintainers of
-"GitHubRepo" probably don't want you directly committing to their code 
-base without them first looking at your contribution ("looking at" is 
+The commands from the previous section are complemented by several GitHub 
+extensions.  We explain these extensions in this section.  For the purposes 
+of this tutorial, let's say you want to contribute to a very creatively named
+repo on GitHub called "GitHubRepo".  Well we've got two problems.  First, the
+maintainers of "GitHubRepo" probably don't want you directly committing to 
+their code base without them first looking at your contribution ("looking at" is 
 typically automated to some extent).  Hence, they'll need to pull your changes 
-into a sandbox area and assess them before committing them.  This is the 
+into a sandbox area and assess them before committing them.  This leads to the 
 second problem, you probably don't want them accessing your computer. GitHub has 
 purposed a solution, it's called forking.  Alls it is, is a fancy clone 
 procedure.  During forking GitHub clones "GitHubRepo" to your account (thereby 
@@ -245,15 +246,14 @@ hosting the clone on GitHub itself).  We'll call the resulting clone
 "GitHubFork". Basically "GitHubFork" is a buffer repo that you both can 
 access comfortably (as in the spirit of Git itself each fork is a legitimate 
 GitHub repo itself and can be forked too, great for allowing the workflow 
-described here to be done recursively for collaborations on a contribution). 
-As for how to fork, on "GitHubRepo"'s GitHub page just click the fork button
-at the top.
+described here to be done recursively for collaborations).  As for how to 
+fork, on "GitHubRepo"'s GitHub page just click the fork button at the top.
 
 After forking, the Git procedure continues like normal.  You clone 
 "GitHubFork" to your local machine and checkout a new branch preserving 
-master.  To save yourself a lot of headaches later you'll want to define an 
-alias for "GitHubRepo" (origin will be set to "GitHubFork").  Typically this 
-alias is called "upstream".  To make this alias the command is:
+master.  To save yourself some typing later you'll want to define an alias for
+"GitHubRepo" (origin will be set to "GitHubFork").  Typically this alias is 
+called "upstream".  To make this alias the command is:
 
 ~~~.git
 git remote add upstream <path_to_original_repo>
@@ -314,7 +314,8 @@ git reset --hard origin/master
 This command will delete all changes made to your current master branch, and 
 make it exactly equal to the state of "GitHubFork"'s master branch.  YOU WILL 
 ALMOST CERTAINLY LOOSE WORK BY DOING THIS.  It's thus best to first checkout a
-new branch, that is a copy of the current branch, before executing this command.  
+new branch, that is a copy of the current master branch, before executing this 
+command.  
 
 Once you're done developing you need to notify the "GitHubRepo" maintainers. 
 This is typically done in two ways.  First, the "[WIP]" tag is removed from 
