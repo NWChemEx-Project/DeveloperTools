@@ -9,22 +9,25 @@ but omit said namespace for simplicity.
 Contents
 --------
 
-1. [Declaring Tensors](#declaring-tensors)  
+1. [What is a Tensor?](#what-is-a-tensor?)
+2. [Declaring Tensors](#declaring-tensors)  
    a. [General Construction](#general-construction)  
-   b. [Sparse Construction](#sparse-construction)  
-2. [Accessing Tensor Data](#accessing-tensor-data)  
+   b. [Sparse Construction](#sparse-construction)
+3. [Handling of Symmetries](#handling-of-symmetries)     
+4. [Accessing Tensor Data](#accessing-tensor-data)  
    a. [General Considerations](#general-considerations)  
    b. [Data Locality Considerations](#data-locality-considerations)  
-3. [Basic Operations](#basic-operations)
-4. [Template Concerns](#concerns-about-template-meta-programming)  
+5. [Basic Operations](#basic-operations)
+6. [Decompositions](#decompositions)
+5. [Template Concerns](#concerns-about-template-meta-programming)  
 
 What is a Tensor?
 -----------------
 
 When designing an API it helps to model the API after the real world object it
-is implementing.  The present section justifies, motivates the basics of our 
-purposed Tensor API by appealing the definition of a tensor.  To that end let us
-define a tensor.  Particularly in chemistry we like to think of tensors as 
+is implementing.  The present section justifies/motivates the basics of our 
+purposed Tensor API by appealing to the definition of a tensor.  To that end let
+us define a tensor.  Particularly in chemistry we like to think of tensors as 
 multidimensional arrays of scalars.  However, this is a very limited view from 
 the mathematical perspective.  From the latter's standpoint, one of the most 
 general definitions of a tensor is that it is an element of a module over a 
@@ -159,7 +162,7 @@ memory and thus being responsible for its deletion.
 Arguably the next most important consideration is how to specify the structure 
 of the tensor (its order, lengths of dimensions, lengths of blocks, *etc.*). 
 Generally speaking this can be a complicated thing.  To that end we purpose 
-the `Shape` class.
+the `Shape` class to abstract many of the details away.
 
 ```.cpp
 //Declare a range for a vector with length 10
@@ -399,6 +402,75 @@ There are a couple of key differences (based on my understanding of TAMM):
   - Can have multiple AO spaces
   
 
+Handling of Symmetries
+----------------------
+
+One of the keys to an efficient tensor class is to take advantage of the 
+symmetries inherent to the tensor.  At the most fundamental level all of 
+these symmetries can be described as being relationships that establish that 
+two elements are not independent, but rather are related via some relationship.  
+This includes the usual permutational symmetry (generalization of 
+symmetric/antisymmetric matrix), but also more problem dependent symmetries like
+different spin blocks being equal.
+
+The current proposal to handle this is to establish a `Symmetry` class.  This
+class would be a list of all symmetries inherent to the tensor.  To state that a
+series of elements are related by some relationship the syntax would be:
+
+```cpp
+Symmetry sym;
+//Establishes that elements 0,0 and 1,1 are equivalent
+//Lambda syntax: 
+//   input: index of input element, value of input element, index of element to 
+//          generate 
+//   return: The generated element
+sym.add_symmetry({{0,0},{1,1}},
+    [](IndexType& idx_in, ElementType& e_in, IndexType& idx_out){return e_in;});
+
+//Convenience function for above
+sym.are_equal({0,0},{1,1});
+```
+
+The lambda function syntax allows for arbitrary symmetry relations and is 
+largely intended for use when the elements are complicated data structures 
+(such as entire tensors).  Its effective use assumes that keeping a list of 
+related elements is more memory effective than actually storing those elements; 
+additionally, it assumes that generating an element via the stored relationship 
+is more efficient than computing the element.  In theory, this same API could be
+used for all types of symmetry.  For example to establish that a 3 by 3 matrix 
+is symmetric would be:
+
+```cpp
+Symmetry sym;
+sym.are_equal({0,1},{1,0});
+sym.are_equal({0,2},{2,0});
+sym.are_equal({1,2},{2,1}); 
+```
+
+However, this would actually lead to having to store more data than if we had
+just stored the symmetric elements (having to apply the function for each 
+element makes the matter even worse). In an attempt to optimize performance the 
+backend could try to establish that the matrix is symmetric by ensuring that 
+all three of the above symmetry relationships are present in that map.  Although
+not too bad for a 3 by 3 matrix, one can imagine this quickly becoming tedious 
+and error-prone for larger tensors.  Thus we purpose another API for 
+establishing permutational symmetry:
+
+```cpp
+Symmetry sym;
+//Establishes that element (i,j) equals element (j,i)
+sym.add_idx_set({0,1});
+
+//Establishes that element (i,j,k) equals element (i,k,j)
+sym.add_idx_set({1,2});
+
+//Establishes (i,j,k)==(i,k,j)==(j,i,k)==(j,k,i)==(k,i,j)==(k,j,i)
+sym.add_idx_set({0,1,2});
+``` 
+
+To establish that a set of indices are antisymmetric the proposal is to include
+an optional second argument, which is a flag for switching between symmetric and
+antisymmetric.
 
 Accessing Tensor Data
 ---------------------
@@ -594,13 +666,25 @@ auto MappedMatrix = AMatrix.apply_map(
     });
 
 ```
+and purpose the `apply_map` function.  This function would take a 
+functor/lambda which is capable of generating an element of the tensor given 
+only that element's index and current value.  Presently we ignore the value and
+set it based purely off the index.  The `apply_map` function can in theory be
+used to implement nearly every operation, for example to add two tensors we'd
+capture the right one in the lambda and then:
+```.cpp
+TensorD LHSTensor;//Assume allocated
+TensorD RHSTensor;//Assume allocated
+auto Result=LHSTensor.apply_map([=](double lhs_elem, index_type idx)
+    { return elem + RHSTensor(idx);});
+```  
+
 
 Basic Operations
 ----------------
 
-We'll skip some of the more mundane operations and instead go to the operations
-that are the basis for science.  To that end we note that index notation is a
-natural way to express tensor operations and wish to utilize it in our API.
+As already alluded to, index notation is a natural way to uniquely express 
+tensor operations and thus we wish to utilize it in our API.
 
 To add two tensors this looks like:
 ```.cpp
@@ -643,8 +727,10 @@ DenseTensorD A("i","j","k","l") = B("i","j")*C("k","l");
 ``` 
 as well as the normal matrix trace:
 ```cpp
-///Disclaimer: the left side needs tested to see if that works
 DenseTensorD A() = B("i","i");
+
+//Overloaded for scalar
+double A = B("i","i");
 ```
 and more complicated traces:
 ```cpp
@@ -652,8 +738,7 @@ DenseTensorD A("i","j") = B("i","j","k","k");
 ```
 
 Element sparse matricies work identically, at the API level, as their dense 
-brethren.  Assuming the blockings are compatible, even block matrix
-operations can be written in this form.
+brethren.
 
 
 ```cpp
@@ -668,11 +753,36 @@ operations can be written in this form.
           (de() += 0.25 * t2(p1, p2, h3, h4) * v2(h3, h4, p1, p2))
       .dealloc(i1);
 
-//Literal translation to proposed API
-auto i1("a","i") = f1("a","i") + 0.5*t1("j","b")*v2("b","a","j","i");
-double de = t1("i","a")*i1("a","i");
-de += 0.25*t2("k","l","c","d")*v2("c","d","k","l");
+//Literal translation to proposed API (not sure spin is right...)
+auto i1("s","t")("a","i") = f1("s","t")("a","i") + 
+         0.5*t1("u","v")("j","b")*v2("v","s","u","t")("b","a","j","i");
+double de = t1("t","s")("i","a")*i1("s","t")("a","i");
+de += 0.25*t2("s","u","t","v")("a","b","i","j")*
+           v2("t","v","s","u")("i","j","a","b");
 ```
+
+Comparing the two APIs we see a few things:
+
+- Indices have somewhat different semantics
+  - TAMM: Indices are pre-registered with spaces
+    - *i.e.* h1 and p1 are **not** interchangeable as they carry meaning
+  - Purposed API: Indices are dummy, *i.e.* "i" doesn't imply occupied
+- Choice of multiplication for blocks    
+  - TAMM: internally decided
+    - Is it going to work with relativistic (?)
+  - Purposed API: must explicitly specify how blocks contract
+- Specification of intermediates, input tensors, output tensors
+  - TAMM: explicit registration
+  - Purposed API: implicit registration
+    - Intermediates specified with "auto"
+    - Inputs are on right side of equation
+    - Outputs are on left side of equation
+- Memory management
+  - TAMM: explict memory allocation/deallocation of intermediate
+  - Purposed API: handled by RAII
+- Equation composition
+  - TAMM: Nested function calls
+  - Purposed API: Nested types         
 
 Decompositions
 --------------
@@ -685,10 +795,71 @@ decompositions:
 - Singular value decomposition
 - Choleskey
 - Tensor train
-- Density fitting (more general?)
+- Density fitting
 
-Generally speaking all of these decompositions are of the form the 
+Generally speaking all of these decompositions are of the form **M**=**ABC**... 
+where **M** is the tensor we are decomposing and **A**, **B**, **C**, *etc.* are
+tensors whose product recovers **M** (usually only approximately in practice).
 
+Much time and effort goes into deriving equations in electronic structure 
+theory.  Given the canonical forms of these equations much time then goes into
+rederiving them with one or more quantities replaced with one or more of the 
+above decompositions.  The resulting equations then need to be optimized by 
+hand for each and every approximation.  This is a very tedious, error-prone 
+task.  In an ideal world we would write the canonical equation and then tell the
+tensor library its okay to decompose one or more of the tensors in the equation.
+The tensor library would then replace all occurrences of that tensor with its
+decomposition and compute the result.  Unfortunately, the resulting equation 
+typically must be implemented in a manner different from the original to obtain
+optimal speed (*e.g.* there may now exist more common intermediates or we may
+have multiple ways to contract a series of tensors which did not exist before).  
+Given that the decomposition is only known to the backend this means that the
+user can not help and the responsibility lies with the backend to clean-up the
+equation.
+
+Long term relying on the backend to clean-up the equation will greatly 
+facilitate much theory development.  However, there is much work to be done 
+before the backend can do so reliably and efficiently.  In designing the API for
+decompositions it then becomes necessary to allow for future innovations towards
+automation, while still allowing for manual intervention.  At the simplest level
+this can be done by letting each decomposition have a type, say 
+`EigenDecomposition<Tensor<T>>` for an eigen value decomposition of an 
+instance of type `Tensor<T>`.  The type will provide access to tensors in the 
+decomposition.  For example:
+
+```cpp
+TensorD A;//Assume square matrix and filled
+
+//I=QDQ^-1
+EigenDecomposition<Tensor<T>> evs(I);
+
+//Get Q
+TensorD Q = evs.Q();
+
+//Get diagonal
+TensorD D = evs.D();
+
+//Get Q^-1
+TensorD Qinv = evs.Q_inv();
+```
+
+It will long-term be important that this could be done in a more generic manner,
+but for illustrative purposes this is fine.  The proposal would be that the 
+tensor `evs` would also be directly usable in a tensor equation like:
+
+```cpp
+TensorD A;
+EigenDecomposition<TensorD> evs(A);
+
+//Some equation "C=AB" where we use "evs" instead
+TensorD C("i","k")=evs("i","j")*B("j","k");
+
+//The backend actually sees: C=(QDQ^-1)B and optimizes that expression
+```
+If the resulting decomposition leads to poor performance then the user is free
+to use the tensors of `EigenDecomposition<TensorD>` manually (at which point 
+they'd likely realize this is a contrived example and eigenvalue 
+decomposition isn't going to help you obtain a speed-up here....).
 
 Concerns About Template Meta-Programming
 ----------------------------------------
