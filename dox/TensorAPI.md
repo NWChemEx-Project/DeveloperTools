@@ -9,13 +9,130 @@ but omit said namespace for simplicity.
 Contents
 --------
 
-1. [Declaring Tensors](#declaring_tensors)  
-   a. [General Construction](#general_construction)  
-   b. [Sparse Construction](#sparse_construction)  
-2. [Accessing Tensor Data](#accessing_tensor_data)  
-   a. [General Considerations](#general_considerations)  
-   b. [Data Locality Considerations](#data_locality_considerations)  
-3. [Basic Operations](#basic_operations)  
+1. [Declaring Tensors](#declaring-tensors)  
+   a. [General Construction](#general-construction)  
+   b. [Sparse Construction](#sparse-construction)  
+2. [Accessing Tensor Data](#accessing-tensor-data)  
+   a. [General Considerations](#general-considerations)  
+   b. [Data Locality Considerations](#data-locality-considerations)  
+3. [Basic Operations](#basic-operations)
+4. [Template Concerns](#concerns-about-template-meta-programming)  
+
+What is a Tensor?
+-----------------
+
+When designing an API it helps to model the API after the real world object it
+is implementing.  The present section justifies, motivates the basics of our 
+purposed Tensor API by appealing the definition of a tensor.  To that end let us
+define a tensor.  Particularly in chemistry we like to think of tensors as 
+multidimensional arrays of scalars.  However, this is a very limited view from 
+the mathematical perspective.  From the latter's standpoint, one of the most 
+general definitions of a tensor is that it is an element of a module over a 
+ring.  If your abstract algebra is rusty, what this means is we have two sets
+of objects, call them **M** and **R**.  **M** will turn out to be the set of all
+possible tensors and **R** will be the set of all possible elements for those 
+tensors.  From an API standpoint, this immediately implies that our tensor class
+depends on the type of its elements, *i.e.* minimally the type of our tensor 
+class should be:
+
+```cpp
+template<typename ElementType>
+class Tensor;
+``` 
+
+We can use the fact that the elements of our tensor form a ring to motivate the 
+C++ concept `ElementType` must satisfy.  To that end, we know that the members
+of **R** are paired with two operations, typically termed "addition" and 
+"multiplication", which must satisfy: 
+
+- **R** and "addition":
+  - **R** is closed under "addition"
+  - "addition" is associative
+  - one element of **R** is the addition identity element
+  - "addition" is invertible
+  - "addition" is commutative
+- **R** and "multiplication":
+  - **R** is closed under "multiplication"
+  - "multiplication" is associative
+  - one element of **R** is the multiplicative identity  
+- "multiplication" distributes over "addition"
+
+For our API purposes, what this means is that the elements must semantically 
+behave as if they minimally have the following API:
+
+```cpp
+struct ElementType {
+
+    //Implements "addition"
+    ElementType operator+(const ElementType& rhs)const
+    {
+        //return *this + rhs
+    }
+    
+    //Implements adding by the inverse of rhs
+    ElementOfARing operator-(const ElementOfARing& rhs)const
+    {
+       //return (*this) + additive_inverse(rhs)
+    }
+    
+    //Implements "multiplication"
+    ElementOfARing operator*(const ElementOfARing& rhs)const
+    {
+        //return *this * rhs
+    }
+};
+```
+
+We say "semantically behave like" because plain old data types, such as `double`
+do not formally have such an interface; however, the various operations are 
+defined so that writing say `A = B + C` works if `A`, `B`, and `C` are all of
+type `double`.  If we define our tensor right then any type satisfying this 
+API can be used in our tensor without modification.  As we'll see this leads to
+some pretty cool features for our Tensor class which allows its feature set to 
+be easily extendable.
+
+Returning to our mathematical definition we now focus on the "module" part. A 
+module is very similar to a ring except that the multiplication occurs between
+elements of **M** and **R** as opposed to between elements of the same set, 
+hence our tensor class must minimally have the following API (assuming we 
+want to support both right and left modules...):
+
+```cpp
+template<typename ElementType>
+class Tensor {
+public:
+    //Add two tensors together
+    Tensor<ElementType> operator+(const Tensor<ElementType>& rhs);
+    
+    //Add the additive inverse of rhs to this
+    Tensor<ElementType> operator-(const Tensor<ElementType>& rhs);
+    
+    //Right multiply by an element
+    Tensor<ElementType> operator*(const ElementType& rhs);
+};
+
+//Left multiply by an element
+template<typename ElementType>
+Tensor<ElementType> operator*(const ElementType& lhs,
+                              const Tensor<ElementType>& rhs);
+```
+
+Interestingly we see that if we defined an operation:
+
+```cpp
+Tensor<ElementType> operator*(const Tensor<ElementType>& rhs);
+``` 
+
+then our tensor would additionally be a ring and could be used as an element of
+itself (in turn giving us blocking for free).  Unfortunately how to do this is 
+not unique, as we may choose multiplication to be the tensor product, 
+element-wise multiplication, or contraction.  It turns out that it is possible 
+to uniquely differentiate between all three of these products using index 
+notation and we consider the distinction in more detail there.  Before 
+concluding this section we point out that the API for the tensor elements is 
+quite general and any functor defining addition, subtraction, and multiplication
+can be used.
+
 
 Declaring Tensors
 -----------------
@@ -92,11 +209,12 @@ purpose a fourth constructor:
 
 which is the same as the default constructor except that the user has set the
 parallelization strategy.  We expect all further constructors to come in two
-flavors, one which takes a `ParallelRuntime` instance in addition to the other
-arguments and one which only takes the other arguments and assumes the default
-parallelization strategy.  
+flavors, one which takes a `ParallelRuntime` instance (plus any additional
+arguments) and one which only takes the additional arguments, thus assuming 
+the default parallelization strategy.  
 
-Using the `Shape` class leads to constructors of the forms:
+Using the `Shape` class to specify the dimensions of the tensor naturally leads
+to constructors of the forms:
 ```.cpp
 using TensorD=Tensor<double>;
 
@@ -131,8 +249,8 @@ TensorD I(RT,Shape());
 ```
 
 One drawback of this approach is that the type of the Tensor is a bit nasty and
-changes with the number of nestings.  A solution would be to take a page from
-the STL and define a function `make_tensor` such that:
+changes with the number of block nestings.  A solution would be to take a page 
+from the STL and define a function `make_tensor` such that:
 
 ```.cpp
 //Makes tensor H from above (use auto to save the headache of determining type)
@@ -260,38 +378,27 @@ BlkTensorD F1(RT,Shape(mos,mos));
 BlkTensorD V2(RT,Shape(mos,mos,mos,mos));
 ```
 
-Formalizing the Element Type
-----------------------------
+There are a couple of key differences (based on my understanding of TAMM):
+- The purposed API relies on RAII for allocation/deallocation whereas TAMM makes
+  it a separate function call
+  - Most C++ libraries will assume RAII, not adhering to it will make it hard to
+    interface
+- TAMM stores tensor sizes as global variable (otherwise I have no idea how the
+  tensors figure out their sizes)
+  - Global variables and/or singletons are considered an anti-pattern in C++ for
+    many reasons, not the least of which is they make parallelism far harder
+- The purposed API supports arbitrary blocking, whereas TAMM assumes minimally
+  spin and irrep blocking on top of using one of the recognized subspaces
+  - Not all tensors in electronic structure theory have spin (*e.g.* electric 
+    field of nuclei)
+  - Not all tensors have spatial symmetry (*e.g.* inertia tensor)
+  - Depending on the application there's more than just alpha/beta spin 
+    (*e.g.* NMR)
+  - Can have multiple MO spaces (*i.e.* would need V1,V2,...,O1,O2,...)
+  - Can have multiple fitting spaces
+  - Can have multiple AO spaces
+  
 
-Mathematically speaking the elements of a tensor must be the elements of a ring.
-What this means in plain English is that the elements must semantically 
-behave as if they minimally have the following API:
-
-```cpp
-struct ElementOfARing {
-    ElementOfARing operator+(const ElementOfARing& rhs)const
-    {
-        //return *this + rhs
-    }
-    
-    ElementOfARing operator*(const ElementOfARing& rhs)const
-    {
-        //return *this * rhs
-    }
-};
-```
-that is they must have some associative, commutative operation which we call
-addition, they must have some associative (but not necessarily commutative)
-operation which we call multiplication, and the multiplication operation must
-distribute over the addition operation.  Clearly normal scalar addition and
-multiplication satisfy this.  It can be shown that for tensors, choosing 
-addition to happen element-wise (so long as the tensor's shapes are compatible)
-and choosing multiplication to be contraction also produces a ring.  For 
-functions defining addition to be the sum of the functions' results and 
-multiplication to be the product of the functions' results (normal scalar 
-multiplication if the functions map to scalars and contraction otherwise) also
-creates a ring.  The point being, mathematically the elements of a tensor can
-be scalars, tensors, or even functions.  We will have need of all three cases. 
 
 Accessing Tensor Data
 ---------------------
@@ -488,7 +595,6 @@ auto MappedMatrix = AMatrix.apply_map(
 
 ```
 
-
 Basic Operations
 ----------------
 
@@ -568,36 +674,81 @@ double de = t1("i","a")*i1("a","i");
 de += 0.25*t2("k","l","c","d")*v2("c","d","k","l");
 ```
 
+Decompositions
+--------------
 
-Getting Tensor Properties
-------------------------- 
+As mentioned, the trick to rank sparsity lies in being able to decompose a 
+tensor.  Minimally our tensor class will need to support the following list of 
+decompositions:
 
-While working with your tensor you'll need the ability to inquire about basic
-details of the tensor.  For example to get the `ParallelRuntime` instance:
+- Eigen decomposition
+- Singular value decomposition
+- Choleskey
+- Tensor train
+- Density fitting (more general?)
 
+Generally speaking all of these decompositions are of the form the 
+
+
+Concerns About Template Meta-Programming
+----------------------------------------
+
+As proposed above the API makes heavy use of template meta-programming 
+techniques.  The result is a series of nasty types for even simple operations.  
+For example adding three tensors is easily expressed:
 ```cpp
+auto D = A("i","j")+B("i","j")+C("i","j");
+``` 
+The resulting type of D would be:
 
+```.cpp
+AddOp<AddOp<LabeledTensor<Tensor<double>>,LabeledTensor<Tensor<double>>>, 
+      LabeledTensor<Tensor<double>>>
 ```
 
+You can imagine that these types get nasty fast for something like coupled 
+cluster.  Note that you as the user never need to know about this type (you'll 
+use auto to capture any intermediate) and the type will always be evaluated 
+to something like `Tensor<double>`.  Where the existence of these types do 
+matter is that the compiler needs to instantiate each one.  This causes the 
+compile time to increase (as well as the binary size).  The stereotypical 
+solution to combat template bloat is to externally instantiate the 
+common instantiations so the compiler only needs to instantiate them once.  This
+only helps if there's a lot of common templates.  Obviously the type of the SCF 
+equations is going to be different then that of coupled cluster, they will 
+however have common subexpressions like `LabeledTensor<Tensor<double>>`.  It is
+not clear that external instantiation will solve the problem.
 
-Filling A Tensor
-----------------
+As a back-up one can make the result of each operation simply be `Operation<T>`,
+even when they nest (`T` being the most nested element type).  This can be done 
+something like (this is pseudo-code meant to show intent):
 
-Formally while thinking 
-
-Given a tensor there are three options for filling.  Element-wise (which is 
-particularly nice for sparse tensors, but may be slow if the elements of 
-the tensor are not stored locally).
-```C++
-T2(0,0)=0.0;
-T2(0,1)=1.0;
-T2(1,0)=2.0;
-T2(1,1)=3.0;
-```
-or we can request the local block and then use the above API:
 ```cpp
-auto sub_T2 = T2.local_block(); //Type is same as T2
-Shape s = sub_T2.shape(); //s only contains details about the local block
+Operation<T> operator+(Operation<T>& rhs)
+{
+    this->dag_.add_op(std::plus<Tensor<T>>(),rhs);
+    return Operation<T>(std::move(this->queue_));
+}
+```
+
+The idea is that `Operation` holds some queue (likely implemented as a 
+directed acyclic graph).  When the operations are nesting, the current 
+operation adds the operation (here symbolized by `std::plus<Tensor<T>>`, which 
+will work if `operator+` is overloaded), and the contents of the rhs to the 
+DAG and makes a new Operation containing the updated queue.  The result is we
+only have two templated classes; however, some of the work that would have 
+been done at compile-time is now done at run-time (we also loose some compiler 
+optimizations of the resulting expression).
+
+The cool thing about this proposal is it's largely internal, *i.e.* you still 
+invoke the command like:
+```cpp
+TensorD D("i","j")=A("i","j")+B("i","j")+C("i","j");
+```
+and capturing intermediates still works:
+```cpp
+auto i1 = A("i","j")+B("i","j");
+TensorD D = i1("i","j")+C("i","j");
 ```
 
 Open Questions
