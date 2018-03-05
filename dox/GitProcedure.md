@@ -26,7 +26,7 @@ main services:
 1. Management of a code's history
    - Sophisticated "undo" feature
 2. Merging disparate contributions into one code base
-   - Manually merging contributions form different developers is error-prone
+   - Manually merging contributions from different developers is error-prone
    - Good VC can merge code automatically by utilizing the common code history
 
 Superficially all VC software follows a similar workflow.  When a developer 
@@ -276,7 +276,7 @@ of your ability).  Starting the PR early is a good idea as it provides you a
 means of getting feedback along the way ranging from "don't bother doing 
 this, we don't want your feature" to "that's great, let us know if there's 
 any way we can help you get that implemented".  It also will be the place 
-where a code review (the maintainers of the repo look at your code and make 
+where a code-review (the maintainers of the repo look at your code and make 
 comments on it) will occur.  By starting early the code-review can be done in
 stages (assuming you regularly update "GitHubFork").
 
@@ -285,7 +285,7 @@ standard.  The big exception is staying synchronized with "GitHubRepo".  Since
 other developers who contribute to "GitHubRepo" aren't going to be nice
 enough to push their changes to your fork of the repo, you can't just run the
 pull command from the last section.  Hence, in order for you to stay
-up-to-date with "GitHubRepo" you'll need to pull changes from it's master 
+up-to-date with "GitHubRepo" you'll need to pull changes from its master 
 branch into your local master branch.  The command is similar (and the reason
 we defined the "upstream" alias):
 
@@ -313,13 +313,13 @@ git reset --hard origin/master
 
 This command will delete all changes made to your current master branch, and 
 make it exactly equal to the state of "GitHubFork"'s master branch.  YOU WILL 
-ALMOST CERTAINLY LOOSE WORK BY DOING THIS.  It's thus best to first checkout a
+ALMOST CERTAINLY LOSE WORK BY DOING THIS.  It's thus best to first checkout a
 new branch, that is a copy of the current master branch, before executing this 
 command.  
 
 Once you're done developing you need to notify the "GitHubRepo" maintainers. 
 This is typically done in two ways.  First, the "[WIP]" tag is removed from 
-the title of your PR.  As this easy to miss, you typically will also comment in 
+the title of your PR.  As this is easy to miss, you typically will also comment in 
 the PR "r2g" (short for ready to go).  Comments are a lot harder to miss.  At
 this point the ball's in the maintainers court to accept your PR or provide 
 additional feedback of things that need fixing (which assuming you were 
