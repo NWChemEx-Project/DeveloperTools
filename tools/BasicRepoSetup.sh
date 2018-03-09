@@ -37,7 +37,7 @@ check_for_file ${CMAKE_FILE}
 echo "cmake_minimum_required(VERSION 3.6)">${CMAKE_FILE}
 echo "project(${LIBRARY_NAME} VERSION 0.0.0 LANGUAGES CXX)">>${CMAKE_FILE}
 echo "set(${LIBRARY_NAME}_DEPENDENCIES )">>${CMAKE_FILE}
-echo "find_package(NWChemExBase)">>${CMAKE_FILE}
+echo "find_package(CMakeBuild)">>${CMAKE_FILE}
 echo 'add_nwxbase_module(${CMAKE_CURRENT_LIST_DIR})'>>${CMAKE_FILE}
 
 #Make source-dir CMakeLists.txt

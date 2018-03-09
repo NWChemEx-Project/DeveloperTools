@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 4 ]; then
-    echo "In NWChemExBase/tools/lint execute:"
+    echo "In tools/lint execute:"
     echo "./clean_my_code.sh <clang-format-exe> <clang-tidy-exe> <source-dir> <build_dir>"
     exit 1
 fi

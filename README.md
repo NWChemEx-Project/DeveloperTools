@@ -1,7 +1,10 @@
-NWChemEx Developer Documentation
+NWChemEx Developer Tools
 ================================
 
-Welcome to the repository for the NWChemEx developer documentation.
+Welcome to the repository for the NWChemEx developer tools.
+
+Documentation Topics
+--------------------
 
 - Git Workflow
   - [Intro to Git and GitHub](dox/GitProcedure.md)

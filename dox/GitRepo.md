@@ -47,26 +47,9 @@ Proposed Workflow For Development
 
 1. Initialize the repo on GitHub
 2. Clone it to your local box
-3. Add `NWChemExBase` and `dox` as git subrepos
+3. Add `CMakeBuild` and `dox` as git subrepos
 4. Develop your repo
 5. Push back to your repo's GitHub repo
 
 *N.B.* After the repository is created you really don't need the git subrepo
 commands except to update dependencies.
-
-
-Repositories
-------------
-
-TODO: Some sort of order to table.
-
-|    Repo Name    |  Purpose                                                  |
-| :-------------: | :-------------------------------------------------------: |
-| NWChemExBase    | Provide a common build system                             |
-| dox             | Provide common Doxygen settings                           |
-| DeveloperDox    | Developer documentation repository                        |
-| LibChemist      | Provide tools for describing the chemistry                |
-| SCF             | Provide self-consistent field capabilities                |
-| CC              | Provide coupled-cluster capabilities                      |
-| TAMM            | Provide high-performance tensor instances                 |
-| NWChemEx        | Repository providing the user API to NWChemEx             |
