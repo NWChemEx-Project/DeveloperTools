@@ -47,7 +47,7 @@ Proposed Workflow For Development
 
 1. Initialize the repo on GitHub
 2. Clone it to your local box
-3. Add `CMakeBuild` and `dox` as git subrepos
+3. Add `dox` as git subrepos
 4. Develop your repo
 5. Push back to your repo's GitHub repo
 
