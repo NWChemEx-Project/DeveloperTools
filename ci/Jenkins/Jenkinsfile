@@ -1,0 +1,34 @@
+def repo_name= ""
+def depends = [" "] as String[]
+def install_root="${WORKSPACE}/install"
+
+def lcrc_jenkins
+
+node{
+
+deleteDir()
+checkout scm
+
+stage('Import Jenkins Commands'){
+lcrc_jenkins=load("lcrc_jenkins.groovy")
+}
+
+stage('Check Code Formatting'){
+lcrc_jenkins.formatCode()
+}
+
+stage('Build Dependencies'){
+lcrc_jenkins.buildDependencies(depends, install_root)
+}
+
+stage('Build $repo_name'){
+lcrc_jenkins.buildRepo(repo_name, install_root)
+}
+
+stage('Test $repo_name'){
+lcrc_jenkins.testRepo()
+}
+
+}
+
+
