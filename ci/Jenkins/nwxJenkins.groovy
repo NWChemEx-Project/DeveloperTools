@@ -36,7 +36,7 @@ def formatCode(){
     set +x
     source /etc/profile
     module restore nwx-buildModules
-    wget https://gist.githubusercontent.com/keipertk/2cd83ea37abed98a09ba9b989b03dbf6/raw/f8f0ed3443d93ad80dbc69acc19ff3f3df9b3ba2/.clang-format -O .clang-format
+    wget https://github.com/NWChemEx-Project/DeveloperTools/blob/master/ci/lint/clang-format.in -O .clang-format
     find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | xargs clang-format -style=file -i -fallback-style=none
     rm .clang-format
     git diff >clang_format.patch
@@ -56,14 +56,14 @@ def formatCode(){
 
 
 
-def buildDependencies(String[] depends, cmakeCommand){
+def buildDependencies(String[] depends, cmakeCommand, credentialsID){
 
 for (int i=0; i<depends.size(); i++){
     dir("${depends[i]}"){
-        git credentialsId:'422b0eed-700d-444d-961c-1e58cc75cda2',
+        git credentialsId:"${credentialsID}"
         url:"https://github.com/NWChemEx-Project/${depends[i]}.git",
         branch: 'master'
-        compileRepo("${depends[i]}", "True", cmakeCommand)
+        compileRepo("${depends[i]}", "True", cmakeCommand, credentialsID)
         }
     }
 }
