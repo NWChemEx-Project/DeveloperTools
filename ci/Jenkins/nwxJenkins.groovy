@@ -36,7 +36,7 @@ def formatCode(){
     set +x
     source /etc/profile
     module restore nwx-buildModules
-    wget https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/master/ci/lint/clang-format.in -O .clang-format
+    wget https://github.com/NWChemEx-Project/DeveloperTools/blob/master/ci/lint/clang-format.in -O .clang-format
     find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | xargs clang-format -style=file -i -fallback-style=none
     rm .clang-format
     git diff >clang_format.patch
