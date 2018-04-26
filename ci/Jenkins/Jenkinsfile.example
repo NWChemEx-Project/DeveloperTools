@@ -10,7 +10,8 @@ def cmakeCommandMatrix = [
 		   "Intel":"-DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc"
 		   ]
 
-def credentialsID = "Hidden while org is private - check a different Jenkinsfile for this key!"
+def credentialsID = "Hidden while org is private - check a different nwx Jenkinsfile for this key!"
+
 /************************************************
  ************************************************
     Shouldn't need to modify anything below...
@@ -32,6 +33,7 @@ for (int i=0; i<buildTypeList.size(); i++){
     }
 
     stage('${buildType}: Import Jenkins Commands'){
+        sh "wget https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/master/ci/Jenkins/nwxJenkins.groovy"
     	nwxJenkins=load("nwxJenkins.groovy")
     }
 
@@ -45,7 +47,7 @@ for (int i=0; i<buildTypeList.size(); i++){
     }
 
     stage('Build Dependencies'){
-        nwxJenkins.buildDependencies(depends, cmakeCommand)
+        nwxJenkins.buildDependencies(depends, cmakeCommand, credentialsID)
     }
 
     stage('Build Repo'){
