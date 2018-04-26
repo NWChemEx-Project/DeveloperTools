@@ -1,34 +1,60 @@
-def repo_name= ""
-def depends = [" "] as String[]
-def install_root="${WORKSPACE}/install"
+def repoName= "Utilities"
+def depends = ["CMakeBuild"] as String[]
+def commonModules = "cmake llvm "
+def buildModuleMatrix = [
+    		   "GCC":(commonModules + "gcc/7.1.0"),
+		   "Intel":(commonModules + "gcc/7.1.0 intel-parallel-studio/cluster.2017.5-uxhpib5")
+		  ]
+def cmakeCommandMatrix = [
+    		   "GCC":"-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++",
+		   "Intel":"-DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc"
+		   ]
 
-def lcrc_jenkins
+def credentialsID = "Hidden while org is private - check a different Jenkinsfile for this key!"
+/************************************************
+ ************************************************
+    Shouldn't need to modify anything below...
+ ************************************************    
+ ************************************************/
+
+def buildTypeList=buildModuleMatrix.keySet() as String[]		  
+def nwxJenkins
 
 node{
+for (int i=0; i<buildTypeList.size(); i++){
 
-deleteDir()
-checkout scm
+    def buildType = "${buildTypeList[i]}"
+    def cmakeCommand = "${cmakeCommandMatrix[buildType]}"
 
-stage('Import Jenkins Commands'){
-lcrc_jenkins=load("lcrc_jenkins.groovy")
+    stage("${buildType}: Set-Up Workspace"){
+        deleteDir()
+        checkout scm
+    }
+
+    stage('${buildType}: Import Jenkins Commands'){
+    	nwxJenkins=load("nwxJenkins.groovy")
+    }
+
+    stage('${buildType}: Export Module List'){
+        def buildModules = "${buildModuleMatrix[buildType]}"
+    nwxJenkins.exportModules(buildModules)
+    }
+
+    stage('Check Code Formatting'){
+        nwxJenkins.formatCode()
+    }
+
+    stage('Build Dependencies'){
+        nwxJenkins.buildDependencies(depends, cmakeCommand)
+    }
+
+    stage('Build Repo'){
+        nwxJenkins.compileRepo(repoName, "False", cmakeCommand)
+    }
+
+    stage('Test Repo'){
+        nwxJenkins.testRepo()
+    }
+
 }
-
-stage('Check Code Formatting'){
-lcrc_jenkins.formatCode()
 }
-
-stage('Build Dependencies'){
-lcrc_jenkins.buildDependencies(depends, install_root)
-}
-
-stage('Build $repo_name'){
-lcrc_jenkins.buildRepo(repo_name, install_root)
-}
-
-stage('Test $repo_name'){
-lcrc_jenkins.testRepo()
-}
-
-}
-
-
