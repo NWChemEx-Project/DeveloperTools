@@ -50,7 +50,6 @@ def formatCode(){
     echo 'Please "git apply" the Following Patch File:'
     ~/bin/gist -p clang_format.patch
     echo '##########################################################'
-    exit 1
     fi
     """
 }
