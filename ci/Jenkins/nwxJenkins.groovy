@@ -1,5 +1,3 @@
-//NWChemEx Jenkins Commands for Argonne LCRC Site
-
 def exportModules(buildModules){
 sh """
 set +x
@@ -63,7 +61,7 @@ for (int i=0; i<depends.size(); i++){
         git credentialsId:"${credentialsID}",
         url:"https://github.com/NWChemEx-Project/${depends[i]}.git",
         branch: 'master'
-        nwxJenkins.compileRepo("${depends[i]}", "True", cmakeCommand)
+        compileRepo("${depends[i]}", "True", cmakeCommand)
         }
     }
 }
