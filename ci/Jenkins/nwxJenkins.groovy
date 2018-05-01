@@ -63,7 +63,7 @@ for (int i=0; i<depends.size(); i++){
         git credentialsId:"${credentialsID}",
         url:"https://github.com/NWChemEx-Project/${depends[i]}.git",
         branch: 'master'
-        compileRepo("${depends[i]}", "True", cmakeCommand, credentialsID)
+        compileRepo("${depends[i]}", "True", cmakeCommand)
         }
     }
 }
