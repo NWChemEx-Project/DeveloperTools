@@ -1,4 +1,4 @@
-#NWChemEx Jenkins Commands for Argonne LCRC Site
+//NWChemEx Jenkins Commands for Argonne LCRC Site
 
 def exportModules(buildModules){
 sh """
