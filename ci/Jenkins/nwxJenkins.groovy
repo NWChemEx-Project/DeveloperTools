@@ -60,7 +60,7 @@ def buildDependencies(String[] depends, cmakeCommand, credentialsID){
 
 for (int i=0; i<depends.size(); i++){
     dir("${depends[i]}"){
-        git credentialsId:"${credentialsID}"
+        git credentialsId:"${credentialsID}",
         url:"https://github.com/NWChemEx-Project/${depends[i]}.git",
         branch: 'master'
         compileRepo("${depends[i]}", "True", cmakeCommand, credentialsID)
