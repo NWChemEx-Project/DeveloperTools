@@ -1,0 +1,24 @@
+#!/bin/bash
+
+format_file() {
+  file="${1}"
+  clang_exe="clang-format"
+  if ! type ${clang_exe};then
+      clang_exe="${clange_exe}-5.0"
+  fi
+  ${clang_exe} -style=file -i -fallback-style=none ${1}
+  git add ${1}
+}
+
+cf_url="https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/"
+cf_url="${cf_url}master/ci/lint/clang-format.in"
+
+if [ ! -f .clang-format ];then
+    wget ${cf_url} -O .clang-format
+fi
+for file in `git diff-index --cached --name-only HEAD` ; do
+    extension="${file##*.}"
+    if [[ "${extension}" == "cpp" || "${extension}" == "hpp" ]];then
+        format_file "${file}"
+    fi
+done
