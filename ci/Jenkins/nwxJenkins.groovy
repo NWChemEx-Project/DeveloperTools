@@ -1,9 +1,11 @@
+//BUILD_TAG is a unique build identifier provided by Jenkins
+
 def exportModules(buildModules){
 sh """
 set +x
 source /etc/profile
 module load ${buildModules}
-module save nwx-buildModules
+module save ${BUILD_TAG}
 """
 }
 
@@ -12,7 +14,7 @@ def compileRepo(repoName, doInstall, cmakeCommand){
     sh """
        set +x
 	source /etc/profile
-	module restore nwx-buildModules
+	module restore ${BUILD_TAG}
         buildTests="True"
         makeCommand=""
         if [ ${doInstall} == "True" ];then
@@ -33,7 +35,7 @@ def formatCode(){
     sh """
     set +x
     source /etc/profile
-    module restore nwx-buildModules
+    module restore ${BUILD_TAG}
     wget https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/master/ci/lint/clang-format.in -O .clang-format
     find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | xargs clang-format -style=file -i -fallback-style=none
     rm .clang-format
@@ -70,7 +72,7 @@ def testRepo(){
     sh """
     set +x
     source /etc/profile
-    module restore nwx-buildModules
+    module restore ${BUILD_TAG}
     cd build && ctest
     """
 }
