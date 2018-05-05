@@ -4,7 +4,7 @@ format_file() {
   file="${1}"
   clang_exe="clang-format"
   if ! type ${clang_exe};then
-      clang_exe="${clange_exe}-5.0"
+      clang_exe="${clang_exe}-5.0"
   fi
   ${clang_exe} -style=file -i -fallback-style=none ${1}
   git add ${1}
