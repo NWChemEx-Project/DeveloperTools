@@ -73,7 +73,7 @@ def testRepo(){
     set +x
     source /etc/profile
     module restore ${BUILD_TAG}
-    cd build && ctest
+    cd build && ctest -VV
     """
 }
 
