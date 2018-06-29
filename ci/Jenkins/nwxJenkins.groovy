@@ -21,6 +21,7 @@ def compileRepo(repoName, doInstall, cmakeCommand){
             buildTests="False"
             makeCommand="install"
         fi
+        git submodule update --init --recursive
         cmake -H. -Bbuild -DBUILD_TESTS=\${buildTests} \
                           -DCMAKE_INSTALL_PREFIX=${installRoot}\
                           -DCMAKE_PREFIX_PATH=${installRoot}\
