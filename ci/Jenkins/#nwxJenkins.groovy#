@@ -55,6 +55,11 @@ def formatCode(){
     """
 }
 
+        compileRepo("${depends[i]}", "True", cmakeCommand)
+        }
+    }
+}
+
 def testRepo(){
     sh """
     set +x
