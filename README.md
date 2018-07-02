@@ -12,6 +12,7 @@ Documentation Topics
   - [What is GitSubrepo?](dox/GitSubrepo.md)
 - Best Practices
   - [Documenting the code With Doxygen](dox/doxygen.md)
+  - [Using Hunter Package Manager](dox/doxygen.md)
 - Continuous Integration
   - [Test requirements for new developer contributions](dox/TestRequirements.md)
   - [Build validation procedures](dox/BuildValidation.md)
