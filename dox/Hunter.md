@@ -212,7 +212,7 @@ Syntax:
 add_catch_cxx_test(
   NAME <name> #Name of the resulting test (and executable) 
   SOURCES src1 [ src2 [...]] #A list of source files to use for the test
-  [TARGETS target1 [target2 [...]]] #A list of targets to link against
+  [DEPENDS depend1 [depend2 [...]]] #A list of targets to link against
 )
 ```
 
