@@ -37,7 +37,7 @@ macro(start_hunter)
 endmacro()
 
 function(add_nwx_library)
-    set(__T_KWARGS SHARED MODULE)
+    set(__T_KWARGS)
     set(__O_KWARGS NAME)
     set(__M_KWARGS SOURCES DEPENDS)
     cmake_parse_arguments(
@@ -62,6 +62,9 @@ function(add_nwx_library)
             $<INSTALL_INTERFACE:include>
     )
     target_compile_features(${__nwx_lib_NAME} PUBLIC cxx_std_14)
+    if(NOT "${__nwx_lib_DEPENDS}" STREQUAL "")
+        target_link_libraries(${__nwx_lib_NAME} ${__nwx_lib_DEPENDS})
+    endif()
 endfunction()
 
 function(add_python_module)
