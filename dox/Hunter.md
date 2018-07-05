@@ -200,7 +200,7 @@ Global variables used:
 - `PROJECT_NAME` : Used for the install RPATH
 
 
-### add_catch_cxx_test
+### add_catch_cxx_tests
 
 This function will add a new Catch2 test given a list of C++ source files to
 compile and, optionally, the targets to link against.  This function will

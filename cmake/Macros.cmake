@@ -86,12 +86,9 @@ function(add_python_module)
             SOURCES ${__ADD_PYTHON_SOURCES}
             DEPENDS ${__ADD_PYTHON_DEPENDS}
     )
-    set_target_properties(
-            ${__ADD_PYTHON_NAME} PROPERTIES
-            PREFIX ""
-            DEBUG_POSTFIX ""
-            RELEASE_POSTFIX ""
-    )
+    set_target_properties(${__name} PROPERTIES PREFIX "")
+    set_target_properties(${__name} PROPERTIES DEBUG_POSTFIX "")
+    set_target_properties(${__name} PROPERTIES RELEASE_POSTFIX "")
 
     #Note do not link against pybind11::module as this will hide the symbols
     #preventing the resulting library from being usable as anything but a Python
