@@ -200,7 +200,7 @@ Global variables used:
 - `PROJECT_NAME` : Used for the install RPATH
 
 
-### add_catch_cxx_test
+### add_catch_cxx_tests
 
 This function will add a new Catch2 test given a list of C++ source files to
 compile and, optionally, the targets to link against.  This function will
@@ -209,7 +209,7 @@ yourself.
 
 Syntax:
 ```.cmake
-add_catch_cxx_test(
+add_catch_cxx_tests(
   NAME <name> #Name of the resulting test (and executable) 
   SOURCES src1 [ src2 [...]] #A list of source files to use for the test
   [DEPENDS depend1 [depend2 [...]]] #A list of targets to link against
