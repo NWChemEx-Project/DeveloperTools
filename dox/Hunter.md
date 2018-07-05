@@ -53,12 +53,13 @@ Feel free to change the minimum CMake version as needed.  The next two commands
 respectively retrieve a tarball from the DeveloperTools repo and untar it.  This
 tarball contains a couple CMake scripts whose contents won't change often, but
 must be included in your project in order for you to be able to use the 
-following commands.  The fourth and fifth lines load our macros and then start
+following commands (check out the Convenience Functions section below for 
+the full list).  The fourth and fifth lines load our macros and then start
 Hunter.  Note the `LOCAL` argument to Hunter indicates that your project 
 contains a `cmake/Hunter/config.cmake` file with local Hunter options.  We'll
-get to that below; for now note that if your project does not have such a file
-leave the `LOCAL` argument out of the call to `start_hunter`.
-
+get to that below in the Fine-Tuning Hunter section; for now note that if your 
+project does not have such a file leave the `LOCAL` argument out of the call 
+to `start_hunter`.
 
 The remainder of the script is slightly tweaked CMake, whose contents will vary
 a bit depending on your project.  `project` is the usual CMake command for 
@@ -73,32 +74,15 @@ declaring a project (your project name would replace the placeholder variable
  dependencies found we tell CMake to descend into our source directory, and then
  into the testing directory (assuming `BUILD_TESTS` evaluates to `TRUE`).  
  That's the end of the top-level `CMakeLists.txt`.
+  
  
  The CMake files within the source and testing directory are pure CMake.  
  Typically this requires a large amount of boilerplate (particularly for 
  installing targets) so we have defined the following CMake functions (they 
  will be in scope thanks to the `include` line):
- 
- - `add_nwx_library(${my_target} "${SRCS}" "${INCLUDES}")`
-   - This function will create a CMake target called `${my_target}` whose source
-     files are given by the list `"${SRCS}"` and has public header files given
-     by `"${INCLUDES}"`.
-   - The result of this call is a legitimate CMake target that will be properly
-     installed.  You are free to continue setting it up by including things 
-     like the targets it must link against (make sure to include your 
-     dependencies!!!)
- - `add_catch_cxx_tests(${test_target} "${test_srcs}" ${target2test})`
-   - This function will create a CTest unit test called `${test_target}` that
-     uses the Catch testing framework.  The resulting executable will be built
-     from the sources in the list `"${test_srcs}"` and will test the target
-     library whose CMake target is `${"target2test}`  
-   - This function will automatically add Catch as a dependency of your project.
-   - This assumes the following is present in only one test's source file.
-      ```.cpp
-      #define CATCH_CONFIG_MAIN
-      #include <catch.hpp>
-      ```
-### The `cmake/Hunter/config.cmake` File
+
+Fine-Tuning Hunter
+------------------
 
 We mentioned above that if your project had local Hunter options it needs to 
 contain a `cmake/Hunter/config.cmake` file; for brevity we refer to this file
@@ -107,7 +91,7 @@ as the `config.cmake` file for the remainder of this section.  The
 the Hunter manual is a bit difficult to read sometimes, explanations are given 
 below for some of the more common uses.
 
-#### Non-release dependency
+### Non-release dependency
 
 Like most package managers, Hunter relies on a versioning system to keep 
 packages straight.  Particularly during development it is common to not have
@@ -147,9 +131,134 @@ After the URL is the SHA1 hash.  Hunter requires this for security purposes.
 You'll need to generate one yourself.  Easiest way is the `sha1sum` command in
 Linux.  Finally, the command takes CMake arguments to pass to the dependency.
 In this case we tell it that we don't want it to build the tests.
-    
-
+  
 Adding a New Package to Hunter
 ------------------------------
 
 To be written.
+
+Convenience Functions
+---------------------
+
+This section contains the documentation for the convenience functions we have
+defined to make your life easier.
+
+### start_hunter
+
+As the name implies this function is used to wrap the call to Hunter.  To use it
+you must have a `HunterGate.cmake` file (one comes with the tarball).
+
+Syntax:
+
+```.cmake
+start_hunter(
+    [LOCAL] # Specify LOCAL to use "cmake/Hunter/config.cmake" file
+)
+```
+
+Global variables used:
+- `CMAKE_BINARY_DIR` : to get the path to the build directory  
+
+### add_nwx_library
+
+Sets up a CMake target that can eventually be passed to `install_targets`.  By
+default the target will assume all include paths are relative to the directory
+in which the CMake `project` command was run.
+
+Syntax:
+```.cmake
+add_nwx_library(
+    NAME <name> # The name of the resulting target and base name of library
+    SOURCES src1 [src2 [...]]] # List of source files to compile
+    [DEPENDS depend1 [ depend2 [...]]] # Targets library should be linked to
+)    
+```
+
+Global variables used:
+- `PROJECT_SOURCE_DIR` : To get the root of the CMake project.
+
+### add_python_module
+
+This allows one to declare a C++ target that will be usable as a Python 
+module with bindings exported using Pybind11.  Note that this will automatically
+add Pybind11 as a dependency to your target, so that you will not need to 
+include a `add_hunter_package` for it.  It should be noted that this call will 
+do nothing to ensure that all dependencies of your library are compiled with 
+position independent code (usually accomplished by passing 
+`BUILD_SHARED_LIBS=TRUE` to their CMake build).  
+
+Syntax:
+```.cmake
+add_python_module(
+    NAME <name> # Name of target and library (no prefix/suffix to lib name)
+    SOURCES src1 [src2 [...]] # List of source files
+    [DEPENDS depend1 [depend2 [...]]] # List of targets library depends on 
+)    
+```
+
+Global variables used:
+- `PROJECT_NAME` : Used for the install RPATH
+
+
+### add_catch_cxx_test
+
+This function will add a new Catch2 test given a list of C++ source files to
+compile and, optionally, the targets to link against.  This function will
+automatically include Catch2 for you so no need to `add_hunter_package` it
+yourself.
+
+Syntax:
+```.cmake
+add_catch_cxx_test(
+  NAME <name> #Name of the resulting test (and executable) 
+  SOURCES src1 [ src2 [...]] #A list of source files to use for the test
+  [DEPENDS depend1 [depend2 [...]]] #A list of targets to link against
+)
+```
+
+### add_python_test
+
+This function will create a test that is executed by calling `python3` on the
+a script.  The script must have the same name as the test (and the extension 
+`.py`).  `PYTHONPATH` will be set to the build directory.  So all includes 
+should be relative to it.
+
+Syntax:
+```.cmake
+add_python_test(
+    NAME <name> # The name of the test and script
+)
+```
+
+Global variables used:
+- `CMAKE_BINARY_DIR` : to get the path to the build directory
+
+### install_targets
+
+This is a wrapper around the very large amount of boilerplate required to 
+properly install a series of targets from CMake.  We admittedly make several
+assumptions about what you want:
+
+1. We assume you want a typical GNU install
+   - Headers in `include/<project name>`
+   - Libraries in `lib/<project name>`
+   - Executables in `bin/`
+   - CMake config files in `lib/cmake/<project name>`
+2. The configure file will be set up so that the targets can be linked against
+   using the syntax `<project name>::<target name>`
+3. Your project uses semantic versioning 
+   - *i.e.* version X.Y can be used with X.Z for all X, Y, and Z   
+
+
+Syntax:
+```.cmake
+install_targets(
+    TARGETS target1 [target2 [...]] # Targets to install
+    [INCLUDES inc1 [inc2 [...]]] # List of includes to install  
+```
+
+Global variables used:
+- `PROJECT_NAME` : Used to namespace protect includes, libraries, config files
+                   and targets
+- `PROJECT_VERSION` : To get project's version information                   
+- `CMAKE_CURRENT_BINARY_DIR` : Used to get build directory                 
