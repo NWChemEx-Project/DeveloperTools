@@ -61,7 +61,8 @@ function(add_nwx_library)
             $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
             $<INSTALL_INTERFACE:include>
     )
-    target_compile_features(${__nwx_lib_NAME} PUBLIC cxx_std_17)
+    #target_compile_features(${__nwx_lib_NAME} PUBLIC cxx_std_17)
+    target_compile_options(${__nwx_lib_NAME} PUBLIC "-std=c++17")
     if(NOT "${__nwx_lib_DEPENDS}" STREQUAL "")
         target_link_libraries(${__nwx_lib_NAME} ${__nwx_lib_DEPENDS})
     endif()
