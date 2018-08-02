@@ -4,12 +4,32 @@
 
 ########## Internal Functions ##################
 
+#Used to check if a variable is defined
+function(__is_defined __variable __output)
+    if(DEFINED ${__variable})
+        set(${__output} TRUE PARENT_SCOPE)
+    else()
+        set(${__output} FALSE PARENT_SCOPE)
+    endif()
+endfunction()
+
+#Used to check if a variable is empty
+function(__is_set __variable __output)
+    if("${${__variable}}" STREQUAL "")
+        set(${__output} FALSE PARENT_SCOPE)
+    else()
+        set(${__output} TRUE PARENT_SCOPE)
+    endif()
+endfunction()
+
 #Used to make sure a variable is set
 function(__assert_arg_set __variable __msg)
-    if(NOT DEFINED ${__variable})
+    __is_defined(${__variable} __assert_arg_defined)
+    __is_set(${__variable} __assert_arg_set)
+    if(NOT __assert_arg_defined)
         message(AUTHOR_WARNING "${__msg} : ${__variable} not defined")
     endif()
-    if("${${__variable}}" STREQUAL "")
+    if(NOT __assert_arg_set)
         message(AUTHOR_WARNING "${__msg} : ${__variable} is empty")
     endif()
 endfunction()
@@ -36,6 +56,45 @@ macro(start_hunter)
     endif()
 endmacro()
 
+#Macro b/c Hunter sets a lot of stuff
+macro(nwx_depend)
+    set(__T_KWARGS SKIP_SHA1)
+    set(__O_KWARGS NAME CMAKE_ARGS SHA1 URL VERSION)
+    set(__M_KWARGS)
+    cmake_parse_arguments(
+            __nwx_depend "${__T_KWARGS}" "${__O_KWARGS}" "${__M_KWARGS}" ${ARGN}
+    )
+    __assert_arg_set(__nwx_depend_NAME "nwx_depend")
+    __assert_arg_set(__nwx_depend_URL "nwx_depend")
+    __assert_arg_set(__nwx_depend_VERSION "nwx_depend")
+    if(__nwx_depend_SKIP_SHA1)
+        set(__nwx_depend_file "${CMAKE_BINARY_DIR}/${__nwx_depend_NAME}.tar")
+        file(DOWNLOAD  "${__nwx_depend_URL}" ${__nwx_depend_file})
+        file(SHA1 ${__nwx_depend_file} __nwx_depend_SHA1)
+    else()
+        __assert_arg_set(__nwx_depend_SHA1)
+    endif()
+    foreach(__nwx_depend_opt CMAKE_CXX_COMPILER CMAKE_CXX_FLAGS)
+        __is_defined(${__nwx_depend_opt} __nwx_depend_defined)
+        __is_set(${__nwx_depend_opt} __nwx_depend_set)
+        if(__nwx_depend_defined AND __nwx_depend_set)
+            set(__nwx_depend_temp "${__nwx_depend_opt}=${${__nwx_depend_opt}}")
+            set(__nwx_depend_CMAKE_ARGS
+                    "${__nwx_depend_CMAKE_ARGS} ${__nwx_depend_temp}")
+        endif()
+    endforeach()
+    message("${__nwx_depend_NAME} ${__nwx_depend_VERSION} ${__nwx_depend_URL}")
+    message("SHA1 ${__nwx_depend_SHA1} ARGS ${__nwx_depend_CMAKE_ARGS}")
+    hunter_config(
+            ${__nwx_depend_NAME}
+            VERSION ${__nwx_depend_VERSION}
+            URL "${__nwx_depend_URL}"
+            SHA1 "${__nwx_depend_SHA1}"
+            CMAKE_ARGS ${__nwx_depend_CMAKE_ARGS}
+    )
+endmacro()
+
+
 function(add_nwx_library)
     set(__T_KWARGS)
     set(__O_KWARGS NAME)
@@ -61,8 +120,7 @@ function(add_nwx_library)
             $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
             $<INSTALL_INTERFACE:include>
     )
-    #target_compile_features(${__nwx_lib_NAME} PUBLIC cxx_std_17)
-    target_compile_options(${__nwx_lib_NAME} PUBLIC "-std=c++17")
+    target_compile_features(${__nwx_lib_NAME} PUBLIC cxx_std_17)
     if(NOT "${__nwx_lib_DEPENDS}" STREQUAL "")
         target_link_libraries(${__nwx_lib_NAME} ${__nwx_lib_DEPENDS})
     endif()
@@ -160,7 +218,7 @@ function(install_targets)
 
     # Configuration
     set(
-        __version_config "${__generated_dir}/${PROJECT_NAME}ConfigVersion.cmake"
+            __version_config "${__generated_dir}/${PROJECT_NAME}ConfigVersion.cmake"
     )
     set(__project_config "${__generated_dir}/${PROJECT_NAME}Config.cmake")
     set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")

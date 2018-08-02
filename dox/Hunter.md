@@ -159,6 +159,31 @@ start_hunter(
 Global variables used:
 - `CMAKE_BINARY_DIR` : to get the path to the build directory  
 
+### nwx_dependency
+
+Wraps the `hunter_config` function so that it behaves more like how we want for
+NWChemEx.  In particular this includes not requiring the SHA1 hashes of a 
+dependency (they are still actually required, but we'll compute them on the 
+fly for you) and forwarding fundamental CMake options, the list of which 
+includes:  
+
+- CMAKE_CXX_COMPILER
+- CMAKE_CXX_FLAGS
+
+Syntax:
+```.cmake
+nwx_dependency(
+    NAME name # The name of the dependency as it is known to Hunter and CMake
+    VERSION version # A string representing the version of dependency
+    URL the_url # The url from which to download the tarball
+    <SKIP_SHA1 | SHA1 sha1_hash> # Either the hash or an flag to skip it
+    [CMAKE_ARGS list_of_args] # List of additional CMake arguments to forward
+)     
+```
+
+Global variables used (in addition to the ones we try to forward):
+- `CMAKE_BINARY_DIR` : For storing
+
 ### add_nwx_library
 
 Sets up a CMake target that can eventually be passed to `install_targets`.  By
