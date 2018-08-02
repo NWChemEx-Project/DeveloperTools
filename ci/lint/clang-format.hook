@@ -1,3 +1,5 @@
+# To use copy this file into your repo's .git/hooks directory ensuring
+# the resulting file's name is "pre-commit"
 #!/bin/bash
 
 format_file() {
