@@ -79,8 +79,7 @@ macro(nwx_depend)
         __is_set(${__nwx_depend_opt} __nwx_depend_set)
         if(__nwx_depend_defined AND __nwx_depend_set)
             set(__nwx_depend_temp "${__nwx_depend_opt}=${${__nwx_depend_opt}}")
-            set(__nwx_depend_CMAKE_ARGS
-                    "${__nwx_depend_CMAKE_ARGS} ${__nwx_depend_temp}")
+            list(APPEND __nwx_depend_CMAKE_ARGS ${__nwx_depend_temp})
         endif()
     endforeach()
     message("${__nwx_depend_NAME} ${__nwx_depend_VERSION} ${__nwx_depend_URL}")
@@ -90,7 +89,7 @@ macro(nwx_depend)
             VERSION ${__nwx_depend_VERSION}
             URL "${__nwx_depend_URL}"
             SHA1 "${__nwx_depend_SHA1}"
-            CMAKE_ARGS ${__nwx_depend_CMAKE_ARGS}
+            CMAKE_ARGS "${__nwx_depend_CMAKE_ARGS}"
     )
 endmacro()
 
