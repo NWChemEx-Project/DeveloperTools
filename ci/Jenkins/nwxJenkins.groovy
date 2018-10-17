@@ -1,34 +1,43 @@
 //BUILD_TAG is a unique build identifier provided by Jenkins
 
 def exportModules(buildModules){
-sh """
-set +x
-source /etc/profile
-module load ${buildModules}
-module save ${BUILD_TAG}
-"""
+    sh """
+       set +x
+       source /etc/profile
+       module load ${buildModules}
+       module save ${BUILD_TAG}
+       """
 }
 
-def compileRepo(repoName, doInstall, cmakeCommand){
+def getCPP(){
+    sh """
+    set +x
+    source /etc/profile
+    module load cmake
+    git clone https://github.com/CMakePackagingProject/CMakePackagingProject
+    cd CMakePackagingProject
+    cmake -H. -Bbuild -DBUILD_TESTS=OFF \
+                      -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/install
+    cmake --build build --target install
+    """
+}
+
+def compileRepo(repoName){
     def installRoot="${WORKSPACE}/install"
     sh """
        set +x
-	source /etc/profile
-	module restore ${BUILD_TAG}
-        buildTests="True"
-        makeCommand=""
-        if [ ${doInstall} == "True" ];then
-            buildTests="False"
-            makeCommand="install"
-        fi
-	CC=gcc
-	CXX=g++
-        cmake -H. -Bbuild -DBUILD_TESTS=\${buildTests} \
-                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
-                          -DCMAKE_PREFIX_PATH=${installRoot}\
-			  ${cmakeCommand}
-        cd build && make \${makeCommand}
-    """
+	   source /etc/profile
+	   module restore ${BUILD_TAG}
+	   if [ -d build ]; then
+	       rm -rf build
+	   fi
+       cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
+                         -DCMAKE_INSTALL_PREFIX=${installRoot}\
+                         -DCMAKE_PREFIX_PATH=${installRoot} \
+                         -DCMAKE_CXX_COMPILER=g++ \
+                         -DCMAKE_C_COMPILER=gcc
+       cmake --build build
+       """
 }
 
 
@@ -37,7 +46,7 @@ def formatCode(){
     sh """
     set +x
     source /etc/profile
-    module restore ${BUILD_TAG}
+    module load llvm
     wget https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/master/ci/lint/clang-format.in -O .clang-format
     find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | xargs clang-format -style=file -i -fallback-style=none
     rm .clang-format
@@ -58,11 +67,45 @@ def formatCode(){
 
 def testRepo(){
     sh """
-    set +x
-    source /etc/profile
-    module restore ${BUILD_TAG}
-    cd build && ctest -VV
+       set +x
+       source /etc/profile
+       module restore ${BUILD_TAG}
+       cd build && ctest -VV
     """
+}
+
+def commonSteps(buildModuleMatrix, repoName){
+    stage("Set-Up Workspace"){
+        deleteDir()
+        checkout scm
+    }
+
+    stage('Check Code Formatting'){
+        formatCode()
+    }
+
+    stage('Get CMakePackagingProject') {
+        getCPP()
+    }
+
+    def buildTypeList=buildModuleMatrix.keySet() as String[]
+    for (int i=0; i<buildTypeList.size(); i++){
+        def buildType = "${buildTypeList[i]}"
+
+        stage("${buildType}: Export Module List"){
+            def buildModules = "${buildModuleMatrix[buildType]}"
+            exportModules(buildModules)
+        }
+
+        stage("${buildType}: Build Repo"){
+            compileRepo(repoName)
+        }
+
+        stage("${buildType}: Test Repo"){
+            testRepo()
+        }
+
+    }
 }
 
 return this
