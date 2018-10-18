@@ -19,11 +19,13 @@ factored that boilerplate out into a script that lives in
 `DeveloperTools/ci/Jenkins/nwxJenkins.groovy`.  Your `Jenkinsfile` needs to 
 construct a build matrix, load the aforementioned script, and forward the build
 matrix to it.  The script will take care of the rest.  To accomplish this start
-with a `Jenkinsfile` that looks something like:
+with a `Jenkinsfile` that looks like (the `Jenkinsfile.example` in this repo
+already contains the following):
 
 ```groovy
+def repoName="Your repo's name"
 def buildModuleMatrix = [
-    		   "GCC 7.1":("cmake gcc/7.1.0")
+    		   "GCC 7.1.0":("cmake gcc/7.1.0")
 		  ]		  
 node{
     def nwxJenkins
@@ -35,7 +37,7 @@ node{
         """
         nwxJenkins=load("nwxJenkins.groovy")
     }
-    nwxJenkins.commonSteps(buildModuleMatrix, "Your repo's name")
+    nwxJenkins.commonSteps(buildModuleMatrix, repoName)
 }
 ```
 

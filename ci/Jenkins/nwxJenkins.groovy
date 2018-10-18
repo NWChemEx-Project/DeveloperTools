@@ -22,7 +22,7 @@ def getCPP(){
     """
 }
 
-def compileRepo(repoName){
+def compileRepo(cCompiler, cxxCompiler){
     def installRoot="${WORKSPACE}/install"
     sh """
        set +x
@@ -34,21 +34,26 @@ def compileRepo(repoName){
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
-                         -DCMAKE_CXX_COMPILER=g++ \
-                         -DCMAKE_C_COMPILER=gcc
+                         -DCMAKE_CXX_COMPILER=${cxxCompiler} \
+                         -DCMAKE_C_COMPILER=${cCompiler}
        cmake --build build
        """
 }
 
 
 def formatCode(){
-// Note: The Gist credentials belong to a dummy account which was created just to generate the auth token. The key is separated so Github doesn't detect and revoke it.
+   // Note: The Gist credentials belong to a dummy account which was created
+   // just to generate the auth token. The key is separated so Github doesn't
+   // detect and revoke it.
     sh """
     set +x
     source /etc/profile
     module load llvm
-    wget https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/master/ci/lint/clang-format.in -O .clang-format
-    find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | xargs clang-format -style=file -i -fallback-style=none
+    da_url=https://raw.githubusercontent.com/NWChemEx-Project/DeveloperTools/
+    da_url+=master/ci/lint/clang-format.in
+    wget  \${da_url} -O .clang-format
+    find . -type f -iname *.h -o -iname *.c -o -iname *.cpp -o -iname *.hpp | \
+      xargs clang-format -style=file -i -fallback-style=none
     rm .clang-format
     git diff >clang_format.patch
     if [ -s clang_format.patch ]
@@ -91,17 +96,23 @@ def commonSteps(buildModuleMatrix, repoName){
     def buildTypeList=buildModuleMatrix.keySet() as String[]
     for (int i=0; i<buildTypeList.size(); i++){
         def buildType = "${buildTypeList[i]}"
+        def buildModules = "${buildModuleMatrix[buildType]}"
 
         stage("${buildType}: Export Module List"){
-            def buildModules = "${buildModuleMatrix[buildType]}"
             exportModules(buildModules)
         }
 
-        stage("${buildType}: Build Repo"){
-            compileRepo(repoName)
+        stage("${buildType}: Build ${repoName}"){
+            def is_intel=buildModules.contains("intel")
+            if(is_intel){
+                compileRepo("icc", "icpc")
+            }
+            else {
+                compileRepo("gcc", "g++")
+            }
         }
 
-        stage("${buildType}: Test Repo"){
+        stage("${buildType}: Test ${repoName}"){
             testRepo()
         }
 
