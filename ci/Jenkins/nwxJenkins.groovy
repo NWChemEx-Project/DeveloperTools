@@ -26,16 +26,19 @@ def compileRepo(cCompiler, cxxCompiler){
     def installRoot="${WORKSPACE}/install"
     sh """
        set +x
-	   source /etc/profile
-	   module restore ${BUILD_TAG}
-	   if [ -d build ]; then
-	       rm -rf build
-	   fi
+       source /etc/profile
+       module restore ${BUILD_TAG}
+       if [ -d build ]; then
+           rm -rf build
+       fi
+       gh_token=a869897b4a98f43589ca5a
+       gh_token+=f1cc2b599f973b8619	   
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
-                         -DCMAKE_C_COMPILER=${cCompiler}
+                         -DCMAKE_C_COMPILER=${cCompiler} \
+			 -DCPP_GITHUB_TOKEN=\${gh_token}   
        cmake --build build
        """
 }
