@@ -31,8 +31,8 @@ def compileRepo(cCompiler, cxxCompiler){
        if [ -d build ]; then
            rm -rf build
        fi
-       gh_token=a869897b4a98f43589ca5a
-       gh_token+=f1cc2b599f973b8619	   
+       gh_token=4dfc676f4c5a2b1b9c3
+       gh_token+=f17bc2c3ebda1efa5f4e9	   
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
