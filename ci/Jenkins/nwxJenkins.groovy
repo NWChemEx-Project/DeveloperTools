@@ -13,7 +13,7 @@ def getCPP(){
     sh """
     set +x
     source /etc/profile
-    module load cmake
+    module restore ${BUILD_TAG}
     git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     cd CMakePackagingProject
     cmake -H. -Bbuild -DBUILD_TESTS=OFF \
@@ -92,10 +92,6 @@ def commonSteps(buildModuleMatrix, repoName){
         formatCode()
     }
 
-    stage('Get CMakePackagingProject') {
-        getCPP()
-    }
-
     def buildTypeList=buildModuleMatrix.keySet() as String[]
     for (int i=0; i<buildTypeList.size(); i++){
         def buildType = "${buildTypeList[i]}"
@@ -104,6 +100,10 @@ def commonSteps(buildModuleMatrix, repoName){
         stage("${buildType}: Export Module List"){
             exportModules(buildModules)
         }
+	    
+    stage('Get CMakePackagingProject') {
+        getCPP()
+    }	    
 
         stage("${buildType}: Build ${repoName}"){
             def is_intel=buildModules.contains("intel")
