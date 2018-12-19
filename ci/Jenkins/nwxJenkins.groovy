@@ -32,15 +32,19 @@ def compileRepo(cCompiler, cxxCompiler){
            rm -rf build
        fi
        gh_token=4dfc676f4c5a2b1b9c3
-       gh_token+=f17bc2c3ebda1efa5f4e9	   
+       gh_token+=f17bc2c3ebda1efa5f4e9
+       spack_root=/blues/gpfs/home/software/spack-0.10.1/opt/spack/
+       spack_root+=linux-centos7-x86_64/
+       omp_path=gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx
+       ga_path=gcc-7.3.0/globalarrays-5.7-rwhqwr3iqlat3vuirrhgnsqmwl5zvmxx
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
-                         -DMPI_ROOT=/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx \
-                         -DGlobalArrays_ROOT=/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/globalarrays-5.7-rwhqwr3iqlat3vuirrhgnsqmwl5zvmxx \	 
-			 -DCPP_GITHUB_TOKEN=\${gh_token}   
+                         -DMPI_ROOT=\${spack_root}/\${omp_path} \
+                         -DGlobalArrays_ROOT=\${spack_root}/\${ga_path} \
+             			 -DCPP_GITHUB_TOKEN=\${gh_token}
        cmake --build build
        """
 }
