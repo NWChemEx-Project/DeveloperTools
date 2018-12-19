@@ -38,6 +38,8 @@ def compileRepo(cCompiler, cxxCompiler){
                          -DCMAKE_PREFIX_PATH=${installRoot} \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
+                         -DMPI_ROOT=/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx \
+                         -DGlobalArrays_ROOT=/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/globalarrays-5.7-rwhqwr3iqlat3vuirrhgnsqmwl5zvmxx \	 
 			 -DCPP_GITHUB_TOKEN=\${gh_token}   
        cmake --build build
        """
