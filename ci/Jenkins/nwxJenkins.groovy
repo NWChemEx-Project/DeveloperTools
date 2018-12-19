@@ -41,7 +41,6 @@ def compileRepo(cCompiler, cxxCompiler){
        echo "set(MPI_ROOT \${spack_root}\${omp_path})" >> toolchain.cmake
        echo "set(GlobalArrays_ROOT \${spack_root}\${ga_path})" >> toolchain.cmake
        echo "set(LAPACKE_ROOT \${spack_root}\${lapacke_path})" >> toolchain.cmake
-       cat toolchain.cmake
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
