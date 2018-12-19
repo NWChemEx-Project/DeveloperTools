@@ -37,7 +37,7 @@ def compileRepo(cCompiler, cxxCompiler){
        spack_root+=linux-centos7-x86_64/
        omp_path=gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx
        ga_path=gcc-7.3.0/globalarrays-5.7-rwhqwr3iqlat3vuirrhgnsqmwl5zvmxx
-       lapacke_path=gcc-7.3.0/netlib-lapack-3.8.0-cxqgdqu22uj7sybbl7vrx4ekopng3eaw/
+       lapacke_path=gcc-7.3.0/netlib-lapack-3.8.0-cxqgdqu22uj7sybbl7vrx4ekopng3eaw
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
