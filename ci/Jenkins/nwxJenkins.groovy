@@ -41,9 +41,6 @@ def compileRepo(cCompiler, cxxCompiler){
        echo "set(MPI_ROOT \${spack_root}\${omp_path})" >> toolchain.cmake
        echo "set(GlobalArrays_ROOT \${spack_root}\${ga_path})" >> toolchain.cmake
        echo "set(LAPACKE_ROOT \${spack_root}\${lapacke_path})" >> toolchain.cmake
-       export CFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
-       export CXXFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
-       export LDFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
                          -DCMAKE_PREFIX_PATH=${installRoot} \
