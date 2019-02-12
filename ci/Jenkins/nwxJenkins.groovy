@@ -38,7 +38,6 @@ def compileRepo(cCompiler, cxxCompiler){
                          -DCMAKE_PREFIX_PATH=${installRoot} \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
-                         -DCMAKE_TOOLCHAIN_FILE=`pwd`/toolchain.cmake \
              		 -DCPP_GITHUB_TOKEN=\${gh_token}
        cmake --build build
        """
