@@ -33,9 +33,10 @@ def compileRepo(cCompiler, cxxCompiler){
        fi
        gh_token=4dfc676f4c5a2b1b9c3
        gh_token+=f17bc2c3ebda1efa5f4e9
+       prefix_path="/jenkins-ci/workspace/nwx-deps/;${installRoot}"
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
-                         -DCMAKE_PREFIX_PATH=${installRoot} \
+                         -DCMAKE_PREFIX_PATH="\${prefix_path}" \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
              		 -DCPP_GITHUB_TOKEN=\${gh_token}
