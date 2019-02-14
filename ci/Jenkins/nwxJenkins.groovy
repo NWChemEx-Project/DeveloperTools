@@ -40,7 +40,7 @@ def compileRepo(cCompiler, cxxCompiler){
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
              		 -DCPP_GITHUB_TOKEN=\${gh_token}
-       cmake --build build
+       cmake --build build --parallel 6
        """
 }
 
