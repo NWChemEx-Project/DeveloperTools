@@ -13,12 +13,13 @@ def getCPP(){
     sh """
     set +x
     source /etc/profile
+    export CMAKE_BUILD_PARALLEL_LEVEL=6
     module restore ${BUILD_TAG}
     git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     cd CMakePackagingProject
     cmake -H. -Bbuild -DBUILD_TESTS=OFF \
                       -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/install
-    cmake --build build  --parallel 6 --target install
+    cmake --build build  --target install
     """
 }
 
@@ -27,6 +28,7 @@ def compileRepo(cCompiler, cxxCompiler){
     sh """
        set +x
        source /etc/profile
+       export CMAKE_BUILD_PARALLEL_LEVEL=6
        module restore ${BUILD_TAG}
        if [ -d build ]; then
            rm -rf build
