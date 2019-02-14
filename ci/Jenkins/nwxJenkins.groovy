@@ -18,7 +18,7 @@ def getCPP(){
     cd CMakePackagingProject
     cmake -H. -Bbuild -DBUILD_TESTS=OFF \
                       -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/install
-    cmake --build build --target install
+    cmake --build build  --parallel 6 --target install
     """
 }
 
