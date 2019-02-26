@@ -81,6 +81,7 @@ def testRepo(){
        set +x
        source /etc/profile
        module restore ${BUILD_TAG}
+       export OMPI_MCA_btl=self
        cd build && ctest -VV
     """
 }
