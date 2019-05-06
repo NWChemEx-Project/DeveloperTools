@@ -5,7 +5,7 @@ This page introduces the NWX team's coding conventions for writing C++. All pull
 requests are expected to adhere to these conventions. When possible
 ``clang-format`` will be used to enforce them; however, it is not possible to
 automatically enforce all of these conventions. This page is primarily targeted
-at conventions which you must manually adhere to ``ci/lint/clang-format.in`` is
+at conventions which you must manually adhere to, while ``ci/lint/clang-format.in`` is
 the linting file used and should be consulted for the conventions which will be
 automatically enforced.
 
@@ -13,7 +13,7 @@ Capitalization
 --------------
 
 C++ is a case-sensitive language. For this reason it is extremely useful for all
-coders on a project ot use the same capitalization conventions, doing so avoids
+coders on a project to use the same capitalization conventions, doing so avoids
 needing to remember how a method, file, *etc.* is capitalized.
 
 .. note::
