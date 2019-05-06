@@ -13,12 +13,13 @@ def getCPP(){
     sh """
     set +x
     source /etc/profile
+    export CMAKE_BUILD_PARALLEL_LEVEL=6
     module restore ${BUILD_TAG}
     git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     cd CMakePackagingProject
     cmake -H. -Bbuild -DBUILD_TESTS=OFF \
                       -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/install
-    cmake --build build --target install
+    cmake --build build  --target install
     """
 }
 
@@ -27,31 +28,21 @@ def compileRepo(cCompiler, cxxCompiler){
     sh """
        set +x
        source /etc/profile
+       export CMAKE_BUILD_PARALLEL_LEVEL=6
        module restore ${BUILD_TAG}
        if [ -d build ]; then
            rm -rf build
        fi
        gh_token=4dfc676f4c5a2b1b9c3
        gh_token+=f17bc2c3ebda1efa5f4e9
-       spack_root=/blues/gpfs/home/software/spack-0.10.1/opt/spack/
-       spack_root+=linux-centos7-x86_64/
-       omp_path=gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx
-       ga_path=gcc-7.3.0/globalarrays-5.7-rwhqwr3iqlat3vuirrhgnsqmwl5zvmxx
-       lapacke_path=gcc-7.3.0/netlib-lapack-3.8.0-cxqgdqu22uj7sybbl7vrx4ekopng3eaw
-       echo "set(MPI_ROOT \${spack_root}\${omp_path})" >> toolchain.cmake
-       echo "set(GlobalArrays_ROOT \${spack_root}\${ga_path})" >> toolchain.cmake
-       echo "set(LAPACKE_ROOT \${spack_root}\${lapacke_path})" >> toolchain.cmake
-       export CFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
-       export CXXFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
-       export LDFLAGS="-L/blues/gpfs/home/software/spack-0.10.1/opt/spack/linux-centos7-x86_64/gcc-7.3.0/openmpi-3.1.2-qve4xatzvbaeruqibmswtyf7oob73dvx/lib -lmpi_cxx"
+       prefix_path="/jenkins-ci/workspace/nwx-deps/;${installRoot}"
        cmake -H. -Bbuild -DBUILD_TESTS=TRUE \
                          -DCMAKE_INSTALL_PREFIX=${installRoot}\
-                         -DCMAKE_PREFIX_PATH=${installRoot} \
+                         -DCMAKE_PREFIX_PATH="\${prefix_path}" \
                          -DCMAKE_CXX_COMPILER=${cxxCompiler} \
                          -DCMAKE_C_COMPILER=${cCompiler} \
-                         -DCMAKE_TOOLCHAIN_FILE=`pwd`/toolchain.cmake \
              		 -DCPP_GITHUB_TOKEN=\${gh_token}
-       cmake --build build
+       cmake --build build --parallel 6
        """
 }
 
@@ -90,6 +81,7 @@ def testRepo(){
        set +x
        source /etc/profile
        module restore ${BUILD_TAG}
+       export OMPI_MCA_btl=self
        cd build && ctest -VV
     """
 }
