@@ -40,18 +40,20 @@ The distributed repo model has a number of advantages compared to the
 centralized repo model:
 
 - Faster operations
+
   - No need to communicate with original (typically remote) repo
   - Encourages code-base to be saved more often
 - Easy collaboration
-  - No need for messy three-way (original, and two copies) synchronization
-    - Only worry about copy to copy synchronization
-  - Copies have access to all VC commands
-    - Makes it much easier to share changes without going through original repo
-- Each repo is essentially a "back-up"
-  - The original repo's full history is in each copy
 
-Given `GitHub <https://github.com/>`_ current popularity as a social coding
-platform it's easy to loose sight of GitHub's actual role in the VC process. 
+  - No need for messy three-way (original, and two copies) synchronization, 
+    only worry about copy to copy synchronization
+  - Copies have access to all VC commands, which makes it much easier to share 
+    changes without going through original repo
+- Each repo is essentially a "back-up", the original repo's full history is in 
+  each copy
+
+Given `GitHub <https://github.com/>`_'s current popularity as a social coding
+platform it's easy to lose sight of GitHub's actual role in the VC process. 
 GitHub itself is really nothing more than a website which hosts Git repos.  
 Consequentially, there's nothing special (from the perspective of Git) about the
 repo that lives on GitHub versus a copy of that repo living on any other 

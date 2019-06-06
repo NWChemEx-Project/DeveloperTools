@@ -82,15 +82,14 @@ comment is often fine (just describing what it is).
  
  Other useful commands to be aware of:
 
-- ``@file`` for documenting files
-   - Particularly useful for files containing many functions
+- ``@file`` for documenting files (particularly useful for files containing 
+  many functions)
 - ``@defgroup`` used to define groups for organizational reasons
 - ``@ingroup`` for associating a file, class, member, *etc.* with a particular
   group
 - ``@f$<latex here> @f$`` for adding on line Latex formulae
-- ``@f{eqnarray}{`` for starting a Latex ``eqnarray`` (obviously change the
-   environment name to get other environments)
-   - This environment is ended by ``@f}``
+- ``@f{eqnarray}{`` for starting a Latex ``eqnarray`` (change the environment 
+  name to get other environments), this environment is ended by ``@f}``
 - ``@note`` for starting a note
 - ``@warning`` for displaying a warning to the reader
 - ``@bug`` for letting the reader know about a known bug
