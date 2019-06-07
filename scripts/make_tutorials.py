@@ -225,8 +225,14 @@ def make_tutorials(input_dir, output_dir):
     """
 
     # Define the comment characters and name for each language
-    comment_chars = {".py": '#', ".hpp": "//", ".cmake": '#'}
-    lang = {".py": "python", ".hpp": "c++", ".cmake": "cmake"}
+    comment_chars = {".py": '#',
+                     ".hpp": "//",
+                     ".cpp" : "//",
+                     ".cmake": '#'}
+    lang = {".py": "python",
+            ".hpp": "c++",
+            ".cpp": "c++",
+            ".cmake": "cmake"}
 
     # Make output directory if it does not exist
     if not os.path.exists(output_dir):
