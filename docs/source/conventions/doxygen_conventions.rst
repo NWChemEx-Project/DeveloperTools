@@ -1,5 +1,6 @@
+*************************************
 Using Doxygen in the NWChemEx Project
-=====================================
+*************************************
 
 The purpose of this page is to give you a (likely less than 10 minute) primer on
 how to use Doxygen particularly with respect to the NWChemEx project. The
@@ -7,7 +8,7 @@ NWChemEx project uses Doxygen to document C++ code. For documenting Python or
 writing documentation pages like this one the project uses Sphinx's ReST flavor.
 
 Intro To Doxygen
-----------------
+================
 
 Doxygen allows you to document your C++ code in a minimally invasive manner.  It
 does this by requiring you to write your C++ comments using Doxygen's markup
@@ -15,14 +16,14 @@ language. Bare-bones this looks like:
 
 .. code-block:: c++
 
-    /// This is a Doxygen, single-line comment for the following function
-    void function1();
+   /// This is a Doxygen, single-line comment for the following function
+   void function1();
  
-    /** For more extened documentation block comments are preferred.
-     *
-     *  This line is also part of the comment.
-     */
-    void function3();
+   /** For more extened documentation block comments are preferred.
+    *
+    *  This line is also part of the comment.
+    */
+   void function3();
 
 Doxygen supports other conventions; however, the two above are the approved
 conventions for the NWChemEx project.  For consistency please use them.
@@ -44,7 +45,7 @@ when documenting C++ code for use with NWChemEx.
 
 
 Minimal Documentation Standards
--------------------------------
+===============================
 
 By far the most useful keywords are shown in the following code example.  For
 documenting a function this should be considered as a minimal acceptable
@@ -53,27 +54,26 @@ comment is often fine (just describing what it is).
 
 .. code-block:: C++
 
-    /** @brief This is the brief description of fake function 1.
-     *
-     *  Fake function 1 demonstrates the bare minimal documentation standards.
-     *  What you are currently reading, is the detailed description that will
-     *  show up in the documentation. The "*" border is optional, but
-     *  encouraged.
-     *
-     *  @tparam T The type this function takes.  The documentation should tell
-     *            you what concept it satisfies.
-     *  @param[in] Param1 The first parameter; it's read-only.
-     *  @param[out] Param2 The second parameter; it's going to be written to.
-     *  @param[in,out] Param3 The third parameter; it's going to be read from
-     *                        and written to.
-     *  @returns Whatever this function returns.
-     *
-     *  @throws std::runtime_error Tell you when it throws and what exception
-     *                             guarantee is afforded.
-     */
-    template<typename T>
-    int function1(int Param1, int& Param2, int& Param3);
-
+   /** @brief This is the brief description of fake function 1.
+    *
+    *  Fake function 1 demonstrates the bare minimal documentation standards.
+    *  What you are currently reading, is the detailed description that will
+    *  show up in the documentation. The "*" border is optional, but
+    *  encouraged.
+    *
+    *  @tparam T The type this function takes.  The documentation should tell
+    *            you what concept it satisfies.
+    *  @param[in] Param1 The first parameter; it's read-only.
+    *  @param[out] Param2 The second parameter; it's going to be written to.
+    *  @param[in,out] Param3 The third parameter; it's going to be read from
+    *                        and written to.
+    *  @returns Whatever this function returns.
+    *
+    *  @throws std::runtime_error Tell you when it throws and what exception
+    *                             guarantee is afforded.
+    */
+   template<typename T>
+   int function1(int Param1, int& Param2, int& Param3);
 
  Obviously the real documentation should be more helpful, but this illustrates
  the key things to document: brief, detailed description, input/output 

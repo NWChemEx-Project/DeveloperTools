@@ -1,5 +1,6 @@
+**********************
 C++ Coding Conventions
-======================
+**********************
 
 This page introduces the NWX team's coding conventions for writing C++. All pull
 requests are expected to adhere to these conventions. When possible
@@ -10,7 +11,7 @@ the linting file used and should be consulted for the conventions which will be
 automatically enforced.
 
 Capitalization
---------------
+==============
 
 C++ is a case-sensitive language. For this reason it is extremely useful for all
 coders on a project to use the same capitalization conventions, doing so avoids
@@ -46,4 +47,3 @@ such as those used by Boost and the STL. The only exception to this statement is
 the decision to use CamelCase for class names. This decision stems from wanting
 to distinguish between built-in types/classes from standard libraries and domain
 specific classes.
-
