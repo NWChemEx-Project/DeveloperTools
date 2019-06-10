@@ -1,5 +1,6 @@
+*************************
 Git and GitHub Procedures
-=========================
+*************************
 
 The purpose of this page is to document typical Git and GitHub workflows and to
 serve as a cheat sheet for remembering the commands.  This page only covers the 
@@ -7,7 +8,7 @@ basic aspects related to Git version control and how one uses GitHub to
 contribute code.
 
 Git and GitHub Background
--------------------------
+=========================
 
 As a code base evolves it will have existed in many versions.  Almost all modern
 codes use some form of what is termed "version control" (VC) to manage these
@@ -66,7 +67,7 @@ integration and code-review).  The following sections detail common Git
 commands and the typical GitHub workflow purposed for the NWChemEx project.
 
 Common Git Commands
-------------------- 
+===================
 
 For the purposes of this tutorial we'll assume that you're working with an 
 existing Git repo (if you're not, the easiest way to make a repo is to do so on 
@@ -76,7 +77,7 @@ in Git lingo).  The command to clone a repo is:
 
 .. code-block:: bash
 
-    git clone <path_to_repo> [<where_to_put_repo>]
+   git clone <path_to_repo> [<where_to_put_repo>]
 
 This will checkout a repo that is located at ``path_to_repo`` and optionally
 put it in a folder named ``where_to_put_repo`` (if you don't specify
@@ -101,7 +102,7 @@ thing you should do is thus make a new branch.  This is done by:
 
 .. code-block:: bash
 
-    git checkout -b <branch_name>
+   git checkout -b <branch_name>
 
 where ``branch_name`` is the name of the branch you'll be working on.  The
 ``-b`` flag tells Git to make the branch (Git will yell at you if the branch
@@ -119,7 +120,7 @@ files you want to save:
 
 .. code-block:: bash
 
-     git add <files_to_save>
+   git add <files_to_save>
 
 where ``files_to_save`` is one or more files to save (Linux wild cards work,
 *e.g.* ``git add *.cpp`` will save all C++ source files in the current directory).
@@ -131,7 +132,7 @@ you can get a wealth of information about the current repo's state via:
 
 .. code-block:: bash
 
-    git status
+   git status
 
 Among other things, this command will tell you which files are not versioned, 
 which versioned files are changed, but not staged, and which versioned files 
@@ -140,7 +141,7 @@ via:
 
 .. code-block:: bash
 
-    git commit -m "<message>"
+   git commit -m "<message>"
 
 This command will save all staged files to your branch and log the commit 
 with some (hopefully descriptive) message (if you omit the ``-m`` flag and the
@@ -167,7 +168,7 @@ the other branch's changes is:
 
 .. code-block:: bash
 
-    git pull origin <branch_name>
+   git pull origin <branch_name>
 
 ``origin`` is an alias Git automatically defines for you, which points to the
 original repo you cloned (obviously change origin if you're not synchronizing
@@ -189,7 +190,7 @@ existed) you "push" your changes to the other repo:
 
 .. code-block:: bash
 
-    git push origin <branch_name>
+   git push origin <branch_name>
  
 While it's essential to keep the master branch of your repo clean, it's also 
 good practice to keep it synchronized with that of the repo you cloned (we'll
@@ -200,7 +201,7 @@ branch:
 
 .. code-block:: bash
 
-    git checkout master
+   git checkout master
 
 then pull the original repo's master branch via:
 
@@ -215,7 +216,7 @@ check-out your development branch and run:
 
 .. code-block:: bash
 
-    git merge master
+   git merge master
 
 This will merge the contents of your repo's master branch into your current 
 branch.  Depending on how master has changed conflicts may occur; if they do, 
@@ -223,7 +224,7 @@ you simply deal with them as we did above.
  
   
 GitHub Workflow
----------------
+===============
 
 The commands from the previous section are complemented by several GitHub 
 extensions.  We explain these extensions in this section.  For the purposes 
@@ -251,7 +252,7 @@ called "upstream".  To make this alias the command is:
 
 .. code-block:: bash
 
-    git remote add upstream <path_to_original_repo>
+   git remote add upstream <path_to_original_repo>
 
 It is polite at this point to notify the maintainers of "GitHubRepo" that you're
 going to work on this feature.  To do this you first push your development 
@@ -285,7 +286,7 @@ we defined the "upstream" alias):
 
 .. code-block:: bash
 
-    git pull upstream master
+   git pull upstream master
 
 With your local master branch synched, you'll then want to synch 
 "GitHubFork"'s master branch.  To do this you'll push the local changes to 
@@ -293,7 +294,7 @@ With your local master branch synched, you'll then want to synch
 
 .. code-block:: bash
 
-    git push origin master
+   git push origin master
 
 Although not strictly necessary, this step makes it easier for you to recover
 should anything go wrong.  In particular let's say you accidentally modify your 
@@ -303,7 +304,7 @@ master branch):
 
 .. code-block:: bash
 
-    git reset --hard origin/master
+   git reset --hard origin/master
 
 This command will delete all changes made to your current master branch, and 
 make it exactly equal to the state of "GitHubFork"'s master branch.  YOU WILL 
@@ -334,7 +335,7 @@ own computer (or other computers you are using).
 .. image:: github_workflow.png
 
 Further Information
--------------------
+===================
 
 There is much more to both GitHub and Git itself.  The following is a collection
 of tutorials offering additional information on certain topics.
