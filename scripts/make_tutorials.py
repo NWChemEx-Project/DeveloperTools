@@ -1,6 +1,76 @@
 import os
 
 
+def strip_newline(block):
+    """
+    Strips any blank lines from the beginning and end of the block.
+    :param block: The block to parse.
+    :return: The block w/o the proceeding/trailing blank lines
+    """
+    start = 0
+    end = len(block)
+    for line in block:
+        if line.strip():
+            break
+        start += 1
+
+    # Early termination for empty block
+    if start == end:
+        return []
+
+    for line in reversed(block[start:]):
+        if line.strip():
+            break
+        end -= 1
+
+    return block[start: end]
+
+
+def write_code(block, lang):
+    """
+    Given a code block from the parsed file this function will turn it into the
+    corresponding  reST code. This function will automatically remove any
+    proceeding or trailing blank lines from the parsed code block.
+
+    :param block: The code block to print out.
+    :param lang: The language of the code snippet
+    :return: A string suitable for printing in a reST file
+    """
+    a_tab = " "*4
+
+    parsed_block = strip_newline(block)
+
+    if len(parsed_block) == 0:
+        return ""
+
+    # Assemble the actual code block
+    output = ".. code:: {}\n\n".format(lang)
+
+    for line in parsed_block:
+        output += a_tab + line
+    output += '\n'
+
+    return output
+
+
+def write_comment(block):
+    """
+    This function takes the raw tutorial comment block and turns it into a
+    string suitable for printing in a .rst file. This function does no
+    processing of the block aside from removing  proceeding and trailing
+    new lines
+
+    :param block: The tutorial block comment to print out.
+    :return: The comment-blcok reST-itized.
+    """
+
+    output = ""
+    for line in strip_newline(block):
+        output += line
+    output += '\n'
+    return output
+
+
 def parse_file(cc, filename):
     """
     This function actually parses the test. It does so using some pretty simple
@@ -75,76 +145,6 @@ def parse_file(cc, filename):
     return comments, code, which_first
 
 
-def strip_newline(block):
-    """
-    Strips any blank lines from the beginning and end of the block.
-    :param block: The block to parse.
-    :return: The block w/o the proceeding/trailing blank lines
-    """
-    start = 0
-    end = len(block)
-    for line in block:
-        if line.strip():
-            break
-        start += 1
-
-    # Early termination for empty block
-    if start == end:
-        return []
-
-    for line in reversed(block[start:]):
-        if line.strip():
-            break
-        end -= 1
-
-    return block[start: end]
-
-
-def write_code(block, lang):
-    """
-    Given a code block from the parsed file this function will turn it into the
-    corresponding  reST code. This function will automatically remove any
-    proceeding or trailing blank lines from the parsed code block.
-
-    :param block: The code block to print out.
-    :param lang: The language of the code snippet
-    :return: A string suitable for printing in a reST file
-    """
-    a_tab = " "*4
-
-    parsed_block = strip_newline(block)
-
-    if len(parsed_block) == 0:
-        return ""
-
-    # Assemble the actual code block
-    output = ".. code:: {}\n\n".format(lang)
-
-    for line in parsed_block:
-        output += a_tab + line
-    output += '\n'
-
-    return output
-
-
-def write_comment(block):
-    """
-    This function takes the raw tutorial comment block and turns it into a
-    string suitable for printing in a .rst file. This function does no
-    processing of the block aside from removing  proceeding and trailing
-    new lines
-
-    :param block: The tutorial block comment to print out.
-    :return: The comment-blcok reST-itized.
-    """
-
-    output = ""
-    for line in strip_newline(block):
-        output += line
-    output += '\n'
-    return output
-
-
 def write_tutorial(name, lang, comments, code, first):
     """
     Given the parsed comments and code blocks this function will write out the
@@ -209,6 +209,10 @@ def write_index(file_names):
     return output
 
 
+def sort_file_names(file_names):
+    return
+
+
 def make_tutorials(input_dir, output_dir):
     """
     Given a full path to a directory, this function will parse each source file
@@ -264,8 +268,8 @@ def make_tutorials(input_dir, output_dir):
         with open(output_file, 'w') as output_file:
             output_file.write(rv)
 
-    with open(os.path.join(output_dir, "index.rst"), 'w') as index_file:
-        index_file.write(write_index(file_names))
+    #with open(os.path.join(output_dir, "index.rst"), 'w') as index_file:
+    #    index_file.write(write_index(file_names))
 
 
 
