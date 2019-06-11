@@ -9,3 +9,4 @@ Welcome to DeveloperTools' Documentation!
     doxygen_conventions
     git_tutorial
     git_repos
+    writing_tutorials

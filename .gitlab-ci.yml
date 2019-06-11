@@ -1,0 +1,17 @@
+stages:
+  - build
+
+variables:
+  CMAKE_OPTIONS: "-DCMAKE_PREFIX_PATH=$CI_PROJECT_DIR/install -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++"
+  NUM_CORES: "20"
+
+default_build:
+    tags:
+      - linux,kamban
+    stage: build
+    script:
+      - module load gcc-9.1.0-gcc-7.4.0-jjv2tsg cmake-3.14.2-gcc-9.1.0-jzu7ays
+      - cmake $CMAKE_OPTIONS -DBUILD_TESTS=ON -H. -Bbuild 
+      - cd build
+      - make -j$NUM_CORES
+      - ctest -VV
