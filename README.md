@@ -3,6 +3,9 @@ NWChemEx Developer Tools
 
 Welcome to the repository for the NWChemEx developer tools.
 
+
+[![pipeline status](https://gitlab.com/NWChemEx-Project/DeveloperTools/badges/master/pipeline.svg)](https://gitlab.com/NWChemEx-Project/DeveloperTools/commits/master)
+
 Documentation Topics
 --------------------
 
