@@ -1,5 +1,6 @@
+*****************
 Writing Tutorials
-=================
+*****************
 
 The purpose of tutorials in the NWX project are to familiarize a developer/user
 with a class or concept. Tutorials walk the reader through a simplistic scenario
@@ -16,7 +17,7 @@ change and for the developer to forget to update the tutorial. The NWX project
 solves this problem using the ``scripts/make_tutorial.py`` script.
 
 Tutorial Markdown
------------------
+=================
 
 NWX's documentation is Sphinx-flavored reST. Thus in order for a tutorial to be
 included in the documentation it must be converted to reST. To do this we have
@@ -41,40 +42,40 @@ write your tutorial comments:
 5. Tutorial keywords must be the first keywords on a line
 
 Example C++ Tutorial
---------------------
+====================
 
 This section shows an example of a markdowned C++ source file suitable for use
 as a tutorial with the ``make_tutorial.py`` script.
 
 .. code-block:: c++
 
-    #include <catch2/catch.hpp>
-    #include <header/with/factorial.hpp>
+   #include <catch2/catch.hpp>
+   #include <header/with/factorial.hpp>
 
-    //TUTORIAL_SKIP_START
-    TEST_CASE("Factorial Tutorial"){
-    //TUTORIAL_SKIP_STOP
+   //TUTORIAL_SKIP_START
+   TEST_CASE("Factorial Tutorial"){
+   //TUTORIAL_SKIP_STOP
 
-    //TUTORIAL
-    //
-    //This tutorial shows you how to use a hypothetical factorial function.
-    //
-    //Mathematically the factorial function is defined as:
-    //
-    //.. math::
-    //
-    //    n! = \prod_{i=1}^n i
-    //
-    //Note that :math:`\prod_{i=1}^0 = 1` so that :math:`0! = 1`.
-    //
-    //To use the factorial function simply provide it the value of ``n``
+   //TUTORIAL
+   //
+   //This tutorial shows you how to use a hypothetical factorial function.
+   //
+   //Mathematically the factorial function is defined as:
+   //
+   //.. math::
+   //
+   //    n! = \prod_{i=1}^n i
+   //
+   //Note that :math:`\prod_{i=1}^0 = 1` so that :math:`0! = 1`.
+   //
+   //To use the factorial function simply provide it the value of ``n``
 
-    auto three_she_bang = factorial(3);
-    REQUIRE(three_she_bang == 3*2*1);
+   auto three_she_bang = factorial(3);
+   REQUIRE(three_she_bang == 3*2*1);
 
-    //TUTORIAL_SKIP_START
-    } // end test case
-    //TUTORIAL_SKIP_STOP
+   //TUTORIAL_SKIP_START
+   } // end test case
+   //TUTORIAL_SKIP_STOP
 
 The tutorial should be self-explanatory for the most part. We start by including
 the header files for the function. Next we start a Catch2 test case. This allows
@@ -92,27 +93,27 @@ unit test should yield the following reST file:
 
 .. code-block:: rest
 
-    CXX Tutorial
-    ============
+   CXX Tutorial
+   ============
 
-    .. code-block:: c++
+   .. code-block:: c++
 
-        #include <catch2/catch.hpp>
-        #include <header/with/factorial.hpp>
+      #include <catch2/catch.hpp>
+      #include <header/with/factorial.hpp>
 
-    This tutorial shows you how to use a hypothetical factorial function.
+   This tutorial shows you how to use a hypothetical factorial function.
 
-    Mathematically the factorial function is defined as:
+   Mathematically the factorial function is defined as:
 
-    .. math::
+   .. math::
 
-        n! = \prod_{i=1}^n i
+      n! = \prod_{i=1}^n i
 
-    Note that :math:`\prod_{i=1}^0 = 1` so that :math:`0! = 1`.
+   Note that :math:`\prod_{i=1}^0 = 1` so that :math:`0! = 1`.
 
-    To use the factorial function simply provide it the value of ``n``
+   To use the factorial function simply provide it the value of ``n``
 
-    .. code-block:: c++
+   .. code-block:: c++
 
-        auto three_she_bang = factorial(3);
-        REQUIRE(three_she_bang == 3*2*1);
+      auto three_she_bang = factorial(3);
+      REQUIRE(three_she_bang == 3*2*1);
