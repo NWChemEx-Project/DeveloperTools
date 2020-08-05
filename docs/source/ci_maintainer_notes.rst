@@ -4,10 +4,17 @@ How NWX's CI Works
 
 The purpose of this page is to document various aspects of NWX's CI.
 
-CI Basics
-=========
+File Synchronization
+====================
 
-For the most part all of NWX's CI is run out of this repo. This is accomplished
-by storing the workflows here and having the "Files Sync Action" synchronize
-them across repos. The synchronization workflow is run out of
-`.github/synch_files.yaml`.
+There are several files which need to appear in each NWX repo and whose content
+doesn't change. This includes:
+
+- .clang-format
+- .gitignore
+- LICENSE
+
+Rather than remembering to update these files in each repo anytime they need to
+change, we rely on the
+`Files Sync Action<https://github.com/marketplace/actions/files-sync-action>`_
+to keep them synchronized.
