@@ -1,0 +1,22 @@
+name: SynchronizeFiles
+on:
+  push:
+    branches:
+      - master
+jobs:
+  synch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: adrianjost/files-sync-action@v1.0.1
+        with:
+          FILE_PATTERNS: |
+            ^.github/workflows/scripts/build_docs.sh$
+            ^.github/workflows/scripts/get_dependencies.sh$
+            ^.github/workflows/scripts/lint.sh$
+            ^.clang-format$
+            ^.gitignore$
+            ^LICENSE$
+          TARGET_REPOS: |
+            NWChemEx-Project/Utilities
+          GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
+          COMMIT_MESSAGE: "Updating synched files from %SRC_REPO%"
