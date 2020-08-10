@@ -3,7 +3,7 @@ arch="Linux-x86_64"
 cmake_command=cmake-${cmake_version}-${arch}/bin/cmake
 
 # Step 1: Build the Doxygen documentation
-${cmake_command} -H. -Bbuild -DBUILD_DOCUMENTATION=ON
+${cmake_command} -H. -Bbuild -DBUILD_DOCS=ON
 ${cmake_command} --build build --target cxx_api
 
 # Step 2: Migrate the Doxygen documentation to the docs source
