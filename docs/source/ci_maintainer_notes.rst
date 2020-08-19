@@ -53,6 +53,14 @@ dependencies to install and installs them. The GitHub workflows should get their
 dependencies by calling this script. This script will be invoked by many of the
 YAML workflows.
 
+Building the Repo
+-----------------
+
+Logic encapsulating the configure, build, and test phases is maintained in the
+`workflows/scripts/build_and_test.sh` script. This script will generate a CMake
+toolchain file, use that file to configure the build, actually build the repo,
+run the unit tests (through ctest), and finally process the coverage results.
+
 Testing and Deploying Documentation
 -----------------------------------
 
@@ -79,3 +87,13 @@ Linting of the C++ source code is done with clang-format (specifically version
 9). The `.github/workflows/scripts/lint.sh` script actually executes the
 linting. The workflow YAML file is responsible for installing clang-format, for
 calling `lint.sh`, and for making a PR from the diff.
+
+Adding a New Repo
+=================
+
+To add another repo to NWX's CI follow these steps.
+
+1. Add the repo to `synch_files.yaml` so that it gets the synchronized files
+2. Commit that change (once it's merged that should trigger the synchronization)
+3. Add workflow files for the CI actions you are interested in
+   - Easiest way is by copy/pasting from another NWX repo

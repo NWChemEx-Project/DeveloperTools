@@ -10,6 +10,7 @@ jobs:
       - uses: adrianjost/files-sync-action@v1.0.1
         with:
           FILE_PATTERNS: |
+            ^.github/workflows/scripts/build_and_test.sh$
             ^.github/workflows/scripts/build_docs.sh$
             ^.github/workflows/scripts/get_dependencies.sh$
             ^.github/workflows/scripts/lint.sh$

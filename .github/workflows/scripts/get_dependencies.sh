@@ -109,6 +109,8 @@ get_sphinx() {
 #                               Main Script                                    #
 ################################################################################
 
+set -e # Exit with error if any command fails
+
 for depend in "$@"; do
   echo "Getting dependency: ${depend}"
   # Please use camel_case for dependency names and keep the if-statements in
