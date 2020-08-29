@@ -29,6 +29,16 @@
 #                               Internal Functions                             #
 ################################################################################
 
+get_boost() {
+  sudo apt update
+  sudo apt-get install libboost-all-dev
+}
+
+get_cblas() {
+  sudo apt update
+  sudo apt-get install libgslcblas0 libgsl-dev
+}
+
 # Wraps installing clang-format
 #
 # Usage:
@@ -61,6 +71,11 @@ get_doxygen() {
   sudo apt-get install -f doxygen
 }
 
+get_eigen3() {
+  sudo apt update
+  sudo apt-get install libeigen3-dev
+}
+
 # Wraps installing GCC
 #
 # Usage:
@@ -72,17 +87,18 @@ get_gcc() {
   gcc_v="${gcc_no_v}-${1}"
   gxx_no_v="/usr/bin/g++"
   gxx_v="${gxx_no_v}-${1}"
+  gfort_no_v="/usr/bin/gfortran"
+  gfort_v="${gfort_no_v}-${1}"
   gcov_no_v="/usr/bin/gcov"
   gcov_v="${gcov_no_v}-${1}"
 
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo apt-get update
-  sudo apt-get install "gcc-${1}" "g++-${1}"
+  sudo apt-get install "gcc-${1}" "g++-${1}" "gfortran-${1}"
   sudo update-alternatives --install ${gcc_no_v} gcc ${gcc_v} 95 --slave\
                                      ${gxx_no_v} g++ ${gxx_v} --slave\
+                                     ${gfort_no_v} gfortran ${gfort_v} --slave\
                                      ${gcov_no_v} gcov ${gcov_v}
-  g++  --version
-  gcov --version
 }
 
 # Wraps installing gcovr
@@ -91,6 +107,21 @@ get_gcc() {
 #   get_gcovr
 get_gcovr() {
   pip install gcovr
+}
+
+get_lapacke() {
+  sudo apt update
+  sudo apt-get install liblapacke liblapacke-dev
+}
+
+get_openblas() {
+  sudo apt update
+  sudo apt-get install libopenblas-base libopenblas-dev
+}
+
+get_openmpi() {
+  sudo apt update
+  sudo apt-get install openmpi-bin libopenmpi-dev
 }
 
 # Wraps installing Sphinx and the ReadTheDocs Theme
@@ -115,16 +146,28 @@ for depend in "$@"; do
   echo "Getting dependency: ${depend}"
   # Please use camel_case for dependency names and keep the if-statements in
   # alphabetical order.
-  if [ "${depend}" = "clang_format" ]; then
+  if [ "${depend}" = "boost" ];then
+    get_boost
+  elif [ "${depend}" = "cblas" ]; then
+    get_cblas
+  elif [ "${depend}" = "clang_format" ]; then
     get_clang_format
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
   elif [ "${depend}" = "doxygen" ]; then
     get_doxygen
+  elif [ "${depend}" = "eigen3" ]; then
+    get_eigen3
   elif [ "${depend}" = "gcc" ]; then
     get_gcc "${gcc_version}"
   elif [ "${depend}" = "gcovr" ]; then
     get_gcovr
+  elif [ "${depend}" = "lapacke" ]; then
+    get_lapacke
+  elif [ "${depend}" = "openblas" ]; then
+    get_openblas
+  elif [ "${depend}" = "openmpi" ]; then
+    get_openmpi
   elif [ "${depend}" = "sphinx" ]; then
     get_sphinx
   else
