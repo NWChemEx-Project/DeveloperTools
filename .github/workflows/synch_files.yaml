@@ -19,6 +19,7 @@ jobs:
             ^LICENSE$
           TARGET_REPOS: |
             NWChemEx-Project/LibChemist
+            NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
           GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
           COMMIT_MESSAGE: "Updating synched files from %SRC_REPO%"
