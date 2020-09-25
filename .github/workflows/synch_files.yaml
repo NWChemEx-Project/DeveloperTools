@@ -16,9 +16,11 @@ jobs:
             ^.github/workflows/scripts/lint.sh$
             ^.clang-format$
             ^.gitignore$
+            ^cmake/get_cpp.cmake$
             ^LICENSE$
           TARGET_REPOS: |
             NWChemEx-Project/LibChemist
+            NWChemEx-Project/MP2
             NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
           GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
