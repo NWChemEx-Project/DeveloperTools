@@ -97,3 +97,18 @@ To add another repo to NWX's CI follow these steps.
 2. Commit that change (once it's merged that should trigger the synchronization)
 3. Add workflow files for the CI actions you are interested in
    - Easiest way is by copy/pasting from another NWX repo
+4. Note that the repo must not enforce branch protection rules for admins
+   otherwise the synch files plugin can't push the synched files.
+
+Documentation
+============
+
+Deployment of documentation to GitHub pages works by:
+
+1. Each repo must have the `build_docs.sh`, `test_docs.yaml`, and
+   `deploy_docs.yaml` workflow files
+2. As long as 1 is satisfied, when a user's PR is merged it will trigger the
+   `deploy_docs.yaml` workflow which will automatically scrape the documentation
+   out of the PR and push it into the repo's `gh-pages` branch
+3. GitHub will automatically publish the contents of the `gh-pages` branch as a
+   GitHub pages website and everyone gets to see the docs!!!
