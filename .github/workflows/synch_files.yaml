@@ -17,11 +17,13 @@ jobs:
             ^.clang-format$
             ^.gitignore$
             ^cmake/get_cpp.cmake$
+            ^cmake/nwx_cxx_api_docs.cmake$
             ^LICENSE$
           TARGET_REPOS: |
             NWChemEx-Project/LibChemist
             NWChemEx-Project/MP2
             NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
+            NWChemEx-Project/NWChemEx
           GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
           COMMIT_MESSAGE: "Updating synched files from %SRC_REPO%"

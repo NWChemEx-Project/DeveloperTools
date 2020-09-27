@@ -6,17 +6,20 @@ This directory contains the source files for NWChemEx's developer documentation.
 Building the Documentation
 --------------------------
 
-The developer documentation uses Sphinx. If you do not have Sphinx installed
-installing it is usually done with Python's `pip` command:
+The developer documentation has several dependencies which can be installed via
+`pip`
 
 ~~~.sh
-pip install sphinx sphinx_rtd_theme
+#These first two steps are recommended, but not required
+python3 -m venv venv
+. venv/bin/activate
+pip3 install -r requirements.txt
 ~~~
 
-With Sphinx installed the documentation is built by:
+With the dependencies installed the documentation is built by running (in the
+same directory as this README):
 
 ~~~.sh
-#Run in the same directory as this README
 make html
 ~~~
 
