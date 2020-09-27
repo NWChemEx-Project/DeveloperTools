@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Writing Tutorials &mdash; DeveloperTools 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Git and GitHub Procedures" href="git_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> DeveloperTools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../conventions/index.html">Project Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design/index.html">Design Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_management/index.html">Project Management</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Additional Developer Resources</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="git_tutorial.html">Git and GitHub Procedures</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-markdown">Tutorial Markdown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-c-tutorial">Example C++ Tutorial</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DeveloperTools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Additional Developer Resources</a> &raquo;</li>
+        
+      <li>Writing Tutorials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/resources/writing_tutorials.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-tutorials">
+<h1>Writing Tutorials<a class="headerlink" href="#writing-tutorials" title="Permalink to this headline">¶</a></h1>
+<p>The purpose of tutorials in the NWX project are to familiarize a developer/user
+with a class or concept. Tutorials walk the reader through a simplistic scenario
+explaining the logic along the way. This is to be contrasted with the class and
+function documentation which usually focuses on what arguments can and cannot be
+passed to the class/function.</p>
+<p>By their nature tutorials couple source code to documentation. Historically in
+electronic structure theory there has been a propensity to write tutorials (if
+tutorials were written at all) as part of the documentation. The problem with
+this approach is that the tutorial is just text and need not reflect the current
+state of the code. Consequentially, it becomes possible for the code’s API to
+change and for the developer to forget to update the tutorial. The NWX project
+solves this problem using the <code class="docutils literal notranslate"><span class="pre">scripts/make_tutorial.py</span></code> script.</p>
+<div class="section" id="tutorial-markdown">
+<h2>Tutorial Markdown<a class="headerlink" href="#tutorial-markdown" title="Permalink to this headline">¶</a></h2>
+<p>NWX’s documentation is Sphinx-flavored reST. Thus in order for a tutorial to be
+included in the documentation it must be converted to reST. To do this we have
+written a script, <code class="docutils literal notranslate"><span class="pre">scripts/make_tutorial.py</span></code>, that will parse a source file’s
+comments and turn them into a reST file. The tutorial itself should be written
+like a typical source file with extended block comments explaining the code.
+Block comments meant to be converted verbatim to reST start with the keyword
+<code class="docutils literal notranslate"><span class="pre">TUTORIAL</span></code>. These comments form the narrative of the tutorial. Any line of
+code not part of a tutorial comment is part of a code block by default. Code
+blocks will be added to the resulting <code class="docutils literal notranslate"><span class="pre">.rst</span></code> file, verbatim, as
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">code-block::</span> <span class="pre">x</span></code> directives. To denote a block of code as neither a
+tutorial comment or a code block the code can be fenced off with
+<code class="docutils literal notranslate"><span class="pre">TUTORIAL_START_SKIP</span></code> and <code class="docutils literal notranslate"><span class="pre">TUTORIAL_STOP_SKIP</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">make_tutorial.py</span></code> script makes a number of assumptions about how you
+write your tutorial comments:</p>
+<ol class="arabic simple">
+<li><p>C/C++ comments must use <code class="docutils literal notranslate"><span class="pre">//</span></code> as the comment character</p></li>
+<li><p>Python comments must us <code class="docutils literal notranslate"><span class="pre">#</span></code> as the comment character</p></li>
+<li><p>Tutorial comment blocks must be contiguous</p></li>
+<li><p>Tutorial comment blocks should be interspersed within code blocks</p></li>
+<li><p>Tutorial keywords must be the first keywords on a line</p></li>
+</ol>
+</div>
+<div class="section" id="example-c-tutorial">
+<h2>Example C++ Tutorial<a class="headerlink" href="#example-c-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>This section shows an example of a markdowned C++ source file suitable for use
+as a tutorial with the <code class="docutils literal notranslate"><span class="pre">make_tutorial.py</span></code> script.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;catch2/catch.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;header/with/factorial.hpp&gt;</span><span class="cp"></span>
+
+<span class="c1">//TUTORIAL_SKIP_START</span>
+<span class="n">TEST_CASE</span><span class="p">(</span><span class="s">&quot;Factorial Tutorial&quot;</span><span class="p">){</span>
+<span class="c1">//TUTORIAL_SKIP_STOP</span>
+
+<span class="c1">//TUTORIAL</span>
+<span class="c1">//</span>
+<span class="c1">//This tutorial shows you how to use a hypothetical factorial function.</span>
+<span class="c1">//</span>
+<span class="c1">//Mathematically the factorial function is defined as:</span>
+<span class="c1">//</span>
+<span class="c1">//.. math::</span>
+<span class="c1">//</span>
+<span class="c1">//    n! = \prod_{i=1}^n i</span>
+<span class="c1">//</span>
+<span class="c1">//Note that :math:`\prod_{i=1}^0 = 1` so that :math:`0! = 1`.</span>
+<span class="c1">//</span>
+<span class="c1">//To use the factorial function simply provide it the value of ``n``</span>
+
+<span class="k">auto</span> <span class="n">three_she_bang</span> <span class="o">=</span> <span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">three_she_bang</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">//TUTORIAL_SKIP_START</span>
+<span class="p">}</span> <span class="c1">// end test case</span>
+<span class="c1">//TUTORIAL_SKIP_STOP</span>
+</pre></div>
+</div>
+<p>The tutorial should be self-explanatory for the most part. We start by including
+the header files for the function. Next we start a Catch2 test case. This allows
+us to test the source file easier. The reader of the tutorial doesn’t need to
+see that though so we fence it off. The tutorial then proceeds with some prose
+about what the factorial function is and the syntax of the function’s API. As
+far as the reader is concerned the last part of the tutorial is the code
+example, which follows the tutorial comment; however, the real end of the
+tutorial is the fenced off end to the test case. As you can see the above is a
+perfectly legitimate C++ source file. Consequentially it can be included as a
+unit test to ensure that if the API changes, the tutorial will break.</p>
+<p>Assuming the above is stored in a file <code class="docutils literal notranslate"><span class="pre">cxx_tutorial.cpp</span></code>, parsing the above
+unit test should yield the following reST file:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="gh">CXX Tutorial</span>
+<span class="gh">============</span>
+
+<span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> <span class="k">c++</span>
+
+   <span class="cp">#include</span> <span class="cpf">&lt;catch2/catch.hpp&gt;</span><span class="cp"></span>
+   <span class="cp">#include</span> <span class="cpf">&lt;header/with/factorial.hpp&gt;</span><span class="cp"></span>
+
+This tutorial shows you how to use a hypothetical factorial function.
+
+Mathematically the factorial function is defined as:
+
+<span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
+
+   n! = \prod_{i=1}^n i
+
+Note that <span class="na">:math:</span><span class="nv">`\prod_{i=1}^0 = 1`</span> so that <span class="na">:math:</span><span class="nv">`0! = 1`</span>.
+
+To use the factorial function simply provide it the value of <span class="s">``n``</span>
+
+<span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> <span class="k">c++</span>
+
+   <span class="k">auto</span> <span class="n">three_she_bang</span> <span class="o">=</span> <span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+   <span class="n">REQUIRE</span><span class="p">(</span><span class="n">three_she_bang</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="git_tutorial.html" class="btn btn-neutral float-left" title="Git and GitHub Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, NWChemEx Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
