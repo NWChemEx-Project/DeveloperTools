@@ -35,7 +35,7 @@ Rather than remembering to update these files in each repo anytime they change,
 we rely on the
 `Files Sync Action<https://github.com/marketplace/actions/files-sync-action>`_
 to keep them synchronized. Synchronizing these files is done in the
-SynchronizeFiles workflow (YAML file: `.github/workflows/synch_files.yaml`).
+SynchronizeFiles workflow (YAML file: ``.github/workflows/synch_files.yaml``).
 This workflow is executed when a DeveloperTools PR is merged into master.
 
 Writing Workflows
@@ -100,15 +100,4 @@ To add another repo to NWX's CI follow these steps.
 4. Note that the repo must not enforce branch protection rules for admins
    otherwise the synch files plugin can't push the synched files.
 
-Documentation
-============
 
-Deployment of documentation to GitHub pages works by:
-
-1. Each repo must have the `build_docs.sh`, `test_docs.yaml`, and
-   `deploy_docs.yaml` workflow files
-2. As long as 1 is satisfied, when a user's PR is merged it will trigger the
-   `deploy_docs.yaml` workflow which will automatically scrape the documentation
-   out of the PR and push it into the repo's `gh-pages` branch
-3. GitHub will automatically publish the contents of the `gh-pages` branch as a
-   GitHub pages website and everyone gets to see the docs!!!
