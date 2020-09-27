@@ -24,5 +24,6 @@ jobs:
             NWChemEx-Project/MP2
             NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
+            NWChemEx-Project/NWChemEx
           GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
           COMMIT_MESSAGE: "Updating synched files from %SRC_REPO%"
