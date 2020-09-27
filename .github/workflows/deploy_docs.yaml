@@ -1,0 +1,28 @@
+name: Build and Deploy Documentation
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Build-Documentation:
+    runs-on: ubuntu-latest
+    env:
+      arch: Linux-x86_64
+    steps:
+      - name: Obtain Source
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: .github/workflows/scripts/get_dependencies.sh sphinx
+      - name: Build documentation
+        run: |
+           . venv/bin/activate
+           cd docs
+           make html
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.CREATE_PULL_REQUEST_TOKEN }}
+          publish_dir: ./docs/build/html
+
+
