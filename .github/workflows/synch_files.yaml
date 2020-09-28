@@ -18,10 +18,14 @@ jobs:
             ^.gitignore$
             ^cmake/get_cpp.cmake$
             ^cmake/nwx_cxx_api_docs.cmake$
+            ^docs/requirements.txt$
             ^LICENSE$
           TARGET_REPOS: |
+            NWChemEx-Project/Integrals
             NWChemEx-Project/LibChemist
             NWChemEx-Project/MP2
+            NWChemEx-Project/PropertyTypes
+            NWChemEx-Project/SCF
             NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
             NWChemEx-Project/NWChemEx
