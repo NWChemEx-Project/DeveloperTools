@@ -124,6 +124,12 @@ get_gcovr() {
   pip install gcovr
 }
 
+# Wraps instally cppyy
+get_cppyy() {
+  sudo apt update
+  pip3 install cppyy
+}
+
 # Wraps installing LAPACKe
 #
 # Usage:
@@ -201,6 +207,8 @@ for depend in "$@"; do
     get_gcc "${gcc_version}"
   elif [ "${depend}" = "gcovr" ]; then
     get_gcovr
+  elif [ "${depend}" = "cppyy" ]; then
+    get_cppyy
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
   elif [ "${depend}" = "openblas" ]; then
