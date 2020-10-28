@@ -126,7 +126,7 @@ get_gcovr() {
 
 # Wraps instally cppyy
 get_cppyy() {
-  pip3 install cppyy
+  pip install cppyy
 }
 
 # Wraps installing LAPACKe
