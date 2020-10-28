@@ -71,6 +71,11 @@ get_cmake() {
   yes | /bin/sh "${script_name}"
 }
 
+# Wraps instally cppyy
+get_cppyy() {
+  pip install cppyy
+}
+
 # Wraps installing Doxygen
 #
 # Usage:
@@ -122,11 +127,6 @@ get_gcovr() {
   sudo apt update
   sudo apt-get install libxml2-dev libxslt-dev python-dev
   pip install gcovr
-}
-
-# Wraps instally cppyy
-get_cppyy() {
-  pip install cppyy
 }
 
 # Wraps installing LAPACKe
@@ -198,6 +198,8 @@ for depend in "$@"; do
     get_clang_format
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
+  elif [ "${depend}" = "cppyy" ]; then
+    get_cppyy
   elif [ "${depend}" = "doxygen" ]; then
     get_doxygen
   elif [ "${depend}" = "eigen3" ]; then
@@ -206,8 +208,6 @@ for depend in "$@"; do
     get_gcc "${gcc_version}"
   elif [ "${depend}" = "gcovr" ]; then
     get_gcovr
-  elif [ "${depend}" = "cppyy" ]; then
-    get_cppyy
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
   elif [ "${depend}" = "openblas" ]; then
