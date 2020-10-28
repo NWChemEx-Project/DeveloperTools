@@ -28,7 +28,7 @@
 
 ################################################################################
 #             Assign Shell Commands to Variables for Consistency               #
-################################################################################ 
+################################################################################
 
 APT_COMMAND="sudo apt"
 APT_GET_COMMAND="sudo apt-get"
@@ -66,13 +66,7 @@ get_clang_format() {
   ${APT_GET_COMMAND} install -f clang-format-9
 }
 
-# Wraps installing Cppyy
-#
-# Usage:
-#   get_cppyy
-get_cppyy() {
-  ${PIP_COMMAND} install cppyy
-}
+
 
 # Wraps downloading and installing a specific version of CMake
 #
@@ -86,6 +80,14 @@ get_cmake() {
   script_name="cmake-${1}-${arch}.sh"
   wget "${cmake_url_base}/v${1}/${script_name}"
   yes | /bin/sh "${script_name}"
+}
+
+# Wraps installing Cppyy
+#
+# Usage:
+#   get_cppyy
+get_cppyy() {
+  ${PIP_COMMAND} install cppyy
 }
 
 # Wraps installing Doxygen
@@ -208,10 +210,10 @@ for depend in "$@"; do
     get_cblas
   elif [ "${depend}" = "clang_format" ]; then
     get_clang_format
-  elif [ "${depend}" = "cppyy" ]; then
-    get_cppyy
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
+  elif [ "${depend}" = "cppyy" ]; then
+    get_cppyy
   elif [ "${depend}" = "doxygen" ]; then
     get_doxygen
   elif [ "${depend}" = "eigen3" ]; then
