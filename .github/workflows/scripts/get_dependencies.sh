@@ -126,7 +126,6 @@ get_gcovr() {
 
 # Wraps instally cppyy
 get_cppyy() {
-  sudo apt update
   pip3 install cppyy
 }
 
