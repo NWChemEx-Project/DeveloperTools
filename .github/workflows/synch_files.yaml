@@ -25,6 +25,7 @@ jobs:
             NWChemEx-Project/LibChemist
             NWChemEx-Project/MP2
             NWChemEx-Project/PropertyTypes
+            NWChemEx-Project/ReferenceData
             NWChemEx-Project/SCF
             NWChemEx-Project/SDE
             NWChemEx-Project/Utilities
