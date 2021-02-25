@@ -82,6 +82,43 @@ which shows up as:
                       \sum_{i > j} \frac{1}{\mathbf{r}_{ij}} +
                       \sum_A \sum_B \frac{Z_AZ_B}{\mathbf{R}_{AB}}
 
+To simplify writing complicated math equations you can define LaTeX commands in
+a math directive:
+
+.. code-block:: rest
+
+   .. math::
+      
+      \newcommand{\bra}[1]{\left\langle{#1}\right|}
+      \newcommand{\ket}[1]{\left|{#1}\right\rangle}
+   
+      \bra{\psi} = \left(\ket{\psi}\right)^\dagger
+
+which renders as:
+
+.. math::
+    
+   \newcommand{\bra}[1]{\left\langle{#1}\right|}
+   \newcommand{\ket}[1]{\left|{#1}\right\rangle}
+   
+   \bra{\psi} = \left(\ket{\psi}\right)^\dagger
+
+Commands defind in a math directive are good for the page, so:
+
+.. code-block:: rest
+
+    .. math::
+
+       \ket{i} = \sum_{\mu}C_{\mu i}\ket{\mu}
+
+renders as:
+
+    .. math::
+
+       \ket{i} = \sum_{\mu}C_{\mu i}\ket{\mu}
+
+without needing to redefine the ``\ket`` command.       
+
 Code Blocks
 ===========
 
