@@ -10,7 +10,7 @@ Terminology
 ===========
 
 reST is an extensible markup language, which means it's a bit more complicated
-than say Markdown. This complication comes with some additional concepts.
+than say Markdown. This complication comes from some additional concepts.
 
 - roles: These are the qualifiers on inline text
 
@@ -117,7 +117,21 @@ renders as:
 
        \ket{i} = \sum_{\mu}C_{\mu i}\ket{\mu}
 
-without needing to redefine the ``\ket`` command.       
+without needing to redefine the ``\ket`` command.
+
+To make aliases for inline math the best solution I have found is to do:
+
+.. code-block:: rest
+
+   .. |fock_matrix| replace:: :math:`f_{\mu\nu}`
+
+   The :math:`\mu\nu`-th element of the fock matrix is |fock_matrix|.
+
+Which renders as:   
+
+.. |fock_matrix| replace:: :math:`f_{\mu\nu}`
+
+The :math:`\mu\nu`-th element of the fock matrix is |fock_matrix|.
 
 Code Blocks
 ===========

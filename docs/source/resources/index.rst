@@ -10,6 +10,7 @@ used for developing NWChemEx.
     :maxdepth: 2
     :caption: Contents:
 
+    development_workflow
     git_tutorial
     rest_cheatsheet
     writing_tutorials
