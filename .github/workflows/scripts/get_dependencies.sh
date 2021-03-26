@@ -107,14 +107,6 @@ get_doxygen() {
   ${APT_GET_COMMAND} install -f doxygen
 }
 
-# Wraps installing numpy
-#
-# Usage:
-#   get_numpy
-get_numpy() {
-  ${PIP_COMMAND} install numpy
-}
-
 # Wraps installing Eigen3
 #
 # Usage:
@@ -167,6 +159,14 @@ get_gcovr() {
 get_lapacke() {
   ${APT_COMMAND} update
   ${APT_GET_COMMAND} install liblapacke liblapacke-dev
+}
+
+# Wraps installing numpy
+#
+# Usage:
+#   get_numpy
+get_numpy() {
+  ${PIP_COMMAND} install numpy
 }
 
 # Wraps installing OpenBLAS
@@ -240,6 +240,8 @@ for depend in "$@"; do
     get_gcovr
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
+  elif [ "${depend}" = "numpy" ]; then
+    get_numpy
   elif [ "${depend}" = "openblas" ]; then
     get_openblas
   elif [ "${depend}" = "openmpi" ]; then
@@ -248,8 +250,6 @@ for depend in "$@"; do
     get_scalapack
   elif [ "${depend}" = "sphinx" ]; then
     get_sphinx
-  elif [ "${depend}" = "numpy" ]; then
-    get_numpy
   else
     echo "Unrecognized dependency: ${depend}"
     exit 99
