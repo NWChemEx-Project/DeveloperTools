@@ -107,6 +107,14 @@ get_doxygen() {
   ${APT_GET_COMMAND} install -f doxygen
 }
 
+# Wraps installing numpy
+#
+# Usage:
+#   get_numpy
+get_numpy() {
+  ${PIP_COMMAND} install numpy
+}
+
 # Wraps installing Eigen3
 #
 # Usage:
@@ -240,6 +248,8 @@ for depend in "$@"; do
     get_scalapack
   elif [ "${depend}" = "sphinx" ]; then
     get_sphinx
+  elif [ "${depend}" = "numpy" ]; then
+    get_numpy
   else
     echo "Unrecognized dependency: ${depend}"
     exit 99
