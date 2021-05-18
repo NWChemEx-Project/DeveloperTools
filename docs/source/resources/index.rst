@@ -11,6 +11,7 @@ used for developing NWChemEx.
     :caption: Contents:
 
     development_workflow
+    ides/index
     git_tutorial
     rest_cheatsheet
     writing_tutorials
