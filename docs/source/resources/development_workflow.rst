@@ -43,6 +43,11 @@ where the ``toolchain.cmake`` file will be described below.
 Basic C++ setup
 ===============
 
+These instructions really only apply if you are working in a repository that is
+directly linked into NWChemEx-Project/NWChemEx. If you are writing C++ modules
+as plugins, i.e., outside the core stack, you should follow the instructions
+here (TODO: add link).
+
 It is strongly recommended that you make a toolchain file with all of your
 compilation options. It's conventional to call this file ``toolchain.cmake`` and
 we'll put it just inside the NWChemEx workspace.
@@ -52,7 +57,7 @@ TODO: Basic syntax of toolchain file/link to more complicated directions
 End users of NWChemEx simply need to build the ``NWChemEx-Project/NWChemEx``
 repository. By default the build process will use clean versions of all the
 dependencies (*e.g.*, repos like ``NWChemEx-Project/SCF``). For development
-purposes we don't want clean versions, rather we want the build to use our local
+purposes we don't want clean versions,the build to use our local
 versions. To make sure the NWChemEx-Project uses our local version of the SCF
 repo we set the CMake variable ``FETCHCONENT_SOURCE_DIR_SCF`` to the
 ``NWChemEx-Project/SCF`` repository in our NWChemEx workspace. This is done by
@@ -68,5 +73,7 @@ uppercase name of the repo as defined in the build files).
 
 TODO: Table of valid XXX values and the corresponding repo
 
-With the toolchain file properly configured we build ``NWChemEx-Project/SCF``.
-In the ``nwx_workspace/NWChemEx`` directory we execute
+With the toolchain file properly configured, when we build
+``NWChemEx-Project/NWChemEX`` the build process will use our local version of
+each repo we provided a ``FETCHCONTENT_SOURCE_DIR_XXX`` value for. Changes to
+say the SCF repo will then be reflected in the NWChemEx repo.
