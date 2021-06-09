@@ -48,4 +48,4 @@ suggested in the :ref:`Workflow Preliminaries` section.
    :maxdepth: 2
    :caption: Contents
 
-   vscode
+   vscode/index
