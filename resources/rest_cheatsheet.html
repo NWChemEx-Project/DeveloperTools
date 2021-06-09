@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>reST Cheat Sheet &mdash; DeveloperTools 1.0.0 documentation</title>
@@ -13,6 +14,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,10 +32,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -95,6 +99,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../design/index.html">Design Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../project_management/index.html">Project Management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Additional Developer Resources</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html">Development Workflow for NWChemEx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ides/index.html">Using IDEs to Develop NWX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="git_tutorial.html">Git and GitHub Procedures</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">reST Cheat Sheet</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
@@ -175,15 +181,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="rest-cheat-sheet">
+  <section id="rest-cheat-sheet">
 <h1>reST Cheat Sheet<a class="headerlink" href="#rest-cheat-sheet" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of this page is to provide a convenient resource for quickly
 becoming familiar with ReStructured text (reST) as commonly needed in
 documenting NWChemEx.</p>
-<div class="section" id="terminology">
+<section id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
 <p>reST is an extensible markup language, which means it’s a bit more complicated
-than say Markdown. This complication comes with some additional concepts.</p>
+than say Markdown. This complication comes from some additional concepts.</p>
 <ul class="simple">
 <li><p>roles: These are the qualifiers on inline text</p>
 <ul>
@@ -196,8 +202,8 @@ than say Markdown. This complication comes with some additional concepts.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="basic-text-formatting">
+</section>
+<section id="basic-text-formatting">
 <h2>Basic Text Formatting<a class="headerlink" href="#basic-text-formatting" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Italics: <code class="docutils literal notranslate"><span class="pre">*text</span> <span class="pre">to</span> <span class="pre">italicize</span></code></p>
@@ -211,8 +217,8 @@ than say Markdown. This complication comes with some additional concepts.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="math">
+</section>
+<section id="math">
 <h2>Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h2>
 <p>To write inline math use the <code class="docutils literal notranslate"><span class="pre">:math:</span></code> role:</p>
 <div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>The area, <span class="na">:math:</span><span class="nv">`a`</span>, of a circle of radius <span class="na">:math:</span><span class="nv">`r`</span> is <span class="na">:math:</span><span class="nv">`a=\pi r^2`</span>
@@ -249,8 +255,42 @@ than say Markdown. This complication comes with some additional concepts.</p>
                    \sum_i \sum_A \frac{Z_A}{\mathbf{r}_{iA}} +
                    \sum_{i &gt; j} \frac{1}{\mathbf{r}_{ij}} +
                    \sum_A \sum_B \frac{Z_AZ_B}{\mathbf{R}_{AB}}\end{split}\]</div>
+<p>To simplify writing complicated math equations you can define LaTeX commands in
+a math directive:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
+
+   \newcommand{\bra}[1]{\left\langle{#1}\right|}
+   \newcommand{\ket}[1]{\left|{#1}\right\rangle}
+
+   \bra{\psi} = \left(\ket{\psi}\right)^\dagger
+</pre></div>
 </div>
-<div class="section" id="code-blocks">
+<p>which renders as:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\newcommand{\bra}[1]{\left\langle{#1}\right|}
+\newcommand{\ket}[1]{\left|{#1}\right\rangle}\\\bra{\psi} = \left(\ket{\psi}\right)^\dagger\end{aligned}\end{align} \]</div>
+<p>Commands defind in a math directive are good for the page, so:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
+
+   \ket{i} = \sum_{\mu}C_{\mu i}\ket{\mu}
+</pre></div>
+</div>
+<p>renders as:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\ket{i} = \sum_{\mu}C_{\mu i}\ket{\mu}\]</div>
+</div></blockquote>
+<p>without needing to redefine the <code class="docutils literal notranslate"><span class="pre">\ket</span></code> command.</p>
+<p>To make aliases for inline math the best solution I have found is to do:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">|fock_matrix|</span> <span class="ow">replace</span><span class="p">::</span> <span class="na">:math:</span><span class="nv">`f_{\mu\nu}`</span>
+
+The <span class="na">:math:</span><span class="nv">`\mu\nu`</span>-th element of the fock matrix is |fock_matrix|.
+</pre></div>
+</div>
+<p>Which renders as:</p>
+<p>The <span class="math notranslate nohighlight">\(\mu\nu\)</span>-th element of the fock matrix is <span class="math notranslate nohighlight">\(f_{\mu\nu}\)</span>.</p>
+</section>
+<section id="code-blocks">
 <h2>Code Blocks<a class="headerlink" href="#code-blocks" title="Permalink to this headline">¶</a></h2>
 <p>Code blocks are done with the <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">code-block::</span></code> directive. To get syntax
 highlighting you can specify the language after the <code class="docutils literal notranslate"><span class="pre">::</span></code>. For example:</p>
@@ -265,8 +305,8 @@ highlighting you can specify the language after the <code class="docutils litera
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The current directory is: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

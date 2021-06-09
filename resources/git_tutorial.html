@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Git and GitHub Procedures &mdash; DeveloperTools 1.0.0 documentation</title>
@@ -13,6 +14,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -39,7 +43,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="reST Cheat Sheet" href="rest_cheatsheet.html" />
-    <link rel="prev" title="Additional Developer Resources" href="index.html" /> 
+    <link rel="prev" title="FAQs" href="ides/vscode/faqs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,6 +98,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../design/index.html">Design Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../project_management/index.html">Project Management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Additional Developer Resources</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html">Development Workflow for NWChemEx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ides/index.html">Using IDEs to Develop NWX</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Git and GitHub Procedures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#git-and-github-background">Git and GitHub Background</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#common-git-commands">Common Git Commands</a></li>
@@ -174,13 +180,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="git-and-github-procedures">
-<h1>Git and GitHub Procedures<a class="headerlink" href="#git-and-github-procedures" title="Permalink to this headline">¶</a></h1>
+  <section id="git-and-github-procedures">
+<span id="id1"></span><h1>Git and GitHub Procedures<a class="headerlink" href="#git-and-github-procedures" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of this page is to document typical Git and GitHub workflows and to
 serve as a cheat sheet for remembering the commands.  This page only covers the
 basic aspects related to Git version control and how one uses GitHub to
 contribute code.</p>
-<div class="section" id="git-and-github-background">
+<section id="git-and-github-background">
 <h2>Git and GitHub Background<a class="headerlink" href="#git-and-github-background" title="Permalink to this headline">¶</a></h2>
 <p>As a code base evolves it will have existed in many versions.  Almost all modern
 codes use some form of what is termed “version control” (VC) to manage these
@@ -241,8 +247,8 @@ in addition to being a place to host Git repos it also strives to encompass
 and simplify many other aspects of the development process (such as continuous
 integration and code-review).  The following sections detail common Git
 commands and the typical GitHub workflow purposed for the NWChemEx project.</p>
-</div>
-<div class="section" id="common-git-commands">
+</section>
+<section id="common-git-commands">
 <h2>Common Git Commands<a class="headerlink" href="#common-git-commands" title="Permalink to this headline">¶</a></h2>
 <p>For the purposes of this tutorial we’ll assume that you’re working with an
 existing Git repo (if you’re not, the easiest way to make a repo is to do so on
@@ -373,8 +379,8 @@ check-out your development branch and run:</p>
 <p>This will merge the contents of your repo’s master branch into your current
 branch.  Depending on how master has changed conflicts may occur; if they do,
 you simply deal with them as we did above.</p>
-</div>
-<div class="section" id="github-workflow">
+</section>
+<section id="github-workflow">
 <h2>GitHub Workflow<a class="headerlink" href="#github-workflow" title="Permalink to this headline">¶</a></h2>
 <p>The commands from the previous section are complemented by several GitHub
 extensions.  We explain these extensions in this section.  For the purposes
@@ -470,8 +476,8 @@ the repos that you (the developer) own.  Above the black dotted line are the
 repos on GitHub and below the black line are the repos that live locally on your
 own computer (or other computers you are using).</p>
 <img alt="../_images/github_workflow.png" src="../_images/github_workflow.png" />
-</div>
-<div class="section" id="further-information">
+</section>
+<section id="further-information">
 <h2>Further Information<a class="headerlink" href="#further-information" title="Permalink to this headline">¶</a></h2>
 <p>There is much more to both GitHub and Git itself.  The following is a collection
 of tutorials offering additional information on certain topics.</p>
@@ -480,8 +486,8 @@ of tutorials offering additional information on certain topics.</p>
 <li><p><a class="reference external" href="https://guides.github.com/introduction/flow/">GitHub Workflow</a></p></li>
 <li><p><a class="reference external" href="https://guides.github.com/activities/forking/">Forking a Repo on GitHub</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -490,7 +496,7 @@ of tutorials offering additional information on certain topics.</p>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="rest_cheatsheet.html" class="btn btn-neutral float-right" title="reST Cheat Sheet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Additional Developer Resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ides/vscode/faqs.html" class="btn btn-neutral float-left" title="FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

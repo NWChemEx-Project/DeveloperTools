@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Software Stack &mdash; DeveloperTools 1.0.0 documentation</title>
@@ -13,6 +14,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -184,19 +188,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="software-stack">
+  <section id="software-stack">
 <h1>Software Stack<a class="headerlink" href="#software-stack" title="Permalink to this headline">¶</a></h1>
 <p>The point of this page is to explain the philosophy and organization of
 NWChemEx’s software stack.</p>
-<div class="section" id="software-stack-overview">
+<section id="software-stack-overview">
 <h2>Software Stack Overview<a class="headerlink" href="#software-stack-overview" title="Permalink to this headline">¶</a></h2>
 <p>NWChemEx is made up of three major software components. In order from least user
 facing to most user facing they are: the framework, the modules, and the user
 API. This is summarized in the following figure:</p>
-<div class="figure align-right" id="id1" style="width: 50%">
+<figure class="align-right" id="id1" style="width: 50%">
 <img alt="../_images/depends_overview.png" src="../_images/depends_overview.png" />
-<p class="caption"><span class="caption-text">UML diagram of the four major components of the NWChemEx software stack.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">UML diagram of the four major components of the NWChemEx software stack.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The framework component encapsulates the infrastructure required to interact
 with the hardware and to run the modules. The framework is intended to have APIs
 that are long-term stable. Most developers will only interact with the framework
@@ -223,13 +229,15 @@ and is designed to make simple tasks easy. More complicated workflows can always
 directly access the framework for finer-grained control.</p>
 <p>The following sections provide more detailed overviews of each software
 component.</p>
-</div>
-<div class="section" id="framework-layer">
+</section>
+<section id="framework-layer">
 <h2>Framework Layer<a class="headerlink" href="#framework-layer" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-left" id="id2" style="width: 50%">
+<figure class="align-left" id="id2" style="width: 50%">
 <img alt="../_images/base_depends.png" src="../_images/base_depends.png" />
-<p class="caption"><span class="caption-text">Components comprising the framework layer of NWChemEx.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Components comprising the framework layer of NWChemEx.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>The framework layer contains software components used to assemble the software
 infrastructure of NWChemEx. At the base of this layer is
 <a class="reference external" href="https://github.com/CMakePP">CMakePP</a>. CMakePP is a CMake module designed to
@@ -255,7 +263,7 @@ module, other modules do not need to know the inner details of your module, but
 rather which property types it satisfies. This allows us to defer coupling to
 runtime and have an incredibly flexible program. Modules are key concept in the
 NWChemEx program explained in more detail in the next section.</p>
-<div class="section" id="framework-repository-quick-reference">
+<section id="framework-repository-quick-reference">
 <h3>Framework Repository Quick-Reference<a class="headerlink" href="#framework-repository-quick-reference" title="Permalink to this headline">¶</a></h3>
 <p>The following table provides a quick reference to what each of the framework
 repositories contain.</p>
@@ -290,14 +298,16 @@ repositories contain.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="module-layer">
+</section>
+</section>
+<section id="module-layer">
 <h2>Module Layer<a class="headerlink" href="#module-layer" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-right" id="id3" style="width: 50%">
+<figure class="align-right" id="id3" style="width: 50%">
 <img alt="../_images/module_depends.png" src="../_images/module_depends.png" />
-<p class="caption"><span class="caption-text">Module layer of NWChemEx</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Module layer of NWChemEx</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>You can think of the framework as being similar to your phone’s operating system
 and modules as being similar to apps. The module layer is then analogous to the
 app store on your phone. Namely it is comprised of all the possible modules that
@@ -318,7 +328,7 @@ repos. As shown in the accompanying UML diagram, note that there are no
 cross-dependencies, rather each repo depends only on the framework layer (in
 truth some of the repos also have external dependencies that are not shown
 here, but the point remains that there is no additional coupling to NWChemEx).</p>
-<div class="section" id="module-repository-quick-reference">
+<section id="module-repository-quick-reference">
 <h3>Module Repository Quick-Reference<a class="headerlink" href="#module-repository-quick-reference" title="Permalink to this headline">¶</a></h3>
 <p>The following table provides a quick-reference for what sorts of modules
 are in each repo.</p>
@@ -350,9 +360,9 @@ are in each repo.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="user-api-layer">
+</section>
+</section>
+<section id="user-api-layer">
 <h2>User API Layer<a class="headerlink" href="#user-api-layer" title="Permalink to this headline">¶</a></h2>
 <p>Ultimately when a user starts up NWChemEx it spins up the framework and loads it
 with modules. The responsibility for selecting NWChemEx’s default modules and
@@ -363,8 +373,8 @@ repo also contains miscellaneous Python functions to provide a cleaner, more
 user-friendly API to NWChemEx. These functions are built on top of the
 framework’s API and can be intermixed with raw calls to the framework. Hence it
 is possible to fully control NWChemEx in conjunction with the user API.</p>
-</div>
-<div class="section" id="miscellaneous-repositories">
+</section>
+<section id="miscellaneous-repositories">
 <h2>Miscellaneous Repositories<a class="headerlink" href="#miscellaneous-repositories" title="Permalink to this headline">¶</a></h2>
 <p>The NWChemEx-Project organization contains a number of additional “meta”
 repositories that are not directly required for building NWChemEx. They are
@@ -391,10 +401,10 @@ summarized in the following table.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="faqs">
+</section>
+<section id="faqs">
 <h2>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="why-so-many-repos">
+<section id="why-so-many-repos">
 <h3>Why So Many Repos?<a class="headerlink" href="#why-so-many-repos" title="Permalink to this headline">¶</a></h3>
 <p>When transitioning from developing a more traditional electronic structure
 package to NWChemEx, one of the first observations developers make is that there
@@ -411,16 +421,16 @@ the libraries without pulling in the entirety of the package. NWChemEx’s
 strategy of keeping each library in an individual repo forces each library to be
 stand alone. It also makes it easier for other codes to get the library they
 want without having to extract it from a monolithic code base.</p>
-</div>
-<div class="section" id="so-where-s-nwchemex">
+</section>
+<section id="so-where-s-nwchemex">
 <h3>So Where’s “NWChemEx”?<a class="headerlink" href="#so-where-s-nwchemex" title="Permalink to this headline">¶</a></h3>
 <p>Having a bunch of individual repos is great for developers, but confusing to
 users. Users only need to build the <code class="docutils literal notranslate"><span class="pre">NWChemEx</span></code> repo. Building this repo will
 build all dependencies which are required to have the complete NWChemEx
 electronic structure package.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
