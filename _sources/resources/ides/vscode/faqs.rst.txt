@@ -21,3 +21,19 @@ your reST/Sphinx dependencies in to it. Start by using ctrl+shift+p to bring up
 the command palette. Then select ``Python: Select Interpreter``. Navigate to
 ``venv/bin/python3``. Now the reST extension should use the virtual environment
 ``venv`` for rendering your documentation preview.
+
+**How do I get the debugger to set breakpoints per file and not per filename?**
+
+By default VSCode assumes that when you set a breakpoint in a file ``x.cpp``
+you want that breakpoint to be set in ``src/x.cpp`` and in ``tests/x.cpp``;
+you probably don't. To fix this add to the ``launch.json`` file for your 
+debugging session:
+ 
+.. code-block:: json
+
+   "sourceFileMap": {
+     "${workspaceFolder}": {
+       "editorPath": "${workspaceFolder}",
+       "useForBreakpoints": "true"
+     }
+   }

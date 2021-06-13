@@ -204,6 +204,19 @@ your reST/Sphinx dependencies in to it. Start by using ctrl+shift+p to bring up
 the command palette. Then select <code class="docutils literal notranslate"><span class="pre">Python:</span> <span class="pre">Select</span> <span class="pre">Interpreter</span></code>. Navigate to
 <code class="docutils literal notranslate"><span class="pre">venv/bin/python3</span></code>. Now the reST extension should use the virtual environment
 <code class="docutils literal notranslate"><span class="pre">venv</span></code> for rendering your documentation preview.</p>
+<p><strong>How do I get the debugger to set breakpoints per file and not per filename?</strong></p>
+<p>By default VSCode assumes that when you set a breakpoint in a file <code class="docutils literal notranslate"><span class="pre">x.cpp</span></code>
+you want that breakpoint to be set in <code class="docutils literal notranslate"><span class="pre">src/x.cpp</span></code> and in <code class="docutils literal notranslate"><span class="pre">tests/x.cpp</span></code>;
+you probably don’t. To fix this add to the <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file for your
+debugging session:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;sourceFileMap&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;${workspaceFolder}&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;editorPath&quot;</span><span class="p">:</span> <span class="s2">&quot;${workspaceFolder}&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;useForBreakpoints&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 
 
