@@ -10,3 +10,4 @@ and implementation of the NWChemEx package.
    :caption: Contents:
 
    software_stack
+   energy_workflow
