@@ -19,5 +19,6 @@ contribute.
 
     conventions/index
     design/index
+    development/index
     project_management/index
     resources/index

@@ -10,8 +10,6 @@ used for developing NWChemEx.
     :maxdepth: 2
     :caption: Contents:
 
-    development_workflow
-    ides/index
     git_tutorial
     rest_cheatsheet
     writing_tutorials

@@ -42,7 +42,7 @@ most of the features on this list, but they may not support all of them):
 
 The following sections focus on how to set-up various IDEs for developing NWX.
 All of these tutorials assume that you have a directory set-up akin to that
-suggested in the :ref:`Workflow Preliminaries` section.
+suggested in the :ref:`development_preliminaries` section.
 
 .. toctree::
    :maxdepth: 2
