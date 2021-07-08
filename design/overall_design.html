@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Overall Design &mdash; DeveloperTools 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Energy Workflow" href="energy_workflow.html" />
+    <link rel="prev" title="Design Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DeveloperTools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../conventions/index.html">Project Conventions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overall Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#software-stack-overview">Software Stack Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-framework">The Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nwchemex">NWChemEx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#miscellaneous-repositories">Miscellaneous Repositories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="energy_workflow.html">Energy Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html">FAQs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development/index.html">Developing NWChemEx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project_management/index.html">Project Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/index.html">Additional Developer Resources</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DeveloperTools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Design Documentation</a> &raquo;</li>
+        
+      <li>Overall Design</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/design/overall_design.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="overall-design">
+<h1>Overall Design<a class="headerlink" href="#overall-design" title="Permalink to this headline">¶</a></h1>
+<p>The point of this page is to explain the philosophy and organization of
+NWChemEx’s software stack.</p>
+<section id="software-stack-overview">
+<span id="id1"></span><h2>Software Stack Overview<a class="headerlink" href="#software-stack-overview" title="Permalink to this headline">¶</a></h2>
+<p>The NWChemEx Project is made up of two major software components: the framework
+and the NWChemEx electronic structure package.</p>
+<figure class="align-center" id="id2" style="width: 100%">
+<img alt="../_images/overall_design.png" src="../_images/overall_design.png" />
+<figcaption>
+<p><span class="caption-text">Diagram of the overall NWChemEx Design</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="the-framework">
+<h2>The Framework<a class="headerlink" href="#the-framework" title="Permalink to this headline">¶</a></h2>
+<p>The framework component encapsulates the infrastructure required to:
+- interact with the hardware,
+- manage and run modules,
+- and describe commonly occurring computational chemistry concepts.
+The framework is intended to have APIs that are long-term stable. Most
+developers will only interact with the framework and will not need to perform
+development on it.</p>
+<p>Conceptually you can think of the framework layer as being akin to a typical
+smartphone operating system. Like a smartphone OS, the framework manages a bunch
+of apps (which we call modules), takes care of inter-app communication (passing
+data among the modules), and automates more mundane tasks (like logging and
+saving). The framework layer is quite general and quite flexible. In particular
+the framework does not need to know about a module ahead of time and modules can
+be added at runtime.</p>
+<p>This generality and flexibility comes at the cost of complexity. While design
+efforts have striven to make the framework layer as simple as possible, the
+reality is that it is still quite verbose from a typical electronic structure
+user’s perspective. It is the responsibility of whatever sits on top of the
+framework to provide more user-friendly API. More complicated workflows can
+always directly access the framework for finer-grained control.</p>
+<p>The main components of the framework are summarized in the following table:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Repository</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ParallelZone</p></td>
+<td><p>The runtime abstraction layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>SDE</p></td>
+<td><p>The runtime framework</p></td>
+</tr>
+<tr class="row-even"><td><p>LibChemist</p></td>
+<td><p>Chemistry specific classes</p></td>
+</tr>
+<tr class="row-odd"><td><p>PropertyTypes</p></td>
+<td><p>Definitions of the module APIs</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="nwchemex">
+<h2>NWChemEx<a class="headerlink" href="#nwchemex" title="Permalink to this headline">¶</a></h2>
+<p>The NWChemEx electronic structure theory package is itself made up of two main
+components: a series of modules for use with the framework and a user-friendly
+API for running those modules. If we continue the smartphone analogy the modules
+provided by NWChemEx are first-party apps (for Android users think GMail, Google
+Calendar, Chrome, etc; iPhone users think Mail, iCal, Safari, etc.). From the
+perspective of the framework where a module comes from doesn’t matter, <em>i.e.</em>,
+modules that are part of NWChemEx are treated no differently than modules that
+are not part of NWChemEx. In the smartphone analogy the user-friendly API is
+similar to the graphical user interface your phone provides. When you click on
+an address in an email app and it brings up a map in your map app, you don’t
+really think about how the apps communicated and what library calls were needed
+to make that happen. Similarly, when you tell NWChemEx to compute the energy of
+a molecule through the user-friendly API you don’t have to think about how that
+request gets dispatched through the modules and libraries underlying NWChemEx.</p>
+</section>
+<section id="miscellaneous-repositories">
+<h2>Miscellaneous Repositories<a class="headerlink" href="#miscellaneous-repositories" title="Permalink to this headline">¶</a></h2>
+<p>The NWChemEx-Project organization contains a number of additional “meta”
+repositories that are not directly required for building NWChemEx. They are
+summarized in the following table.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Repository</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeveloperTools</p></td>
+<td><p>Developer documentation and tools for maintaining NWChemEx</p></td>
+</tr>
+<tr class="row-odd"><td><p>Publications</p></td>
+<td><p>Manuscripts written by the NWChemEx team about NWChemEx</p></td>
+</tr>
+<tr class="row-even"><td><p>dox</p></td>
+<td><p>Deprecated documentation repo</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="energy_workflow.html" class="btn btn-neutral float-right" title="Energy Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Design Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, NWChemEx Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

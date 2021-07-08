@@ -9,4 +9,6 @@ and implementation of the NWChemEx package.
    :maxdepth: 2
    :caption: Contents:
 
-   software_stack
+   overall_design
+   energy_workflow
+   faqs
