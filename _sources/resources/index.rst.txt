@@ -13,3 +13,4 @@ used for developing NWChemEx.
     git_tutorial
     rest_cheatsheet
     writing_tutorials
+    recommended_development_resources
