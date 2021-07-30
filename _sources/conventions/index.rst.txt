@@ -11,4 +11,5 @@ all repos facilitates comprehension of the source code.
 
    cxx_conventions
    doxygen_conventions
+   python_conventions
    rst_conventions
