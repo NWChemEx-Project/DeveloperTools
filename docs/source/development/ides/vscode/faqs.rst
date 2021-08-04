@@ -37,3 +37,13 @@ debugging session:
        "useForBreakpoints": "true"
      }
    }
+
+** How do I get the debugger to break on a throw?**
+
+Add the following to the ``"setupCommands"`` block of your ``launch.json`` file:
+
+.. code-block:: json
+   
+   "description": "Enable break on all exceptions",
+   "text": "catch throw",
+   "ignoreFailures": true
