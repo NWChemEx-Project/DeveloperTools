@@ -191,19 +191,26 @@
 <h1>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h1>
 <p>This subsection covers frequently asked questions regarding VSCode and
 developing NWX with VSCode.</p>
-<p><strong>How do I change the editor font size?</strong></p>
+<section id="how-do-i-change-the-editor-font-size">
+<h2><strong>How do I change the editor font size?</strong><a class="headerlink" href="#how-do-i-change-the-editor-font-size" title="Permalink to this headline">¶</a></h2>
 <p>In settings search “editor.fontSize”. Change the field to your preferred font
 size.</p>
-<p><strong>How do I get a ruler to signify the 80 character limit?</strong></p>
+</section>
+<section id="how-do-i-get-a-ruler-to-signify-the-80-character-limit">
+<h2><strong>How do I get a ruler to signify the 80 character limit?</strong><a class="headerlink" href="#how-do-i-get-a-ruler-to-signify-the-80-character-limit" title="Permalink to this headline">¶</a></h2>
 <p>In settings search “editor.rulers”. Click on the “edit in settings.json” link.
 In the <code class="docutils literal notranslate"><span class="pre">settings.json</span> <span class="pre">file</span></code> add “80” to the settings file that gets opened.</p>
-<p><strong>How do I get the reST extension to use a virtual environment?</strong></p>
+</section>
+<section id="how-do-i-get-the-rest-extension-to-use-a-virtual-environment">
+<h2><strong>How do I get the reST extension to use a virtual environment?</strong><a class="headerlink" href="#how-do-i-get-the-rest-extension-to-use-a-virtual-environment" title="Permalink to this headline">¶</a></h2>
 <p>Assuming you have created a virtual environment <code class="docutils literal notranslate"><span class="pre">venv</span></code> and installed all of
 your reST/Sphinx dependencies in to it. Start by using ctrl+shift+p to bring up
 the command palette. Then select <code class="docutils literal notranslate"><span class="pre">Python:</span> <span class="pre">Select</span> <span class="pre">Interpreter</span></code>. Navigate to
 <code class="docutils literal notranslate"><span class="pre">venv/bin/python3</span></code>. Now the reST extension should use the virtual environment
 <code class="docutils literal notranslate"><span class="pre">venv</span></code> for rendering your documentation preview.</p>
-<p><strong>How do I get the debugger to set breakpoints per file and not per filename?</strong></p>
+</section>
+<section id="how-do-i-get-the-debugger-to-set-breakpoints-per-file-and-not-per-filename">
+<h2><strong>How do I get the debugger to set breakpoints per file and not per filename?</strong><a class="headerlink" href="#how-do-i-get-the-debugger-to-set-breakpoints-per-file-and-not-per-filename" title="Permalink to this headline">¶</a></h2>
 <p>By default VSCode assumes that when you set a breakpoint in a file <code class="docutils literal notranslate"><span class="pre">x.cpp</span></code>
 you want that breakpoint to be set in <code class="docutils literal notranslate"><span class="pre">src/x.cpp</span></code> and in <code class="docutils literal notranslate"><span class="pre">tests/x.cpp</span></code>;
 you probably don’t. To fix this add to the <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file for your
@@ -216,13 +223,16 @@ debugging session:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>** How do I get the debugger to break on a throw?**</p>
+</section>
+<section id="how-do-i-get-the-debugger-to-break-on-a-throw">
+<h2><strong>How do I get the debugger to break on a throw?</strong><a class="headerlink" href="#how-do-i-get-the-debugger-to-break-on-a-throw" title="Permalink to this headline">¶</a></h2>
 <p>Add the following to the <code class="docutils literal notranslate"><span class="pre">&quot;setupCommands&quot;</span></code> block of your <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Enable break on all exceptions&quot;</span><span class="p">,</span>
 <span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;catch throw&quot;</span><span class="p">,</span>
 <span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span> <span class="kc">true</span>
 </pre></div>
 </div>
+</section>
 </section>
 
 
