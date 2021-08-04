@@ -216,6 +216,13 @@ debugging session:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>** How do I get the debugger to break on a throw?**</p>
+<p>Add the following to the <code class="docutils literal notranslate"><span class="pre">&quot;setupCommands&quot;</span></code> block of your <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Enable break on all exceptions&quot;</span><span class="p">,</span>
+<span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;catch throw&quot;</span><span class="p">,</span>
+<span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span> <span class="kc">true</span>
+</pre></div>
+</div>
 </section>
 
 
