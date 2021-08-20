@@ -190,13 +190,13 @@ writing documentation pages like this one the project uses Sphinx’s ReST flavo
 does this by requiring you to write your C++ comments using Doxygen’s markup
 language. Bare-bones this looks like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">/// This is a Doxygen, single-line comment for the following function</span>
-<span class="kt">void</span> <span class="nf">function1</span><span class="p">();</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">function1</span><span class="p">();</span><span class="w"></span>
 
 <span class="cm">/** For more extened documentation block comments are preferred.</span>
 <span class="cm"> *</span>
 <span class="cm"> *  This line is also part of the comment.</span>
-<span class="cm"> */</span>
-<span class="kt">void</span> <span class="nf">function3</span><span class="p">();</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">function3</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Doxygen supports other conventions; however, the two above are the approved
@@ -222,7 +222,7 @@ when documenting C++ code for use with NWChemEx.</p>
 documenting a function this should be considered as a minimal acceptable
 amount of documentation.  For documenting data members and types a single line
 comment is often fine (just describing what it is).</p>
-<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span>  <span class="cm">/** @brief This is the brief description of fake function 1.</span>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="cm">/** @brief This is the brief description of fake function 1.</span>
 <span class="cm">   *</span>
 <span class="cm">   *  Fake function 1 demonstrates the bare minimal documentation standards.</span>
 <span class="cm">   *  What you are currently reading, is the detailed description that will</span>
@@ -239,16 +239,16 @@ comment is often fine (just describing what it is).</p>
 <span class="cm">   *</span>
 <span class="cm">   *  @throws std::runtime_error Tell you when it throws and what exception</span>
 <span class="cm">   *                             guarantee is afforded.</span>
-<span class="cm">   */</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
-  <span class="kt">int</span> <span class="n">function1</span><span class="p">(</span><span class="kt">int</span> <span class="n">Param1</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">Param2</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">Param3</span><span class="p">);</span>
+<span class="cm">   */</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">function1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">Param1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Param2</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Param3</span><span class="p">);</span><span class="w"></span>
 
-<span class="n">Obviously</span> <span class="n">the</span> <span class="n">real</span> <span class="n">documentation</span> <span class="n">should</span> <span class="n">be</span> <span class="n">more</span> <span class="n">helpful</span><span class="p">,</span> <span class="n">but</span> <span class="k">this</span> <span class="n">illustrates</span>
-<span class="n">the</span> <span class="n">key</span> <span class="n">things</span> <span class="n">to</span> <span class="nl">document</span><span class="p">:</span> <span class="n">brief</span><span class="p">,</span> <span class="n">detailed</span> <span class="n">description</span><span class="p">,</span> <span class="n">input</span><span class="o">/</span><span class="n">output</span>
-<span class="n">parameters</span><span class="p">,</span> <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="k">template</span> <span class="n">type</span> <span class="p">(</span><span class="n">or</span> <span class="n">non</span><span class="o">-</span><span class="n">type</span><span class="p">)</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">and</span>
-<span class="n">exceptions</span> <span class="n">that</span> <span class="n">are</span> <span class="n">thrown</span> <span class="p">(</span><span class="n">as</span> <span class="n">well</span> <span class="n">as</span> <span class="n">the</span> <span class="n">level</span> <span class="n">of</span> <span class="n">exception</span> <span class="n">guarantee</span><span class="p">).</span>
+<span class="n">Obviously</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">real</span><span class="w"> </span><span class="n">documentation</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">helpful</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">illustrates</span><span class="w"></span>
+<span class="n">the</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">things</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nl">document</span><span class="p">:</span><span class="w"> </span><span class="n">brief</span><span class="p">,</span><span class="w"> </span><span class="n">detailed</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="o">/</span><span class="n">output</span><span class="w"></span>
+<span class="n">parameters</span><span class="p">,</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="k">template</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="p">(</span><span class="n">or</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">type</span><span class="p">)</span><span class="w"> </span><span class="n">parameters</span><span class="p">,</span><span class="w"> </span><span class="n">and</span><span class="w"></span>
+<span class="n">exceptions</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">thrown</span><span class="w"> </span><span class="p">(</span><span class="n">as</span><span class="w"> </span><span class="n">well</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">guarantee</span><span class="p">).</span><span class="w"></span>
 
-<span class="n">Other</span> <span class="n">useful</span> <span class="n">commands</span> <span class="n">to</span> <span class="n">be</span> <span class="n">aware</span> <span class="nl">of</span><span class="p">:</span>
+<span class="n">Other</span><span class="w"> </span><span class="n">useful</span><span class="w"> </span><span class="n">commands</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">aware</span><span class="w"> </span><span class="nl">of</span><span class="p">:</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">

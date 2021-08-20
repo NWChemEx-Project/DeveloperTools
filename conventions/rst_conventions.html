@@ -196,9 +196,8 @@ In particular:</p>
 </section>
 <section id="sections">
 <h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
-<p>NWChemEx adopts Python’s reST
-<a class="reference external" href="https://devguide.python.org/documenting/#sections">conventions</a> for denoting
-sections. Namely:</p>
+<p>Python’s reST <a class="reference external" href="https://devguide.python.org/documenting/#sections">conventions</a>
+for denoting sections are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">#</span></code> with overline should be used for parts</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> with overline is for chapters</p></li>
@@ -207,12 +206,19 @@ sections. Namely:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">^</span></code> for subsubsections</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span></code> for paragraphs</p></li>
 </ul>
-<p>The distinction between “parts”, “chapters”, <em>etc</em>. is based largely on how
-nested in the documentation a file is. For example, “parts” are topics in the
-top-level table of contents; in the case of DeveloperTools’ documentation the
-parts are: Project Conventions, Design Documentation, <em>etc.</em>. Chapters are
-topics within one of the parts (<em>e.g.</em> this page is a chapter in the Project
-Conventions part).</p>
+<p>The exact distinction between “parts”, “chapters”, <em>etc</em>. seems to be based
+largely on how nested in the documentation a file is. For example, “parts” would
+be topics in the top-level table of contents; in the case of DeveloperTools’
+documentation the parts are: Project Conventions, Design Documentation, <em>etc.</em>.
+Chapters are topics within one of the parts (<em>e.g.</em> this page is a chapter in
+the Project Conventions part).</p>
+<p>The definitions of parts, chapters, etc. are a bit annoying as they require
+changing under/overlines in a potentially large number of documentation files if
+andy refactoring occurrs. To avoid this, the NWX project adopts the convention
+that definitions of parts, chapters, etc. are file specific. In other words,
+the first title in a particular reST file should be considered the title of a
+part; the first title within that part is considered a chapter, <em>etc.</em>. As a
+more concrete example see the raw source for this file.</p>
 </section>
 </section>
 
