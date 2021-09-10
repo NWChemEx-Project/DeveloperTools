@@ -27,6 +27,7 @@ SimDE encapsulates the infrastructure required to:
 - interact with the hardware,
 - manage and run modules,
 - and describe commonly occurring computational chemistry concepts.
+
 SimDE is intended to have APIs that are long-term stable. Most
 developers will only interact with SimDE and will not need to perform
 development on it.
@@ -36,7 +37,7 @@ operating system, but targeting computational chemistry. Like a smartphone OS,
 SimDE manages a bunch of apps (which we call modules), takes care of inter-app
 communication (passing data among the modules), and automates more mundane tasks
 (like logging and saving results). SimDE is extensible in that new modules and
-communication protocals can be added downstream from it, even at runtime.
+communication protocols can be added downstream from it, even at runtime.
 
 This generality and flexibility comes at the cost of complexity. While design
 efforts have striven to make SimDE as simple as possible, the reality is that it
@@ -86,7 +87,7 @@ Repository     Description
 ============== =======================================================
 Integrals      Modules for computing integrals with AOs
 SCF            Modules related to Hartree-Fock and DFT
-MP2            Modules realted to Moller-Plesset perturbation theory
+MP2            Modules related to Moller-Plesset perturbation theory
 TAMM-SDE       An assortment of modules which use TAMM instead of TA
 NWChemEx       The top-level repo which provides the user-friendly API
 ============== =======================================================
