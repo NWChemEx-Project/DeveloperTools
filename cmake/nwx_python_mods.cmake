@@ -32,7 +32,7 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     set(options MPI PYTHONIZE)
     set(oneValueArgs PACKAGE)
-    set(multiValueArgs NAMESPACES DEPNAMESPACES)
+    set(multiValueArgs NAMESPACES DEPPACKAGES)
     cmake_parse_arguments(install_data "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
     #---------------------------------------------------------------------------
     #--------------------------Get include directories--------------------------
@@ -70,8 +70,8 @@ function(cppyy_make_python_package)
     #---------------------------------------------------------------------------
     set(init_file_name "${output_dir}/__init__.py")
     set(init_file "import cppyy\n\n")
-    foreach(depnamespace ${install_data_DEPNAMESPACES})
-        set(init_file "${init_file}from ${depnamespace} import \*\n")
+    foreach(deppackage ${install_data_DEPPACKAGES})
+        set(init_file "${init_file}from ${deppackage} import \*\n")
     endforeach()
     set(init_file "${init_file}import os\n")
     set(init_file "${init_file}paths = list(set(\"${include_dirs}\".split(';')))\n")
