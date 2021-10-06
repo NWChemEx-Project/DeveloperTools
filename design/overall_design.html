@@ -1,78 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Overall Design &mdash; DeveloperTools 1.0.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Energy Workflow" href="energy_workflow.html" />
     <link rel="prev" title="Design Documentation" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> DeveloperTools
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 1.0.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -80,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../conventions/index.html">Project Conventions</a></li>
@@ -112,91 +60,49 @@
 <li class="toctree-l1"><a class="reference internal" href="../resources/index.html">Additional Developer Resources</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">DeveloperTools</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="index.html">Design Documentation</a> &raquo;</li>
-        
       <li>Overall Design</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/design/overall_design.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <section id="overall-design">
-<h1>Overall Design<a class="headerlink" href="#overall-design" title="Permalink to this headline">¶</a></h1>
+<h1>Overall Design<a class="headerlink" href="#overall-design" title="Permalink to this headline"></a></h1>
 <p>The point of this page is to explain the philosophy and organization of
 NWChemEx’s software stack.</p>
 <section id="software-stack-overview">
-<span id="id1"></span><h2>Software Stack Overview<a class="headerlink" href="#software-stack-overview" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Software Stack Overview<a class="headerlink" href="#software-stack-overview" title="Permalink to this headline"></a></h2>
 <p>The NWChemEx Project is made up of two major software components: the framework
 known as the simulation development environment, or SimDE for short, and the
 NWChemEx electronic structure package.</p>
 <figure class="align-center" id="id2" style="width: 100%">
 <img alt="../_images/overall_design.png" src="../_images/overall_design.png" />
 <figcaption>
-<p><span class="caption-text">Diagram of the overall NWChemEx Design</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Diagram of the overall NWChemEx Design</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="simde">
-<h2>SimDE<a class="headerlink" href="#simde" title="Permalink to this headline">¶</a></h2>
+<h2>SimDE<a class="headerlink" href="#simde" title="Permalink to this headline"></a></h2>
 <p>SimDE encapsulates the infrastructure required to:
 - interact with the hardware,
 - manage and run modules,
@@ -244,7 +150,7 @@ for finer-grained control.</p>
 </table>
 </section>
 <section id="nwchemex">
-<h2>NWChemEx<a class="headerlink" href="#nwchemex" title="Permalink to this headline">¶</a></h2>
+<h2>NWChemEx<a class="headerlink" href="#nwchemex" title="Permalink to this headline"></a></h2>
 <p>The NWChemEx electronic structure theory package is itself made up of two main
 components: a series of modules for use with SimDE and a user-friendly API for
 running those modules. If we continue the smartphone analogy, the modules
@@ -294,7 +200,7 @@ NWChemEx.</p>
 </table>
 </section>
 <section id="miscellaneous-repositories">
-<h2>Miscellaneous Repositories<a class="headerlink" href="#miscellaneous-repositories" title="Permalink to this headline">¶</a></h2>
+<h2>Miscellaneous Repositories<a class="headerlink" href="#miscellaneous-repositories" title="Permalink to this headline"></a></h2>
 <p>The NWChemEx-Project organization contains a number of additional “meta”
 repositories that are not directly required for building NWChemEx. They are
 summarized in the following table.</p>
@@ -322,50 +228,33 @@ summarized in the following table.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="energy_workflow.html" class="btn btn-neutral float-right" title="Energy Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Design Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="energy_workflow.html" class="btn btn-neutral float-right" title="Energy Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, NWChemEx Team.
-
-    </p>
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
