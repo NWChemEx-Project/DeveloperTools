@@ -18,6 +18,8 @@ jobs:
             ^.gitignore$
             ^cmake/get_cpp.cmake$
             ^cmake/nwx_cxx_api_docs.cmake$
+            ^cmake/nwx_python_mods.cmake$
+            ^cmake/FindCppyy.cmake$
             ^docs/requirements.txt$
             ^LICENSE$
           TARGET_REPOS: |
