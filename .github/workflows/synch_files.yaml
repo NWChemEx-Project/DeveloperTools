@@ -26,10 +26,12 @@ jobs:
             NWChemEx-Project/Integrals
             NWChemEx-Project/LibChemist
             NWChemEx-Project/MP2
-            NWChemEx-Project/PropertyTypes
-            NWChemEx-Project/ReferenceData
+            NWChemEx-Project/SimDE         
+            NWChemEx-Project/ChemCache
             NWChemEx-Project/SCF
-            NWChemEx-Project/SDE
+            NWChemEx-Project/PluginPlay
+            NWChemEx-Project/ParallelZone
+            NWChemEx-Project/Mokup
             NWChemEx-Project/Utilities
             NWChemEx-Project/NWChemEx
           GITHUB_TOKEN: ${{ secrets.SYNC_FILES }}
