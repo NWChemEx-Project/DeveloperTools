@@ -7,13 +7,38 @@ Python.
 
 .. All pull requests are expected to adhere to these conventions. 
 
+Code Formatting
+===============
+
+When possible, ``yapf`` (`PyPI link <https://pypi.org/project/yapf/>`__) will 
+be used to enforce code conventions. In general, Python code should be 
+`PEP 8 compliant <https://www.python.org/dev/peps/pep-0008/>`__.
+
+VSCode Integration
+------------------
+
+VSCode can use ``yapf`` to automatically format code through the `official 
+Microsoft Python extension <https://marketplace.visualstudio.com/items?
+itemName=ms-python.python>`__. Install ``yapf`` using ``pip install yapf``
+and set ``python.formatting.provider`` to "yapf" to use ``yapf`` when 
+auto-formatting your code.
+
+.. note:: 
+   
+   More information on VSCode Python formatting can be found `here 
+   <https://code.visualstudio.com/docs/python/editing#_formatting>`__.
+
 Docstrings
 ==========
 
 A general description of a docstring and standardized conventions are described
-in `PEP-257 <https://www.python.org/dev/peps/pep-0257/>`__. Docstrings in
+in `PEP 257 <https://www.python.org/dev/peps/pep-0257/>`__. Docstrings in
 NWChemEx are written using the ``Sphinx`` format, described
 `here <https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html>`__.
+
+Docstrings should be used to sufficiently document Python modules, classes, 
+and functions, similar to the expectation that C++ code be documented 
+sufficiently through Doxygen documentation blocks.
 
 VSCode Integration
 ------------------
