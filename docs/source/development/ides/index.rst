@@ -1,3 +1,5 @@
+.. _nwx-ide-development:
+
 #########################
 Using IDEs to Develop NWX
 #########################
