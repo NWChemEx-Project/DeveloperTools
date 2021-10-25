@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#basic-text-formatting">Basic Text Formatting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#math">Math</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#code-blocks">Code Blocks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#faqs">FAQs</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="writing_tutorials.html">Writing Tutorials</a></li>
@@ -209,6 +210,28 @@ highlighting you can specify the language after the <code class="docutils litera
 <p>which renders as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The current directory is: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="faqs">
+<h2>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>How do I have URLs with the same generic link text?</p></li>
+</ol>
+<p>For example the following reST will give rise to
+the warning <cite>WARNING: Duplicate explicit target name: “here”</cite>:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>See <span class="s">`here </span><span class="si">&lt;https://github.com/NWChemEx-Project/DeveloperTools&gt;</span><span class="s">`_</span> or
+<span class="s">`here </span><span class="si">&lt;https://github.com/NWChemEx-Project/NWChemEX&gt;</span><span class="s">`_</span> for a really
+cool repo.
+</pre></div>
+</div>
+<p>This problem is caused by the fact that Sphinx automatically creates a
+target for your link based on the link text. To avoid this problem you
+can make the link have an anonymous target. This is done by using two
+underscores at the end like:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>See <span class="s">`here </span><span class="si">&lt;https://github.com/NWChemEx-Project/DeveloperTools&gt;</span><span class="s">`__</span> or
+<span class="s">`here </span><span class="si">&lt;https://github.com/NWChemEx-Project/NWChemEX&gt;</span><span class="s">`__</span> for a really
+cool repo.
 </pre></div>
 </div>
 </section>
