@@ -159,7 +159,7 @@ FAQs
 #. How do I have URLs with the same generic link text?
 
 For example the following reST will give rise to
-the warning `WARNING: Duplicate explicit target name: "here"`:
+the warning ``WARNING: Duplicate explicit target name: "here"``:
 
 .. code-block:: rest
    
