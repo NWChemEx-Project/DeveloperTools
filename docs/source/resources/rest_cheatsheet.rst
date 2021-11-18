@@ -152,3 +152,30 @@ which renders as:
 
    import os
    print("The current directory is: " + os.getcwd())
+   
+FAQs
+====
+
+#. How do I have URLs with the same generic link text?
+
+For example the following reST will give rise to
+the warning ``WARNING: Duplicate explicit target name: "here"``:
+
+.. code-block:: rest
+   
+   See `here <https://github.com/NWChemEx-Project/DeveloperTools>`_ or
+   `here <https://github.com/NWChemEx-Project/NWChemEX>`_ for a really
+   cool repo.
+
+This problem is caused by the fact that Sphinx automatically creates a 
+target for your link based on the link text. To avoid this problem you
+can make the link have an anonymous target. This is done by using two
+underscores at the end like:
+
+.. code-block:: rest
+   
+   See `here <https://github.com/NWChemEx-Project/DeveloperTools>`__ or
+   `here <https://github.com/NWChemEx-Project/NWChemEX>`__ for a really
+   cool repo.   
+
+   
