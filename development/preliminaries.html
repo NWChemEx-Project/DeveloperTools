@@ -133,17 +133,17 @@ don’t need to clone any other repo.</p>
 <p>The last piece of the preliminary set-up is the toolchain file. By convention
 this is a file named <code class="docutils literal notranslate"><span class="pre">toolchain.cmake</span></code>. Its contents are a series of CMake
 <code class="docutils literal notranslate"><span class="pre">set</span></code> commands like:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span> <span class="s">/path/to/your/C++/compiler</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span> <span class="s">TRUE</span><span class="p">)</span> <span class="c"># Always a good idea to enable tests when developing</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span> <span class="s">my_super_secret_token</span><span class="p">)</span> <span class="c"># Needed to get private repos</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_BUILD_POSITION_INDEPENDENT_CODE</span> <span class="s">TRUE</span><span class="p">)</span> <span class="c"># Adds -fPIC to static libs</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s">/path/to/your/C++/compiler</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span><span class="w"> </span><span class="c"># Always a good idea to enable tests when developing</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CPP_GITHUB_TOKEN</span><span class="w"> </span><span class="s">my_super_secret_token</span><span class="p">)</span><span class="w"> </span><span class="c"># Needed to get private repos</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_BUILD_POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="s">TRUE</span><span class="p">)</span><span class="w"> </span><span class="c"># Adds -fPIC to static libs</span>
 </pre></div>
 </div>
 <p>For development purposes we also want to tell the build system to use our local
 copies of repos we’re developing in. This is done with CMake’s
 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_SOURCE_DIR_XXX</span></code> variables. For example if we’re developing code
 for the SCF repo we need to also add:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">FETCHCONENT_SOURCE_DIR_SCF</span> <span class="s">/path/to/nwx_workspace/SCF</span><span class="p">)</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">FETCHCONENT_SOURCE_DIR_SCF</span><span class="w"> </span><span class="s">/path/to/nwx_workspace/SCF</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>to our toolchain. If you are writing code for multiple repos you simply set

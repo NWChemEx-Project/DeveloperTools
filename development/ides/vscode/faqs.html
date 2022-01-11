@@ -119,21 +119,21 @@ the command palette. Then select <code class="docutils literal notranslate"><spa
 you want that breakpoint to be set in <code class="docutils literal notranslate"><span class="pre">src/x.cpp</span></code> and in <code class="docutils literal notranslate"><span class="pre">tests/x.cpp</span></code>;
 you probably don’t. To fix this add to the <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file for your
 debugging session:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;sourceFileMap&quot;</span><span class="p">:</span> <span class="p">{</span>
-  <span class="nt">&quot;${workspaceFolder}&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;editorPath&quot;</span><span class="p">:</span> <span class="s2">&quot;${workspaceFolder}&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;useForBreakpoints&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;sourceFileMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;${workspaceFolder}&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;editorPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${workspaceFolder}&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;useForBreakpoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="how-do-i-get-the-debugger-to-break-on-a-throw">
 <h2><strong>How do I get the debugger to break on a throw?</strong><a class="headerlink" href="#how-do-i-get-the-debugger-to-break-on-a-throw" title="Permalink to this headline"></a></h2>
 <p>Add the following to the <code class="docutils literal notranslate"><span class="pre">&quot;setupCommands&quot;</span></code> block of your <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Enable break on all exceptions&quot;</span><span class="p">,</span>
-<span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;catch throw&quot;</span><span class="p">,</span>
-<span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enable break on all exceptions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;catch throw&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
