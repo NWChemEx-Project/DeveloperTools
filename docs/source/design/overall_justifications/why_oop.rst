@@ -1,3 +1,5 @@
+.. _why_object_oriented_programming:
+
 ################################
 Why Object-Oriented Programming?
 ################################

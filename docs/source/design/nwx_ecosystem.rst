@@ -59,6 +59,9 @@ supports).
 
 Performance key points:
 
+#. Internal components of NWChemEx written in C++ to take advantage of the
+   growing HPC support for C++ and to provide developers a performance focused
+   coding language.
 #. Performance is treated as a fundamental concern entering into the stack as
    part of the low level ParallelZone component.
 #. ParallelZone acts as a sort of domain-specific language (DSL) for the rest of
@@ -85,6 +88,8 @@ Ease of use key points:
 
 Component mentality key points:
 
+#. User facing APIs are written in Python to take advantage of its popularity in
+   scientific software (particularly in workflows)
 #. PluginPlay provides NWChemEx's abstractions for interacting with software
    components.
 #. The bulk of NWChemEx's capabilities are provided by its internal module
