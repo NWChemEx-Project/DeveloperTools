@@ -5,7 +5,9 @@ Sure it Looks Pretty, But is it Going to Scale?
 :ref:`why_object_oriented_programming` explained why we opted for an OOP
 paradigm. To some extent this section continues that discussion, but in the
 context of whether or not OOP is just "syntactic sugar" or if it actually allows
-one to write performant code, that looks nice too.
+one to write performant code, that looks nice too. Put another way, this section
+justifies why we can adopt a top-down philosophy (design the pretty API, then
+worry about performance) and expect it to perform well.
 
 The short answer is, OOP really is just "syntactic sugar". We proposition,
 without proof, that everything on this page can be accomplished with functional

@@ -1,3 +1,5 @@
+.. _why_do_we_need_pluginplay:
+
 ##########################
 Why Do We Need PluginPlay?
 ##########################
