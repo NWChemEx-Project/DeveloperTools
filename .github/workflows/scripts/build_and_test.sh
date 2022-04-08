@@ -53,7 +53,7 @@ echo "set(BUILD_TESTING ON)" > "${toolchain_file}"
 } >> "${toolchain_file}"
 
 #Step 2: Configure
-${cmake_command} -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}"
+${cmake_command} -GNinja -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}"
 
 #Step 3: Compile
 ${cmake_command} --build build

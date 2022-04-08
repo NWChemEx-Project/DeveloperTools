@@ -198,6 +198,16 @@ get_scalapack() {
   ${APT_GET_COMMAND} install libscalapack-openmpi-dev
 }
 
+# Wraps installing ninja
+#
+# Usage:
+#   get_ninja
+#
+get_ninja() {
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install ninja-build
+}
+
 # Wraps installing Sphinx and the ReadTheDocs Theme
 #
 # Usage:
@@ -236,6 +246,7 @@ for depend in "$@"; do
     get_clang_format
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
+    get_ninja
   elif [ "${depend}" = "cppyy" ]; then
     get_cppyy
   elif [ "${depend}" = "doxygen" ]; then
