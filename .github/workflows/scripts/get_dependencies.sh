@@ -246,7 +246,6 @@ for depend in "$@"; do
     get_clang_format
   elif [ "${depend}" = "cmake" ]; then
     get_cmake "${cmake_version}"
-    get_ninja
   elif [ "${depend}" = "cppyy" ]; then
     get_cppyy
   elif [ "${depend}" = "doxygen" ]; then
@@ -259,6 +258,8 @@ for depend in "$@"; do
     get_gcovr
   elif [ "${depend}" = "lapacke" ]; then
     get_lapacke
+  elif [ "${depend}" = "ninja" ]; then
+    get_ninja
   elif [ "${depend}" = "numpy" ]; then
     get_numpy
   elif [ "${depend}" = "openblas" ]; then
