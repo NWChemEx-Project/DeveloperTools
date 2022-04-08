@@ -161,6 +161,16 @@ get_lapacke() {
   ${APT_GET_COMMAND} install liblapacke liblapacke-dev
 }
 
+# Wraps installing ninja
+#
+# Usage:
+#   get_ninja
+#
+get_ninja() {
+  ${APT_COMMAND} update
+  ${APT_GET_COMMAND} install ninja-build
+}
+
 # Wraps installing numpy
 #
 # Usage:
@@ -196,16 +206,6 @@ get_openmpi() {
 get_scalapack() {
   ${APT_COMMAND} update
   ${APT_GET_COMMAND} install libscalapack-openmpi-dev
-}
-
-# Wraps installing ninja
-#
-# Usage:
-#   get_ninja
-#
-get_ninja() {
-  ${APT_COMMAND} update
-  ${APT_GET_COMMAND} install ninja-build
 }
 
 # Wraps installing Sphinx and the ReadTheDocs Theme
