@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQs &mdash; DeveloperTools 1.0.0 documentation</title>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -44,11 +45,20 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../conventions/index.html">Project Conventions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Design Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="philosophy.html">Design Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nwx_ecosystem.html">NWChemEx Ecosystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overall_design.html">Overall Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/index.html">Overall Design Justification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="energy_workflow.html">Energy Workflow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">FAQs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#why-so-many-repos">Why So Many Repos?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#so-where-s-nwchemex">So Where’s “NWChemEx”?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overall-design">Overall Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#why-so-many-repos">Why So Many Repos?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#so-where-s-nwchemex">So Where’s “NWChemEx”?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -84,27 +94,33 @@
            <div itemprop="articleBody">
              
   <section id="faqs">
-<h1>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline"></a></h1>
+<h1>FAQs<a class="headerlink" href="#faqs" title="Permalink to this heading"></a></h1>
 <p>This page collects frequently asked questions pertaining to NWChemEx’s Design.</p>
+<section id="overall-design">
+<h2>Overall Design<a class="headerlink" href="#overall-design" title="Permalink to this heading"></a></h2>
 <section id="why-so-many-repos">
-<h2>Why So Many Repos?<a class="headerlink" href="#why-so-many-repos" title="Permalink to this headline"></a></h2>
+<h3>Why So Many Repos?<a class="headerlink" href="#why-so-many-repos" title="Permalink to this heading"></a></h3>
 <p>When transitioning from developing a more traditional electronic structure
 package to NWChemEx, one of the first observations developers make is that there
 are a lot of repos. The motivation behind this is a separation of concerns and
-to enforced a decoupled nature to the source code. Each repo is designed to be a
+to enforce a decoupled nature to the source code. Each repo is designed to be a
 reusable component. It is our hope that such a code factorization will
 facilitate adoption of these components by other codes. Even if our components
 are never adopted by other codes, a component-based design still benefits us by
 making it easier to refactor if need be.</p>
 </section>
+</section>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h2>
 <section id="so-where-s-nwchemex">
-<h2>So Where’s “NWChemEx”?<a class="headerlink" href="#so-where-s-nwchemex" title="Permalink to this headline"></a></h2>
+<h3>So Where’s “NWChemEx”?<a class="headerlink" href="#so-where-s-nwchemex" title="Permalink to this heading"></a></h3>
 <p>Having a bunch of individual repos is great for developers, but confusing to
 users. Users only need to build the <code class="docutils literal notranslate"><span class="pre">NWChemEx</span></code> repo. Building this repo will
 build all dependencies which are required to have the complete NWChemEx
 electronic structure package. The result of building <code class="docutils literal notranslate"><span class="pre">NWChemEx</span></code> is a set of
 Python bindings. There is no “NWChemEx” executable, rather users use the Python
 module.</p>
+</section>
 </section>
 </section>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Design Documentation &mdash; DeveloperTools 1.0.0 documentation</title>
@@ -14,11 +14,12 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Overall Design" href="overall_design.html" />
+    <link rel="next" title="Design Philosophy" href="philosophy.html" />
     <link rel="prev" title="Conventions for Writing reST Documentation" href="../conventions/rst_conventions.html" /> 
 </head>
 
@@ -44,7 +45,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../conventions/index.html">Project Conventions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Design Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="philosophy.html">Design Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nwx_ecosystem.html">NWChemEx Ecosystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overall_design.html">Overall Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/index.html">Overall Design Justification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="energy_workflow.html">Energy Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faqs.html">FAQs</a></li>
 </ul>
@@ -79,23 +83,44 @@
            <div itemprop="articleBody">
              
   <section id="design-documentation">
-<h1>Design Documentation<a class="headerlink" href="#design-documentation" title="Permalink to this headline"></a></h1>
+<h1>Design Documentation<a class="headerlink" href="#design-documentation" title="Permalink to this heading"></a></h1>
 <p>This section focuses on documentation relating to the overall design philosophy
-and implementation of the NWChemEx package.</p>
+and implementation of the NWChemEx package. The documentation is laid out to
+give you a top-down approach to the design. That is to say it starts very
+general and high-level, and as you progress through the design more details are
+added. The design documents in this section describe the overall project design,
+but do not specify how the components are designed. Consult the documentation of
+the individual components for details pertaining to their respective designs.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Design Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nwx_ecosystem.html">NWChemEx Ecosystem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nwx_ecosystem.html#nwchemex-use-cases">NWChemEx Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nwx_ecosystem.html#overall-software-ecosystem">Overall Software Ecosystem</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="overall_design.html">Overall Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overall_design.html#software-stack-overview">Software Stack Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overall_design.html#simde">SimDE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overall_design.html#nwchemex">NWChemEx</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overall_design.html#miscellaneous-repositories">Miscellaneous Repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_design.html#nwchemex-organization-overview">NWChemEx Organization Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overall_justifications/index.html">Overall Design Justification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_oop.html">Why Object-Oriented Programming?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/will_this_perform.html">Sure it Looks Pretty, But is it Going to Scale?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_cxx.html">Why is C++ the Primary Language of NWChemEx?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_python.html">Why is the NWChemEx API Written in Python?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/one_repo_vs_many.html">Why not Just Have One Giant Repo?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_pluginplay.html">Why Do We Need PluginPlay?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_simde.html">Why Do We Need SimDE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_chemcache.html">Why Do We Need ChemCache?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_mokup.html">Why Do We Need Mokup?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overall_justifications/why_this_partitioning.html">Why are the Repositories Partitioned this Way?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="energy_workflow.html">Energy Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="faqs.html#why-so-many-repos">Why So Many Repos?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faqs.html#so-where-s-nwchemex">So Where’s “NWChemEx”?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html#overall-design">Overall Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html#general">General</a></li>
 </ul>
 </li>
 </ul>
@@ -107,7 +132,7 @@ and implementation of the NWChemEx package.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../conventions/rst_conventions.html" class="btn btn-neutral float-left" title="Conventions for Writing reST Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="overall_design.html" class="btn btn-neutral float-right" title="Overall Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="philosophy.html" class="btn btn-neutral float-right" title="Design Philosophy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
