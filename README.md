@@ -1,7 +1,6 @@
 NWChemEx Developer Tools
 ========================
 
-The Developer Tools repository stores tools and documentation meant for NWChemEx
-developers. It is also the home of files which need to be synchronized among the
-various repositories.
+Please DO NOT use this repository anymore.  The .github repository has replaced this one.  
+This repo will be deleted or archived once we are sure there is nothing left to keep here.
 
